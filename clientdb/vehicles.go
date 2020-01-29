@@ -10,7 +10,7 @@ type VehicleModel struct {
 	DB *sql.DB
 }
 
-func (m *VehicleModel) GetAllMotorcycles() ([]clientmodels.Vehicle, error) {
+func (m *VehicleModel) GetAllMotorcycles(vehicleType int) ([]clientmodels.Vehicle, error) {
 	var v []clientmodels.Vehicle
 
 	query := `
@@ -45,13 +45,13 @@ func (m *VehicleModel) GetAllMotorcycles() ([]clientmodels.Vehicle, error) {
 		from 
 		     vehicles v 
 		where
-			vehicle_type = 7
+			vehicle_type = ?
 			and status = 1
 
 		order by year desc
 		       
 	`
-	rows, err := m.DB.Query(query)
+	rows, err := m.DB.Query(query, vehicleType)
 
 	if err == sql.ErrNoRows {
 		// do nothing
