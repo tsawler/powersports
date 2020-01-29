@@ -10,7 +10,7 @@ type VehicleModel struct {
 	DB *sql.DB
 }
 
-func (m *VehicleModel) GetAllMotorcycles(vehicleType int) ([]clientmodels.Vehicle, error) {
+func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels.Vehicle, error) {
 	var v []clientmodels.Vehicle
 
 	query := `

@@ -16,7 +16,7 @@ func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
 }
 
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
-	vehicles, err := vehicleModel.GetAllMotorcycles()
+	vehicles, err := vehicleModel.GetVehiclesForSaleByType(7)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
