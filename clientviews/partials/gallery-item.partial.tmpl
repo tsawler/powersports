@@ -1,0 +1,62 @@
+{{define "gallery-item-modal"}}
+    <div class="modal fade" tabindex="-1" role="dialog" id="galleryItemModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gallery Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="uploadGalleryForm" id="uploadGalleryForm" method="post" action="/admin/gallery/upload-item"
+                          enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                        <input type="hidden" name="id" id="gallery-item-id" value="0">
+                        <div class="form-group">
+                            <label>Image: </label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input required" id="gallery_image" name="gallery_image" accept="image/*">
+                                <label class="custom-file-label" for="gallery_image">Image</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Title:</label>
+                            <input type="text" name="title" id="title" class="form-control required">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gallery Tag:</label>
+                            <select class="form-control" name="gallery_id" id="gallery_id">
+                                {{range (index .RowSets "galleries")}}
+                                    <option value="{{.ID}}">{{.GalleryName}}</option>
+                                {{end}}
+                                <option value="-1">Add tag...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group d-none" id="new_tag_div">
+                            <label>Tag Name:</label>
+                            <input type="text" name="new_category_id" id="new_category_id" class="form-control required">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <select class="form-control" name="active" id="gallery_item_active">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success"  onclick="uploadGalleryImage()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{end}}

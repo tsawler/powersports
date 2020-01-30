@@ -1,0 +1,384 @@
+{{define "client-base"}}
+    <!doctype html>
+    <html class="no-js" lang="{{.Lang}}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>XX{{template "title" .}} - {{index .PreferenceMap "org-name"}}</title>
+        <meta name="generator"
+              content="goblender version {{.GbVersion}} by Verilion Inc. - https://www.verilion.com. All rights reserved.">
+        <meta name="csrf-token" content="{{.CSRFToken}}">
+        <link rel="canonical" href="https://{{.CurrentUrl}}">
+
+        <!-- open graph tags -->
+        {{$fbAppID := index .PreferenceMap "fb-app-id"}}
+        {{if ne $fbAppID ""}}
+            <meta property="fb:app_id" content="{{index .PreferenceMap "fb-app-id"}}">
+        {{end}}
+
+        {{$twitterAccount := index .PreferenceMap "twitter-account"}}
+        {{if ne $twitterAccount ""}}
+            <meta name="twitter:site" content="{{index .PreferenceMap "twitter-account"}}">
+        {{end}}
+
+        {{if .Post.Title}}
+            <meta name="description" content="{{.Post.Meta}}">
+            <meta name="keywords" content="{{.Post.Keywords}}">
+            {{if ne .Post.SEOImage 0}}
+                <meta property="og:image" content="{{.ServerUrl}}/static/site-content/post-uploads/{{.Post.ID}}/fb.jpg">
+            {{end}}
+            <meta property="og:type" content="website">
+            <meta property="og:title" content="{{.Post.Title}}">
+            <meta property="og:description" content="{{.Post.Meta}}">
+            <meta property="og:site_name" content="{{index .PreferenceMap "application-name"}}">
+            <meta property="og:url" content="https://{{.CurrentUrl}}">
+
+            <!-- twitter tags -->
+            {{if ne .Post.SEOImage 0}}
+                <meta name="twitter:card" content="summary_large_image">
+            {{else}}
+                <meta name="twitter:card" content="summary">
+            {{end}}
+            <meta name="twitter:title" content="{{.Post.Title}}">
+            <meta name="twitter:url" content="https://{{.CurrentUrl}}">
+            <meta name="twitter:description" content="{{.Post.Meta}}">
+            {{if ne .Post.SEOImage 0}}
+                <meta name="twitter:image" content="{{.ServerUrl}}/static/site-content/post-uploads/{{.Post.ID}}/twitter.jpg">
+            {{end}}
+
+        {{else if .Page.PageTitle}}
+            <meta name="description" content="{{.Page.Meta}}">
+            <meta name="keywords" content="{{.Page.MetaTags}}">
+            {{if ne .Page.SEOImage 0}}
+                <meta property="og:image" content="{{.ServerUrl}}/static/site-content/page-uploads/{{.Page.ID}}/fb.jpg">
+            {{end}}
+            <meta property="og:type" content="website">
+            <meta property="og:title" content="{{.Page.PageTitle}}">
+            <meta property="og:description" content="{{.Page.Meta}}">
+            <meta property="og:site_name" content="{{index .PreferenceMap "application-name"}}">
+            <meta property="og:url" content="https://{{.CurrentUrl}}">
+
+            <!-- twitter tags -->
+            {{if ne .Page.SEOImage 0}}
+                <meta name="twitter:card" content="summary_large_image">
+            {{else}}
+                <meta name="twitter:card" content="summary">
+            {{end}}
+            <meta name="twitter:title" content="{{.Page.PageTitle}}">
+            <meta name="twitter:url" content="https://{{.CurrentUrl}}">
+            <meta name="twitter:description" content="{{.Page.Meta}}">
+            {{if ne .Page.SEOImage 0}}
+                <meta name="twitter:image" content="{{.ServerUrl}}/static/site-content/page-uploads/{{.Page.ID}}/twitter.jpg">
+            {{end}}
+        {{else if .News.Title}}
+            <meta name="description" content="{{.News.Meta}}">
+            <meta name="keywords" content="{{.News.Keywords}}">
+            {{if ne .News.SEOImage 0}}
+                <meta property="og:image" content="{{.ServerUrl}}/static/site-content/news-uploads/{{.News.ID}}/fb.jpg">
+            {{end}}
+            <meta property="og:type" content="website">
+            <meta property="og:title" content="{{.News.Title}}">
+            <meta property="og:description" content="{{.News.Meta}}">
+            <meta property="og:site_name" content="{{index .PreferenceMap "application-name"}}">
+            <meta property="og:url" content="https://{{.CurrentUrl}}">
+
+            <!-- twitter tags -->
+            {{if ne .News.SEOImage 0}}
+                <meta name="twitter:card" content="summary_large_image">
+            {{else}}
+                <meta name="twitter:card" content="summary">
+            {{end}}
+            <meta name="twitter:title" content="{{.News.Title}}">
+            <meta name="twitter:url" content="https://{{.CurrentUrl}}">
+            <meta name="twitter:description" content="{{.News.Meta}}">
+            {{if ne .News.SEOImage 0}}
+                <meta name="twitter:image" content="{{.ServerUrl}}/static/site-content/news-uploads/{{.News.ID}}/twitter.jpg">
+            {{end}}
+        {{end}}
+
+
+
+        {{ $favico := index .PreferenceMap "favico"}}
+        {{if ne $favico ""}}
+            <link rel="icon" type="image/png" href="/static/site-content/prefs/favicon.png" sizes="16x16">
+            <link rel="icon" type="image/png" href="/static/site-content/prefs/favicon-32.png" sizes="32x32">
+            <link rel="icon" type="image/png" href="/static/site-content/prefs/favicon-96.png" sizes="96x96">
+            <link rel="apple-touch-icon" href="/static/site-content/prefs/favicon-120.png">
+            <link rel="apple-touch-icon" sizes="180x180" href="/static/site-content/prefs/favicon-180.png">
+            <link rel="apple-touch-icon" sizes="152x152" href="/static/site-content/prefs/favicon-152.png">
+            <link rel="apple-touch-icon" sizes="167x167" href="/static/site-content/prefs/favicon-167.png">
+        {{else}}
+            <link rel='shortcut icon' href='/static/img/favicon.ico' type='image/x-icon'>
+        {{end}}
+
+        <link href="/static/box/box.css?v={{.CSSVersion}}" rel="stylesheet"/>
+        <link href="/static/assets/minimalist-basic/content-bootstrap.css?v={{.CSSVersion}}" rel="stylesheet"/>
+        <link href="/static/templates/spacial/dist/theme.min.css?v={{.CSSVersion}}" rel="stylesheet">
+        {{if .IsAuthenticated}}
+            {{if hasRole "pages" .Auth.ID}}
+                <link href="/static/contentbuilder/contentbuilder.css?v={{.CSSVersion}}" rel="stylesheet">
+                <link href="/static/contentbox/contentbox.css?v={{.CSSVersion}}" rel="stylesheet">
+            {{end}}
+            <link rel="stylesheet"
+                  href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
+            <link rel="stylesheet" href="/static/css/BootSideMenu.css">
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        {{end}}
+
+
+        <link rel="stylesheet" href="/static/custom.css?v={{.CSSVersion}}">
+        {{ $siteWideCss := index .PreferenceMap "css"}}
+        {{if ne $siteWideCss ""}}
+            {{ safeHTML $siteWideCss}}
+        {{end}}
+
+
+        {{block "css" .}}
+
+        {{end}}
+
+    </head>
+
+    <body>
+
+    {{block "flyout" .}}
+
+    {{end}}
+
+
+    {{template "top-menu" .}}
+    {{template "slider" . }}
+
+    {{block "content" .}}
+
+    {{end}}
+
+    {{block "body" .}}
+
+    {{end}}
+
+
+    {{block "buttons" .}}
+
+    {{end}}
+
+{{/*    {{template "footer" .}}*/}}
+
+    <!-- microdata -->
+    {{$microdata := index .PreferenceMap "enable-microdata"}}
+    {{if eq $microdata "1"}}
+        <script type="application/ld+json">{
+                "@context": "http:\/\/schema.org",
+                "@type": "{{index .PreferenceMap "org-type"}}",
+                "name": "{{index .PreferenceMap "org-name"}}",
+                "email": "{{index .PreferenceMap "org-email"}}",
+                "address": "{{index .PreferenceMap "org-address"}}",
+                "telephone": "{{index .PreferenceMap "org-phone"}}",
+                {{ $img := index .PreferenceMap.logo}}
+                {{if ne $img ""}}
+                "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
+                {{end}}
+            }
+        </script>
+    {{end}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="/static/templates/spacial/dist/theme.min.js?id={{.CSSVersion}}"></script>
+{{/*    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*/}}
+{{/*    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>*/}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/static/assets/scripts/slick/slick.min.js"></script>
+    {{if eq (index .PreferenceMap "use-pusher") "1"}}
+        <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+        <script>
+            let pusher = new Pusher("{{index .PreferenceMap "pusher-key"}}", {
+                authEndPoint: '/pusher/auth',
+                wsHost: '{{ index .PreferenceMap "pusher-host"}}',
+                wsPort: {{ index .PreferenceMap "pusher-ws-port"}},
+                wssPort: {{ index .PreferenceMap "pusher-port"}},
+                {{if eq (index .PreferenceMap "pusher-encrypted") "1"}}
+                encrypted: true,
+                {{else}}
+                encrypted: false,
+                {{end}}
+                enabledTransports: ["ws", "wss", "flash"],
+                disabledTransports: ["flash"]
+            });
+
+            $(document).ready(function () {
+                {{if .IsAuthenticated}}
+                    // private channels
+                    let privateChannel = pusher.subscribe('private-channel-{{.Identifier}}-{{.Auth.ID}}');
+                    privateChannel.bind('warning-event', function (data) {
+                        warningAlert(data.message);
+                    });
+                    privateChannel.bind('error-event', function (data) {
+                        errorAlert(data.message);
+                    });
+                    privateChannel.bind('modal-event', function (data) {
+                        modalAlert(data.message);
+                    });
+                    privateChannel.bind('modal-message-event', function (data) {
+                        modalAlert(data.message);
+                    });
+                    privateChannel.bind('quite-message-event', function (data) {
+                        successAlert(data.message);
+                    });
+                {{end}}
+
+                // public channels
+                let publicChannel = pusher.subscribe('public-channel-{{.Identifier}}');
+                publicChannel.bind('success-event', function (data) {
+                    successAlert(data.message);
+                });
+                publicChannel.bind('warning-event', function (data) {
+                    warningAlert(data.message);
+                });
+                publicChannel.bind('error-event', function (data) {
+                    errorAlert(data.message);
+                });
+                publicChannel.bind('modal-event', function (data) {
+                    modalAlert(data.message);
+                });
+            });
+        </script>
+    {{end}}
+    {{if .IsAuthenticated}}
+        <script rel="preload" src="/static/contentbuilder/contentbuilder.js"></script>
+        <script rel="preload" src="/static/contentbuilder/saveimages.js"></script>
+        <script rel="preload" src="/static/contentbox/contentbox-src.js?v=2.1"></script>
+        <script rel="preload" src="/static/js/BootSideMenu.js"></script>
+        <script rel="preload" src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.js"></script>
+        <script rel="preload" src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.ui.position.min.js"></script>
+        <script rel="preload" src="/static/js/dropzone.min.js"></script>
+        <script rel="preload" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/js/bootstrap-colorpicker.min.js"></script>
+    {{end}}
+
+    <script>
+        // alerts
+        function successAlert(x) {
+            toastr.options.closeButton = true;
+            toastr.options.positionClass = "toast-top-center";
+            toastr.success(x);
+        }
+
+        function errorAlert(x) {
+            toastr.options.closeButton = true;
+            toastr.options.positionClass = "toast-top-center";
+            toastr.options.timeOut = 0;
+            toastr.options.extendedTimeOut = 0;
+            toastr.error(x);
+        }
+
+        function warningAlert(x) {
+            toastr.options.closeButton = true;
+            toastr.options.positionClass = "toast-top-center";
+            toastr.options.timeOut = 0;
+            toastr.options.extendedTimeOut = 0;
+            toastr.warning(x);
+        }
+
+        function modalAlert(x) {
+            bootbox.alert(x);
+        }
+
+        {{with .Flash}}
+            successAlert('{{.}}');
+        {{end}}
+
+        {{with .Error}}
+            errorAlert('{{.}}');
+        {{end}}
+
+        $('.modal').on('hidden.bs.modal', function (e) {
+            this.modal('dispose');
+        });
+
+        {{$logo := index .PreferenceMap "logo"}}
+        {{$invertedLogo := index .PreferenceMap "reverse-logo"}}
+        {{$sticky := index .PreferenceMap "sticky-menu"}}
+
+        {{if eq .IsMobile false}}
+            {{if eq $sticky "1"}}
+                $(function () {
+                    let header = $("#main-nav");
+                    let links = $('.mitem');
+
+                    {{$topBar := index $.PreferenceMap "top-bar"}}
+                    $(window).scroll(function () {
+                        let scroll = $(window).scrollTop();
+                        if (scroll >= 50) {
+                            header.addClass("scrolled").addClass("fixed-top");
+                            $("#top-bar").addClass('d-none');
+                            {{if ne $invertedLogo ""}}
+                                $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$invertedLogo}}');
+                            {{end}}
+                            if (header.hasClass("bg-transparent")) {
+                                header.removeClass("bg-transparent").addClass("was-transparent");
+                            }
+                            {{$showBar := index .PreferenceMap "show-top-bar"}}
+                            {{if eq $showBar "1"}}
+                                {{if pushDown $topBar .Page.MenuTransparent}}
+                                    $("#top-nav-bar").attr("style", "");
+                                {{end}}
+                            {{end}}
+                            links.addClass("menu-scrolled");
+                            $("#search-input").addClass("scrolled-search-icon");
+                        } else {
+                            header.removeClass("scrolled").removeClass("fixed-top");
+                            $("#top-bar").removeClass('d-none');
+                            {{if ne $invertedLogo ""}}
+                                $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$logo}}');
+                            {{end}}
+                            if (header.hasClass("was-transparent")) {
+                                header.removeClass("was-transparent").addClass("bg-transparent");
+                            }
+                            {{if eq $showBar "1"}}
+                                {{if pushDown $topBar .Page.MenuTransparent}}
+                                    $("#top-nav-bar").attr("style", "margin-top: 60px;");
+                                {{end}}
+                            {{end}}
+                            links.removeClass("menu-scrolled");
+                            $("#search-input").removeClass("scrolled-search-icon");
+                        }
+                    });
+                });
+            {{end}}
+        {{end}}
+    </script>
+
+    {{$js := index .PreferenceMap "js"}}
+    {{if ne $js ""}}
+        {{ safeHTML $js}}
+    {{end}}
+
+    {{block "js" .}}
+
+    {{end}}
+
+    <noscript id="deferred-styles">
+{{/*        <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>*/}}
+        <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+        <link href="/static/css/basic.min.css" rel="stylesheet">
+    </noscript>
+    <script>
+        let loadDeferredStyles = function() {
+            let addStylesNode = document.getElementById("deferred-styles");
+            let replacement = document.createElement("div");
+            replacement.innerHTML = addStylesNode.textContent;
+            document.body.appendChild(replacement);
+            addStylesNode.parentElement.removeChild(addStylesNode);
+        };
+        let raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+        else window.addEventListener('load', loadDeferredStyles);
+    </script>
+    </body>
+    </html>
+{{end}}

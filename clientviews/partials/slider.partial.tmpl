@@ -1,0 +1,209 @@
+{{define "slider"}}
+    {{if eq .Page.HasSlider 1}}
+        {{if .Page.Slider}}
+            {{if gt .Page.Slider.ID 0}}
+                <div id="main-slider"
+                     class="carousel slide {{if eq .Page.Slider.TransitionType "fade"}}carousel-fade{{end}}"
+                     data-ride="carousel"
+                     data-interval="{{.Page.Slider.Delay}}"
+                        {{if eq .Page.Slider.PauseOnHover 1 }}
+                    data-pause="hover"
+                {{else}}
+                    data-pause="false"
+                {{end}}>
+                    {{if eq .Page.Slider.ShowIndicators 1}}
+                        {{if eq $.IsMobile false}}
+                            <ol class="carousel-indicators">
+                                {{range $index, $value := .Page.Slider.Slides}}
+                                    {{if eq .Active 1}}
+                                        {{if eq $index 0}}
+                                            <li data-target="#main-slider" data-slide-to="{{$index}}"
+                                                class="d-block active"></li>
+                                        {{else}}
+                                            <li data-target="#main-slider" data-slide-to="{{$index}}" class="d-block"></li>
+                                        {{end}}
+                                    {{end}}
+                                {{end}}
+                            </ol>
+                        {{end}}
+                    {{end}}
+                    <div class="carousel-inner">
+                        {{$first := true}}
+                        {{range .Page.Slider.Slides}}
+                            {{if eq .Active 1}}
+                                {{if eq .IsVideo 0}}
+                                    {{if $first}}
+                                        <div class="carousel-item active" data-interval="{{.Delay}}">
+                                            <picture>
+                                                <source srcset="/static/site-content/sliders/{{$.Page.ID}}/lg-{{.MediaSrc}}"
+                                                        media="(min-width: 1400px)">
+                                                <source srcset="/static/site-content/sliders/{{$.Page.ID}}/md-{{.MediaSrc}}"
+                                                        media="(min-width: 768px)">
+                                                <source srcset="/static/site-content/sliders/{{$.Page.ID}}/sm-{{.MediaSrc}}"
+                                                        media="(min-width: 576px)">
+                                                <img srcset="/static/site-content/sliders/{{$.Page.ID}}/lg-{{.MediaSrc}}"
+                                                     alt="responsive image" class="d-block img-fluid">
+                                            </picture>
+                                            {{if eq $.IsMobile false}}
+                                            <div class="carousel-caption d-none d-md-block {{ captionClass .VPosition .HPosition}}">
+                                                <h2 style="color: {{.TitleColor}}" {{if eq .TitleShadow 1}} class="outline-text" {{end}}>{{index .TitleMap $.Lang}}</h2>
+                                                <p style="color: {{.SubtitleColor}}" {{if eq .SubtitleShadow 1}} class="outline-text" {{end}}>{{index .SubtitleMap $.Lang}}</p>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center ">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                            {{else}}
+                                            <div class="mobile-slider-text">
+                                                <h2 class="mobile-slider-text">{{index .TitleMap $.Lang}}</h2>
+                                                <h3 class="mobile-slider-text">{{index .SubtitleMap $.Lang}}</h3>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                            {{end}}
+                                        </div>
+                                        {{$first = false}}
+                                    {{else}}
+                                        <div class="carousel-item" data-interval="{{.Delay}}">
+                                            <picture>
+                                                <source srcset="/static/site-content/sliders/{{$.Page.ID}}/lg-{{.MediaSrc}}"
+                                                        media="(min-width: 1400px)">
+                                                <source srcset="/static/site-content/sliders/{{$.Page.ID}}/md-{{.MediaSrc}}"
+                                                        media="(min-width: 768px)">
+                                                <source srcset="/static/site-content/sliders/{{$.Page.ID}}/sm-{{.MediaSrc}}"
+                                                        media="(min-width: 576px)">
+                                                <img srcset="/static/site-content/sliders/{{$.Page.ID}}/lg-{{.MediaSrc}}"
+                                                     alt="responsive image" class="d-block img-fluid">
+                                            </picture>
+                                        {{if eq $.IsMobile false}}
+                                            <div class="carousel-caption d-none d-md-block {{ captionClass .VPosition .HPosition}}">
+                                                <h2 style="color: {{.TitleColor}}" {{if eq .TitleShadow 1}} class="outline-text" {{end}}>{{index .TitleMap $.Lang}}</h2>
+                                                <p style="color: {{.SubtitleColor}}" {{if eq .SubtitleShadow 1}} class="outline-text" {{end}}>{{index .SubtitleMap $.Lang}}</p>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                        {{else}}
+                                            <div class="mobile-slider-text">
+                                                <h2 class="mobile-slider-text">{{index .TitleMap $.Lang}}</h2>
+                                                <h3 class="mobile-slider-text">{{index .SubtitleMap $.Lang}}</h3>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                        {{end}}
+                                        </div>
+                                    {{end}}
+                                {{else}}
+
+                                    {{if $first}}
+                                        <div class="carousel-item active" data-interval="{{.Delay}}">
+                                            <div class="overlay"></div>
+                                            {{if eq .BackgroundVideo 0}}
+                                                <div class="text-center">
+                                                    <video playsinline="playsinline" autoplay="autoplay" muted="muted" controls
+                                                           width="768" loop="loop">
+                                                        <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
+                                                    </video>
+                                                </div>
+                                            {{else}}
+                                                <video playsinline="playsinline" autoplay="autoplay" muted="muted" controls
+                                                       loop="loop" style="min-width: 100%;">
+                                                    <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
+                                                </video>
+                                            {{end}}
+                                        {{if eq $.IsMobile false}}
+                                            <div class="carousel-caption d-none d-md-block {{ captionClass .VPosition .HPosition}}">
+                                                <h2 style="color: {{.TitleColor}}" {{if eq .TitleShadow 1}} class="outline-text" {{end}}>{{index .TitleMap $.Lang}}</h2>
+                                                <p style="color: {{.SubtitleColor}}" {{if eq .SubtitleShadow 1}} class="outline-text" {{end}}>{{index .SubtitleMap $.Lang}}</p>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                        {{else}}
+                                            <div class="mobile-slider-text">
+                                                <h2 class="mobile-slider-text">{{index .TitleMap $.Lang}}</h2>
+                                                <h3 class="mobile-slider-text">{{index .SubtitleMap $.Lang}}</h3>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                        {{end}}
+                                        </div>
+                                        {{$first = false}}
+                                    {{else}}
+                                        <div class="carousel-item" data-interval="{{.Delay}}">
+                                            <div class="overlay"></div>
+                                            {{if eq .BackgroundVideo 0}}
+                                                <div class="text-center">
+                                                    <video playsinline="playsinline" autoplay="autoplay" muted="muted" controls
+                                                           width="768" loop="loop">
+                                                        <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
+                                                    </video>
+                                                </div>
+                                            {{else}}
+                                                <video playsinline="playsinline" autoplay="autoplay" muted="muted"
+                                                       loop="loop" style="min-width: 100%;">
+                                                    <source src="/static//site-content/videos/{{.MediaSrc}}" type="video/mp4">
+                                                </video>
+                                            {{end}}
+                                        {{if eq $.IsMobile false}}
+                                            <div class="carousel-caption d-none d-md-block {{ captionClass .VPosition .HPosition}}">
+                                                <h2 style="color: {{.TitleColor}}" {{if eq .TitleShadow 1}} class="outline-text" {{end}}>{{index .TitleMap $.Lang}}</h2>
+                                                <p style="color: {{.SubtitleColor}}" {{if eq .SubtitleShadow 1}} class="outline-text" {{end}}>{{index .SubtitleMap $.Lang}}</p>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                        {{else}}
+                                            <div class="mobile-slider-text">
+                                                <h2 class="mobile-slider-text">{{index .TitleMap $.Lang}}</h2>
+                                                <h3 class="mobile-slider-text">{{index .SubtitleMap $.Lang}}</h3>
+                                                {{ $btnText := index .ButtonMap $.Lang}}
+                                                {{if ne $btnText "" }}
+                                                    <div class="btn-group">
+                                                        <a href="{{.ButtonUrl}}" {{if eq .NewWindow 1}} target="_blank" {{end}}
+                                                           class="btn btn-sm {{.ButtonStyle}} d-flex justify-content-center">{{$btnText}}</a>
+                                                    </div>
+                                                {{end}}
+                                            </div>
+                                        {{end}}
+                                        </div>
+                                    {{end}}
+                                {{end}}
+                            {{end}}
+                        {{end}}
+                    </div>
+                </div>
+            {{end}}
+        {{end}}
+    {{end}}
+{{end}}
