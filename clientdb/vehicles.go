@@ -208,7 +208,6 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			order by 
 				sort_order`
 		iRows, err := m.DB.Query(query, c.ID)
-		fmt.Println("Getting images for id", c.ID)
 		if err != nil {
 			fmt.Println(err)
 		}
