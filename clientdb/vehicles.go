@@ -535,6 +535,30 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 
 func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, error) {
 	var models []clientmodels.Model
+	query := `
+			select  
+				m.id, m.model
+			from 
+				vehicle_models m
+			where
+				m.id in (select v.vehicle_models_id from vehicles v where status = 1 and vehicle_type = ?)
+			order by 
+				m.model`
+	rows, err := m.DB.Query(query, id)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for rows.Next() {
+		var y clientmodels.Model
+		err = rows.Scan(
+			&y.ID,
+			&y.Model)
+		if err != nil {
+			fmt.Println(err)
+		}
+		models = append(models, y)
+	}
 
 	return models, nil
 }

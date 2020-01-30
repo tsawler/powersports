@@ -60,9 +60,6 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	infoLog.Println("Number found", num)
-	infoLog.Println("Number in slice", len(vehicles))
-
 	rowSets := make(map[string]interface{})
 	rowSets["vehicles"] = vehicles
 
@@ -89,6 +86,12 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	// get makes
 
 	// get models
+	models, err := vehicleModel.GetModelsForVehicleType(7)
+	if err != nil {
+		errorLog.Println(err)
+		helpers.ClientError(w, http.StatusBadRequest)
+		return
+	}
 
 	// get years
 	years, err := vehicleModel.GetYearsForVehicleType(7)
@@ -99,6 +102,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rowSets["years"] = years
+	rowSets["models"] = models
 
 	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
 		Page:      pg,

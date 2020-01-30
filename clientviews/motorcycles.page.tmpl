@@ -152,7 +152,9 @@
                             <label for="model" class="mr-sm-2 sr-only">Model</label>
                             <select class="form-control mr-sm-2" name="model" id="model">
                                 <option value="0">All Models</option>
-                                <option value="1">Passat</option>
+                                {{range index .RowSets "models"}}
+                                    <option {{if eq .ID $model}} selected {{end}} value="{{.ID}}">{{.Model}}</option>
+                                {{end}}
                             </select>
                         </div>
 
