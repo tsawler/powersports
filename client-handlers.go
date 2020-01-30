@@ -20,18 +20,50 @@ func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
 func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 	ids := r.Form.Get("ids")
 	infoLog.Println("Ids:", ids)
-
 	helpers.Render(w, r, "compare.page.tmpl", &templates.TemplateData{})
-
 }
 
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
+	stringMap["item-link-prefix"] = "motorcycle"
+	stringMap["pager-prefix"] = "motorcycles"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 7
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "motorcycle-inventory")
+}
+
+func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/atv-brute-force-inventory"
+	stringMap["item-link-prefix"] = "atv"
+	stringMap["pager-prefix"] = "atvs"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 8
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-brute-force")
+}
+
+func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string) {
 	var offset int
 	var selectedYear, selectedMake, selectedModel, selectedPrice int
 	pagerSuffix := ""
 
-	searching, ok := r.URL.Query()["year"]
+	pageIndex, err := strconv.Atoi(r.URL.Query().Get(":pageIndex"))
+	if err != nil {
+		pageIndex = 1
+	}
 
+	searching, ok := r.URL.Query()["year"]
 	if !ok || len(searching[0]) < 1 {
 		selectedYear = 0
 		selectedMake = 0
@@ -43,17 +75,13 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 		selectedModel, _ = strconv.Atoi(r.URL.Query()["model"][0])
 		selectedPrice, _ = strconv.Atoi(r.URL.Query()["price"][0])
 		pagerSuffix = fmt.Sprintf("?year=%d&make=%d&model=%d&price=%d", selectedYear, selectedMake, selectedModel, selectedPrice)
-	}
-
-	pageIndex, err := strconv.Atoi(r.URL.Query().Get(":pageIndex"))
-	if err != nil {
-		pageIndex = 1
+		stringMap["pager-suffix"] = pagerSuffix
 	}
 
 	perPage := 10
 	offset = (pageIndex - 1) * perPage
 
-	vehicles, num, err := vehicleModel.AllVehiclesPaginated(7, perPage, offset, selectedYear, selectedMake, selectedModel, selectedPrice)
+	vehicles, num, err := vehicleModel.AllVehiclesPaginated(vehicleType, perPage, offset, selectedYear, selectedMake, selectedModel, selectedPrice)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
@@ -63,29 +91,21 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	rowSets := make(map[string]interface{})
 	rowSets["vehicles"] = vehicles
 
-	intMap := make(map[string]int)
 	intMap["num-vehicles"] = num
 	intMap["current-page"] = pageIndex
 	intMap["year"] = selectedYear
 	intMap["make"] = selectedMake
 	intMap["model"] = selectedModel
 	intMap["price"] = selectedPrice
-	intMap["show-makes"] = 0
 
-	pg, err := pageModel.GetBySlug("motorcycle-inventory")
+	pg, err := pageModel.GetBySlug(slug)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
 	}
 
-	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
-	stringMap["item-link-prefix"] = "motorcycle"
-	stringMap["pager-prefix"] = "motorcycles"
-	stringMap["pager-suffix"] = pagerSuffix
-
 	// get makes
-	makes, err := vehicleModel.GetMakesForVehicleType(7)
+	makes, err := vehicleModel.GetMakesForVehicleType(vehicleType)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
@@ -93,7 +113,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get models
-	models, err := vehicleModel.GetModelsForVehicleType(7)
+	models, err := vehicleModel.GetModelsForVehicleType(vehicleType)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
@@ -101,7 +121,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get years
-	years, err := vehicleModel.GetYearsForVehicleType(7)
+	years, err := vehicleModel.GetYearsForVehicleType(vehicleType)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
@@ -112,7 +132,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	rowSets["models"] = models
 	rowSets["makes"] = makes
 
-	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
+	helpers.Render(w, r, templateName, &templates.TemplateData{
 		Page:      pg,
 		RowSets:   rowSets,
 		IntMap:    intMap,

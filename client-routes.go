@@ -22,12 +22,19 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
 
+	// motorcycles
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/inventory/motorcycle-inventory", http.StatusMovedPermanently)
 	}))
-
 	mux.Get("/inventory/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 	mux.Get("/inventory/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
+
+	// atvs
+	mux.Get("/atv-brute-force-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/atv-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/atv-brute-force-inventory", standardMiddleWare.ThenFunc(GetAllBruteForce))
+	mux.Get("/inventory/atv-brute-force-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllBruteForce))
 
 	return mux, nil
 }
