@@ -83,6 +83,66 @@ func GetAllMule(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-mule")
 }
 
+func GetAllJetSki(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/watercraft-jetski-inventory"
+	stringMap["item-link-prefix"] = "atv"
+	stringMap["pager-prefix"] = "jetski"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 13
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "watercraft-jetski-kawaski")
+}
+
+func GetAllMercuryOutboard(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/outboard-motors-mercury-inventory"
+	stringMap["item-link-prefix"] = "atv"
+	stringMap["pager-prefix"] = "mercury"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 10
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "outboard-motors-mercury-outboards")
+}
+
+func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/electric-bikes-inventory"
+	stringMap["item-link-prefix"] = "electric-bikes"
+	stringMap["pager-prefix"] = "pedegogo"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 16
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "electric-bikes")
+}
+
+func GetAllScooters(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory"
+	stringMap["item-link-prefix"] = "scooters"
+	stringMap["pager-prefix"] = "scooters"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 16
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "vespa-piaggio-gas-and-electric-scooters-mopeds")
+}
+
 func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string) {
 	var offset int
 	var selectedYear, selectedMake, selectedModel, selectedPrice int

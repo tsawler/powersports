@@ -50,6 +50,34 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	mux.Get("/inventory/atv-mule-inventory", standardMiddleWare.ThenFunc(GetAllMule))
 	mux.Get("/inventory/atv-mule-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMule))
 
+	// jetski
+	mux.Get("/watercraft-jetski", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/watercraft-jetski-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/watercraft-jetski-inventory", standardMiddleWare.ThenFunc(GetAllJetSki))
+	mux.Get("/inventory/watercraft-jetski-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllJetSki))
+
+	// jetski
+	mux.Get("/outboard-motors-mercury-outboards", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/outboard-motors-mercury-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/outboard-motors-mercury-inventory", standardMiddleWare.ThenFunc(GetAllMercuryOutboard))
+	mux.Get("/inventory/outboard-motors-mercury-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMercuryOutboard))
+
+	// electric bikes
+	mux.Get("/electric-bikes", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/outboard-motors-mercury-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/electric-bikes-inventory", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+	mux.Get("/inventory/electric-bikes-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+
+	// scooters
+	mux.Get("/vespa-piaggio-gas-and-electric-scooters-mopeds", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/outboard-motors-mercury-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+
 	return mux, nil
 }
 
