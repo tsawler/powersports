@@ -2,6 +2,7 @@ package clienthandlers
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/helpers"
@@ -27,17 +28,21 @@ func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	var offset int
 	var selectedYear, selectedMake, selectedModel, selectedPrice int
+	pagerSuffix := ""
 
-	if r.URL.Query()["year"][0] != "" {
-		selectedYear, _ = strconv.Atoi(r.URL.Query()["year"][0])
-		selectedMake, _ = strconv.Atoi(r.URL.Query()["make"][0])
-		selectedModel, _ = strconv.Atoi(r.URL.Query()["model"][0])
-		selectedPrice, _ = strconv.Atoi(r.URL.Query()["price"][0])
-	} else {
+	searching, ok := r.URL.Query()["year"]
+
+	if !ok || len(searching[0]) < 1 {
 		selectedYear = 0
 		selectedMake = 0
 		selectedModel = 0
 		selectedPrice = 0
+	} else {
+		selectedYear, _ = strconv.Atoi(r.URL.Query()["year"][0])
+		selectedMake, _ = strconv.Atoi(r.URL.Query()["make"][0])
+		selectedModel, _ = strconv.Atoi(r.URL.Query()["model"][0])
+		selectedPrice, _ = strconv.Atoi(r.URL.Query()["price"][0])
+		pagerSuffix = fmt.Sprintf("?year=%d&make=%d&model=%d&price=%d", selectedYear, selectedMake, selectedModel, selectedPrice)
 	}
 
 	pageIndex, err := strconv.Atoi(r.URL.Query().Get(":pageIndex"))
@@ -48,12 +53,15 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	perPage := 10
 	offset = (pageIndex - 1) * perPage
 
-	vehicles, num, err := vehicleModel.AllVehiclesPaginated(7, perPage, offset)
+	vehicles, num, err := vehicleModel.AllVehiclesPaginated(7, perPage, offset, selectedYear, selectedMake, selectedModel, selectedPrice)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
 		return
 	}
+
+	infoLog.Println("Number found", num)
+	infoLog.Println("Number in slice", len(vehicles))
 
 	rowSets := make(map[string]interface{})
 	rowSets["vehicles"] = vehicles
@@ -75,6 +83,8 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
 	stringMap["item-link-prefix"] = "motorcycle"
+	stringMap["pager-prefix"] = "motorcycles"
+	stringMap["pager-suffix"] = pagerSuffix
 
 	// get makes
 

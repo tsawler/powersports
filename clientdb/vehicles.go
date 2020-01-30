@@ -239,11 +239,25 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 	return v, nil
 }
 
-func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset int) ([]clientmodels.Vehicle, int, error) {
+func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year, make, model, price int) ([]clientmodels.Vehicle, int, error) {
 	var v []clientmodels.Vehicle
-	stmt := `
+
+	where := ""
+	if year > 0 {
+		where = fmt.Sprintf("and v.year = %d", year)
+	}
+
+	if make > 0 {
+		where = fmt.Sprintf("%s and v.vehicle_makes_id = %d", where, make)
+	}
+
+	if model > 0 {
+		where = fmt.Sprintf("%s and v.vehicle_models_id = %d", where, model)
+	}
+
+	stmt := fmt.Sprintf(`
 		select 
-			count(id) from vehicles where status = 1 and vehicle_type = ?`
+			count(v.id) from vehicles v where status = 1 and vehicle_type = ? %s`, where)
 
 	nRows, err := m.DB.Query(stmt, vehicleTypeID)
 	if err != nil {
@@ -258,7 +272,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset int) 
 		fmt.Println(err)
 	}
 
-	query := `
+	query := fmt.Sprintf(`
 		select 
 		       id, 
 		       stock_no, 
@@ -292,9 +306,10 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset int) 
 		where
 			vehicle_type = ?
 			and status = 1
+			%s
 
 		order by year desc
-		limit ? offset ?`
+		limit ? offset ?`, where)
 
 	rows, err := m.DB.Query(query, vehicleTypeID, perPage, offset)
 	if err != nil {
