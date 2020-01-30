@@ -39,6 +39,11 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 
 	rowSets := make(map[string]interface{})
 	rowSets["vehicles"] = vehicles
+
+	intMap := make(map[string]int)
+	intMap["num-vehicles"] = num
+	intMap["current-page"] = pageIndex
+
 	//for _, x := range vehicles {
 	//	infoLog.Println(x.ID)
 	//	infoLog.Println(x.Make.Make, x.Model.Model, x.Trim, x.Cost)
@@ -57,6 +62,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
 		Page:    pg,
 		RowSets: rowSets,
+		IntMap:  intMap,
 	})
 }
 

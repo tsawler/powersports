@@ -112,13 +112,14 @@
 {{define "body"}}
     {{$vehicles := index .RowSets "vehicles"}}
     {{$currentPage := index .IntMap "current-page"}}
-    {{$numPosts := index .IntMap "num-posts"}}
+    {{$numVehicles := index .IntMap "num-vehicles"}}
 
     <div class="clearfix"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
 
+                {{paginate $currentPage $numVehicles 10 "/motorcycle-inventory" "blog-pager"}}
 
             </div>
         </div>

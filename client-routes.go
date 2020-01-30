@@ -21,6 +21,7 @@ var parentDB *driver.DB
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
+	mux.Get("/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 
 	mux.Get("/custom/my-test-route", standardMiddleWare.ThenFunc(TestHandler))
 	mux.Get("/custom/protected-route", standardMiddleWare.Append(middleware.Auth).ThenFunc(TestProtectedHandler))
