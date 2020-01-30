@@ -53,6 +53,36 @@ func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-brute-force")
 }
 
+func GetAllTeryx(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/atv-teryx-inventory"
+	stringMap["item-link-prefix"] = "atv"
+	stringMap["pager-prefix"] = "teryx"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 12
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-teryx")
+}
+
+func GetAllMule(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/atv-mule-inventory"
+	stringMap["item-link-prefix"] = "atv"
+	stringMap["pager-prefix"] = "mule"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 11
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-mule")
+}
+
 func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string) {
 	var offset int
 	var selectedYear, selectedMake, selectedModel, selectedPrice int

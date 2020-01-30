@@ -29,12 +29,26 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	mux.Get("/inventory/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 	mux.Get("/inventory/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 
-	// atvs
-	mux.Get("/atv-brute-force-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/atv-inventory", http.StatusMovedPermanently)
+	// atvs - brute force
+	mux.Get("/atv-brute-force", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/atv-brute-force-inventory", http.StatusMovedPermanently)
 	}))
 	mux.Get("/inventory/atv-brute-force-inventory", standardMiddleWare.ThenFunc(GetAllBruteForce))
 	mux.Get("/inventory/atv-brute-force-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllBruteForce))
+
+	// atvs - teryx
+	mux.Get("/atv-teryx", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/atv-teryx-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/atv-teryx-inventory", standardMiddleWare.ThenFunc(GetAllTeryx))
+	mux.Get("/inventory/atv-teryx-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllTeryx))
+
+	// atvs - mule
+	mux.Get("/atv-mule", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/atv-mule-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/atv-mule-inventory", standardMiddleWare.ThenFunc(GetAllMule))
+	mux.Get("/inventory/atv-mule-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMule))
 
 	return mux, nil
 }
