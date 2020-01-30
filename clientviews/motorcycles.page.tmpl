@@ -113,11 +113,17 @@
     {{$vehicles := index .RowSets "vehicles"}}
     {{$currentPage := index .IntMap "current-page"}}
     {{$numVehicles := index .IntMap "num-vehicles"}}
+    {{$make := index .IntMap "make"}}
+    {{$model := index .IntMap "model"}}
+    {{$price := index .IntMap "price"}}
+    {{$year := index .IntMap "year"}}
 
     <div class="clearfix"></div>
     <div class="container is-content-1200">
         <div class="row">
             <div class="col-md-12">
+                <p>Year: {{$year}}, Make {{$make}}, Model {{$model}}, price {{$price}}</p>
+
 
                 <form method="get" action="{{.CurrentUrl}}" name="bookform" role="form" id="bookform"
                       class="float-left">
@@ -127,8 +133,9 @@
                             <label for="year" class="mr-sm-2 sr-only">Year</label>
                             <select class="form-control mr-sm-2" name="year" id="year">
                                 <option value="0">All Years</option>
-                                <option value="2020">2020</option>
-                                <option value="2019">2019</option>
+                                {{range index .RowSets "years"}}
+                                    <option {{if eq . $year}} selected {{end}} value="{{.}}">{{.}}</option>
+                                {{end}}
                             </select>
                         </div>
 

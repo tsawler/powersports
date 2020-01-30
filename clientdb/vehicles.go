@@ -486,7 +486,29 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset int) 
 
 func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 	var years []int
+	query := `
+			select distinct 
+				v.year
+			from 
+				vehicles v
+			where
+				vehicle_type = ?
+				and v.status = 1
+			order by 
+				year desc`
+	rows, err := m.DB.Query(query, id)
+	if err != nil {
+		fmt.Println(err)
+	}
 
+	for rows.Next() {
+		var y int
+		err = rows.Scan(&y)
+		if err != nil {
+			fmt.Println(err)
+		}
+		years = append(years, y)
+	}
 	return years, nil
 }
 

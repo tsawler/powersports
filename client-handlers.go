@@ -26,6 +26,19 @@ func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	var offset int
+	var selectedYear, selectedMake, selectedModel, selectedPrice int
+
+	if r.URL.Query()["year"][0] != "" {
+		selectedYear, _ = strconv.Atoi(r.URL.Query()["year"][0])
+		selectedMake, _ = strconv.Atoi(r.URL.Query()["make"][0])
+		selectedModel, _ = strconv.Atoi(r.URL.Query()["model"][0])
+		selectedPrice, _ = strconv.Atoi(r.URL.Query()["price"][0])
+	} else {
+		selectedYear = 0
+		selectedMake = 0
+		selectedModel = 0
+		selectedPrice = 0
+	}
 
 	pageIndex, err := strconv.Atoi(r.URL.Query().Get(":pageIndex"))
 	if err != nil {
@@ -48,6 +61,10 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	intMap := make(map[string]int)
 	intMap["num-vehicles"] = num
 	intMap["current-page"] = pageIndex
+	intMap["year"] = selectedYear
+	intMap["make"] = selectedMake
+	intMap["model"] = selectedModel
+	intMap["price"] = selectedPrice
 
 	pg, err := pageModel.GetBySlug("motorcycle-inventory")
 	if err != nil {
@@ -64,6 +81,14 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	// get models
 
 	// get years
+	years, err := vehicleModel.GetYearsForVehicleType(7)
+	if err != nil {
+		errorLog.Println(err)
+		helpers.ClientError(w, http.StatusBadRequest)
+		return
+	}
+
+	rowSets["years"] = years
 
 	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
 		Page:      pg,
