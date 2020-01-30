@@ -8,6 +8,7 @@ import (
 	"github.com/tsawler/goblender/pkg/helpers"
 	"github.com/tsawler/goblender/pkg/templates"
 	"net/http"
+	"strconv"
 )
 
 var vehicleModel *clientdb.VehicleModel
@@ -17,12 +18,24 @@ func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
 }
 
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
-	vehicles, err := vehicleModel.GetVehiclesForSaleByType(7)
+	var offset int
+
+	pageIndex, err := strconv.Atoi(r.URL.Query().Get(":pageIndex"))
+	if err != nil {
+		pageIndex = 1
+	}
+
+	perPage := 10
+	offset = (pageIndex - 1) * perPage
+
+	vehicles, num, err := vehicleModel.AllVehiclesPaginated(7, perPage, offset)
 	if err != nil {
 		errorLog.Println(err)
 		helpers.ClientError(w, http.StatusBadRequest)
 		return
 	}
+
+	infoLog.Println(num)
 
 	rowSets := make(map[string]interface{})
 	rowSets["vehicles"] = vehicles

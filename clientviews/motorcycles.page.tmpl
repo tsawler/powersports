@@ -111,6 +111,8 @@
 
 {{define "body"}}
     {{$vehicles := index .RowSets "vehicles"}}
+    {{$currentPage := index .IntMap "current-page"}}
+    {{$numPosts := index .IntMap "num-posts"}}
 
     <div class="clearfix"></div>
     <div class="container">
