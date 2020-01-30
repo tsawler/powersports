@@ -4,8 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
+	"github.com/tsawler/goblender/pkg/cache"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/helpers"
+	"github.com/tsawler/goblender/pkg/models"
+	"github.com/tsawler/goblender/pkg/templates"
 	"net/http"
 )
 
@@ -16,20 +19,29 @@ func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
 }
 
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
-	vehicles, err := vehicleModel.GetVehiclesForSaleByType(7)
+	//vehicles, err := vehicleModel.GetVehiclesForSaleByType(7)
+	//if err != nil {
+	//	errorLog.Println(err)
+	//	helpers.ClientError(w, http.StatusBadRequest)
+	//	return
+	//}
+	//for _, x := range vehicles {
+	//	infoLog.Println(x.ID)
+	//	infoLog.Println(x.Make.Make, x.Model.Model, x.Trim, x.Cost)
+	//	infoLog.Println(x.Images)
+	//	for _, i := range x.Images {
+	//		infoLog.Println("     ", i.Image)
+	//	}
+	//}
+
+	result, err := cache.Get(fmt.Sprintf("page-%s", "home"))
 	if err != nil {
-		errorLog.Println(err)
-		helpers.ClientError(w, http.StatusBadRequest)
+		helpers.ServerError(w, err)
 		return
 	}
-	for _, x := range vehicles {
-		infoLog.Println(x.ID)
-		infoLog.Println(x.Make.Make, x.Model.Model, x.Trim, x.Cost)
-		infoLog.Println(x.Images)
-		for _, i := range x.Images {
-			infoLog.Println("     ", i.Image)
-		}
-	}
+	pg := result.(models.Page)
+
+	helpers.Render(w, r, "client-page.page.tmpl", &templates.TemplateData{Page: pg})
 }
 
 func TestHandler(w http.ResponseWriter, r *http.Request) {
