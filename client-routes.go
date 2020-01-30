@@ -6,7 +6,6 @@ import (
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/driver"
-	"github.com/tsawler/goblender/pkg/middleware"
 	"github.com/tsawler/goblender/pkg/repository"
 	"github.com/tsawler/goblender/pkg/repository/page"
 	"log"
@@ -29,9 +28,6 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	mux.Get("/inventory/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 	mux.Get("/inventory/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
-
-	mux.Get("/custom/my-test-route", standardMiddleWare.ThenFunc(TestHandler))
-	mux.Get("/custom/protected-route", standardMiddleWare.Append(middleware.Auth).ThenFunc(TestProtectedHandler))
 
 	return mux, nil
 }
