@@ -52,15 +52,6 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	intMap["num-vehicles"] = num
 	intMap["current-page"] = pageIndex
 
-	//for _, x := range vehicles {
-	//	infoLog.Println(x.ID)
-	//	infoLog.Println(x.Make.Make, x.Model.Model, x.Trim, x.Cost)
-	//	infoLog.Println(x.Images)
-	//	for _, i := range x.Images {
-	//		infoLog.Println("     ", i.Image)
-	//	}
-	//}
-
 	pg, err := pageModel.GetBySlug("motorcycle-inventory")
 	if err != nil {
 		helpers.ServerError(w, err)
