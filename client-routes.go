@@ -5,13 +5,18 @@ import (
 	"github.com/justinas/alice"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
 	"github.com/tsawler/goblender/pkg/config"
+	"github.com/tsawler/goblender/pkg/driver"
 	"github.com/tsawler/goblender/pkg/middleware"
+	"github.com/tsawler/goblender/pkg/repository"
+	"github.com/tsawler/goblender/pkg/repository/page"
 	"log"
 )
 
 var app config.AppConfig
 var infoLog *log.Logger
 var errorLog *log.Logger
+var pageModel repository.PageRepo
+var parentDB *driver.DB
 
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
@@ -24,10 +29,12 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 }
 
 // ClientInit gives us access to site values for client code.
-func ClientInit(c config.AppConfig) {
+func ClientInit(c config.AppConfig, p *driver.DB) {
 	app = c
 	conn := app.Connections["wheels"]
 	vehicleModel = &clientdb.VehicleModel{DB: conn}
 	infoLog = app.InfoLog
 	errorLog = app.ErrorLog
+	pageModel = page.NewSQLPageRepo(p.SQL)
+	parentDB = p
 }

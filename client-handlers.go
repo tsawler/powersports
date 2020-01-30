@@ -4,10 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
-	"github.com/tsawler/goblender/pkg/cache"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/helpers"
-	"github.com/tsawler/goblender/pkg/models"
 	"github.com/tsawler/goblender/pkg/templates"
 	"net/http"
 )
@@ -34,14 +32,13 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	//	}
 	//}
 
-	result, err := cache.Get(fmt.Sprintf("page-%s", "home"))
+	pg, err := pageModel.GetBySlug("motorcycle-inventory")
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
 	}
-	pg := result.(models.Page)
 
-	helpers.Render(w, r, "client-page.page.tmpl", &templates.TemplateData{Page: pg})
+	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{Page: pg})
 }
 
 func TestHandler(w http.ResponseWriter, r *http.Request) {
