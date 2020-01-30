@@ -22,8 +22,8 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
 
-	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
-	mux.Get("/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
+	mux.Get("/inventory/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
+	mux.Get("/inventory/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 
 	mux.Get("/custom/my-test-route", standardMiddleWare.ThenFunc(TestHandler))
 	mux.Get("/custom/protected-route", standardMiddleWare.Append(middleware.Auth).ThenFunc(TestProtectedHandler))
