@@ -58,6 +58,12 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
 
+	// get makes
+
+	// get models
+
+	// get years
+
 	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
 		Page:      pg,
 		RowSets:   rowSets,
