@@ -17,6 +17,14 @@ func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
 	vehicleModel = &clientdb.VehicleModel{DB: conn}
 }
 
+func CompareVehicles(w http.ResponseWriter, r *http.Request) {
+	ids := r.Form.Get("ids")
+	infoLog.Println("Ids:", ids)
+
+	helpers.Render(w, r, "compare.page.tmpl", &templates.TemplateData{})
+
+}
+
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	var offset int
 

@@ -20,6 +20,8 @@ var parentDB *driver.DB
 
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
+	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
+
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 	mux.Get("/motorcycle-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 

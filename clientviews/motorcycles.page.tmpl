@@ -119,6 +119,15 @@
         <div class="row">
             <div class="col-md-12">
 
+                <div class="float-right">
+                    <a class="btn btn-info" style="color: white" id="compare" data-toggle="modal" data-target="#compareModal" disabled="disabled"
+                       data-backdrop="false"
+                       href="#!">Compare checked</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+
                 {{paginate $currentPage $numVehicles 10 (index .StringMap "pager-url") "blog-pager"}}
 
                 <table class="table table-striped table-condensed">
@@ -183,7 +192,7 @@
 
 
                                 <div class="text-center">
-                                    <input type="checkbox" name="compare[]" value="{{.ID}}" class="compare"
+                                    <input type="checkbox" name="compare" value="{{.ID}}" class="compare"
                                            data-toggle="tooltip" data-placement="top"
                                            title="You can compare a maximum of 3 vehicles at a time"> Compare
 
@@ -251,6 +260,28 @@
 
 {{define "js"}}
 
+    <div class="modal modal-fade" tabindex="-1" role="dialog" id="compareModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Compare</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="compareDiv">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     {{ .Page.JS}}
 
     <script>
@@ -262,6 +293,44 @@
         function openQQ(id, v) {
 
         }
+
+        $("#compare").click(function () {
+            let allValues = [];
+            $('.compare:checked').each(function () {
+                allValues.push($(this).val());
+            });
+            let a = allValues + "";
+
+            let formData = new FormData();
+            formData.append('ids', a);
+            formData.append('csrf_token', {{.CSRFToken}});
+            let ajax = new XMLHttpRequest();
+            ajax.responseType = "html";
+            ajax.open("POST", "/inventory/compare-vehicles");
+            ajax.send(formData);
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState === 4) {
+                    returned = ajax.response;
+                    $("#compareDiv").html(returned);
+                }
+            }
+        });
+
+        $(".compare").click(function () {
+            var numberOfChecked = $('.compare:checkbox:checked').length;
+            if (numberOfChecked == 3) {
+                $('.compare:not(:checked)').attr('disabled', 'disabled');
+            } else {
+                $('input.compare').removeAttr('disabled');
+            }
+
+            if (numberOfChecked > 1) {
+                $('#compare').removeAttr('disabled');
+            } else {
+                $('#compare').attr('disabled', 'disabled');
+            }
+        });
+
     </script>
 
     {{if .IsAuthenticated}}
