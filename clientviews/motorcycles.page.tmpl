@@ -119,8 +119,55 @@
         <div class="row">
             <div class="col-md-12">
 
+                <form method="get" action="{{.CurrentUrl}}" name="bookform" role="form" id="bookform" class="float-left">
+                    <div class="form-row align-items-center">
+
+                        <div class="col-auto my-1">
+                            <label for="year" class="mr-sm-2 sr-only">Year</label>
+                            <select class="form-control mr-sm-2" name="year" id="year">
+                                <option value="0">All Years</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto my-1">
+                            <label for="make" class="mr-sm-2 sr-only">make</label>
+                            <select class="form-control mr-sm-2" name="make" id="make">
+                                <option value="0">All Makes</option>
+                                <option value="1">Audi</option>
+                                <option value="2">Volkswagen</option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto my-1">
+                            <label for="model" class="mr-sm-2 sr-only">Model</label>
+                            <select class="form-control mr-sm-2" name="model" id="model">
+                                <option value="0">All Models</option>
+                                <option value="1">Passat</option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto my-1">
+                            <label for="price" class="mr-sm-2 sr-only">Price</label>
+                            <select class="form-control mr-sm-2" name="price" id="price">
+                                <option value="0">All Prices</option>
+                                <option value="1">Low to High</option>
+                                <option value="2">High to Low</option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-auto my-1">
+                            <button type="submit" class="btn btn-default">Go</button>
+                        </div>
+                    </div>
+
+                </form>
+
                 <div class="float-right">
-                    <a class="btn btn-info" style="color: white" id="compare" data-toggle="modal" data-target="#compareModal" disabled="disabled"
+                    <a class="btn btn-info" style="color: white" id="compare" data-toggle="modal"
+                       data-target="#compareModal" disabled="disabled"
                        data-backdrop="false"
                        href="#!">Compare checked</a>
                 </div>
@@ -190,7 +237,6 @@
                                 <br>
 
 
-
                                 <div class="text-center">
                                     <input type="checkbox" name="compare" value="{{.ID}}" class="compare"
                                            data-toggle="tooltip" data-placement="top"
@@ -209,7 +255,7 @@
                                     {{/*                                        <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,No Charge 1st Scheduled Service "done by us",Full Tank of Gas</span>*/}}
                                     {{/*                                    </div>*/}}
                                     {{/*                                    @endif*/}}
-                                                                    </div>
+                                </div>
 
                             </td>
                         </tr>
@@ -286,7 +332,7 @@
 
     <script>
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             // $('[data-toggle="tooltip"]').tooltip({container: 'body'});
         });
 
