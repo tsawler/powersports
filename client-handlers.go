@@ -57,6 +57,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
+	stringMap["item-link-prefix"] = "motorcycle"
 
 	// get makes
 
