@@ -116,8 +116,8 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			&vehicleMake.CreatedAt,
 			&vehicleMake.UpdatedAt)
 		if err != nil {
-			fmt.Println(err)
-			return v, err
+			fmt.Println("*** Error getting make:", err)
+			//return v, err
 		}
 		c.Make = vehicleMake
 
@@ -144,8 +144,8 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			&model.CreatedAt,
 			&model.UpdatedAt)
 		if err != nil {
-			fmt.Println(err)
-			return v, err
+			fmt.Println("*** Error getting model:", err)
+			//return v, err
 		}
 		c.Model = model
 
@@ -168,19 +168,19 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				o.option_name`
 		oRows, err := m.DB.Query(query, c.ID)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("*** Error getting options:", err)
 		}
 
 		var vehicleOptions []*clientmodels.VehicleOption
 		for oRows.Next() {
 			o := &clientmodels.VehicleOption{}
 			err = oRows.Scan(
-				o.ID,
-				o.VehicleID,
-				o.OptionID,
-				o.CreatedAt,
-				o.UpdatedAt,
-				o.OptionName,
+				&o.ID,
+				&o.VehicleID,
+				&o.OptionID,
+				&o.CreatedAt,
+				&o.UpdatedAt,
+				&o.OptionName,
 			)
 
 			if err != nil {
@@ -190,6 +190,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			}
 		}
 		c.VehicleOptions = vehicleOptions
+		oRows.Close()
 
 		// get images
 		query = `
@@ -207,6 +208,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			order by 
 				sort_order`
 		iRows, err := m.DB.Query(query, c.ID)
+		fmt.Println("Getting images for id", c.ID)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -215,12 +217,12 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 		for iRows.Next() {
 			o := &clientmodels.Image{}
 			err = iRows.Scan(
-				o.ID,
-				o.VehicleID,
-				o.Image,
-				o.CreatedAt,
-				o.UpdatedAt,
-				o.SortOrder,
+				&o.ID,
+				&o.VehicleID,
+				&o.Image,
+				&o.CreatedAt,
+				&o.UpdatedAt,
+				&o.SortOrder,
 			)
 
 			if err != nil {
@@ -230,6 +232,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			}
 		}
 		c.Images = vehicleImages
+		iRows.Close()
 
 		current := *c
 		v = append(v, current)

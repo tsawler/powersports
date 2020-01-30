@@ -25,7 +25,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	for _, x := range vehicles {
 		infoLog.Println(x.ID)
 		infoLog.Println(x.Make.Make, x.Model.Model, x.Trim, x.Cost)
-		infoLog.Println("Images:")
+		infoLog.Println(x.Images)
 		for _, i := range x.Images {
 			infoLog.Println("     ", i.Image)
 		}
