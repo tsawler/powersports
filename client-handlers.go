@@ -42,8 +42,6 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	infoLog.Println(num)
-
 	rowSets := make(map[string]interface{})
 	rowSets["vehicles"] = vehicles
 
