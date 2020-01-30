@@ -70,6 +70,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	intMap["make"] = selectedMake
 	intMap["model"] = selectedModel
 	intMap["price"] = selectedPrice
+	intMap["show-makes"] = 0
 
 	pg, err := pageModel.GetBySlug("motorcycle-inventory")
 	if err != nil {
@@ -84,6 +85,12 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	stringMap["pager-suffix"] = pagerSuffix
 
 	// get makes
+	makes, err := vehicleModel.GetMakesForVehicleType(7)
+	if err != nil {
+		errorLog.Println(err)
+		helpers.ClientError(w, http.StatusBadRequest)
+		return
+	}
 
 	// get models
 	models, err := vehicleModel.GetModelsForVehicleType(7)
@@ -103,6 +110,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 
 	rowSets["years"] = years
 	rowSets["models"] = models
+	rowSets["makes"] = makes
 
 	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
 		Page:      pg,

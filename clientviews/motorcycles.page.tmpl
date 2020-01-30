@@ -122,8 +122,6 @@
     <div class="container is-content-1200">
         <div class="row">
             <div class="col-md-12">
-                <p>Year: {{$year}}, Make {{$make}}, Model {{$model}}, price {{$price}}, number found {{$numVehicles}}</p>
-
 
                 <form method="get" action="{{.CurrentUrl}}" name="bookform" role="form" id="bookform"
                       class="float-left">
@@ -138,15 +136,19 @@
                                 {{end}}
                             </select>
                         </div>
-
+                        {{if eq (index .IntMap "show-makes") 1}}
                         <div class="col-auto my-1">
                             <label for="make" class="mr-sm-2 sr-only">make</label>
                             <select class="form-control mr-sm-2" name="make" id="make">
                                 <option value="0">All Makes</option>
-                                <option value="1">Audi</option>
-                                <option value="2">Volkswagen</option>
+                                {{range index .RowSets "makes"}}
+                                    <option {{if eq .ID $make}} selected {{end}} value="{{.ID}}">{{.Make}}</option>
+                                {{end}}
                             </select>
                         </div>
+                        {{else}}
+                            <input type="hidden" name="make" value="0">
+                        {{end}}
 
                         <div class="col-auto my-1">
                             <label for="model" class="mr-sm-2 sr-only">Model</label>
@@ -239,7 +241,7 @@
                                 <hr>
                                 <a class="btn btn-block btn-danger"
                                    href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}">
-                                    Vehicle Details
+                                    Details
                                 </a>
 
                                 <a class="btn btn-block btn-danger"

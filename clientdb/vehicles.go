@@ -530,6 +530,31 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, error) {
 	var makes []clientmodels.Make
 
+	query := `
+			select  
+				m.id, m.make
+			from 
+				vehicle_makes m
+			where
+				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and vehicle_type = ?)
+			order by 
+				m.make`
+	rows, err := m.DB.Query(query, id)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for rows.Next() {
+		var y clientmodels.Make
+		err = rows.Scan(
+			&y.ID,
+			&y.Make)
+		if err != nil {
+			fmt.Println(err)
+		}
+		makes = append(makes, y)
+	}
+
 	return makes, nil
 }
 
