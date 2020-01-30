@@ -147,8 +147,25 @@
                                 <h3 class="text-danger text-center">{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}</h3>
 
                                 {{safeHTML .Description}}
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Exterior Color</strong>: {{.ExteriorColour}}</li>
+                                            <li><strong>Engine</strong>: {{.Engine}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Stock #</strong>: {{.StockNo}}</li>
+                                            <li><strong>Kilometers</strong>: {{.Odometer}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </td>
-                            <td></td>
+                            <td class="text-center">
+                                <h3 class="text-danger">{{formatCurrency .Cost}}</h3>
+                            </td>
                         </tr>
                     {{end}}
                     </tbody>
