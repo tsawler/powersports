@@ -483,3 +483,21 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset int) 
 
 	return v, num, nil
 }
+
+func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
+	var years []int
+
+	return years, nil
+}
+
+func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, error) {
+	var makes []clientmodels.Make
+
+	return makes, nil
+}
+
+func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, error) {
+	var models []clientmodels.Model
+
+	return models, nil
+}
