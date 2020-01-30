@@ -5,6 +5,11 @@
 {{define "css"}}
     {{ .Page.PageStyles}}
     {{ .Page.CSS}}
+    <style>
+        .is-wrapper {
+            height: auto;
+        }
+    </style>
 {{end}}
 
 {{define "flyout"}}
@@ -104,9 +109,18 @@
 {{end}}
 
 
-
 {{define "body"}}
+    {{$vehicles := index .RowSets "vehicles"}}
 
+    <div class="clearfix"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+
+
+            </div>
+        </div>
+    </div>
 {{end}}
 
 {{define "buttons"}}

@@ -17,12 +17,15 @@ func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
 }
 
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
-	//vehicles, err := vehicleModel.GetVehiclesForSaleByType(7)
-	//if err != nil {
-	//	errorLog.Println(err)
-	//	helpers.ClientError(w, http.StatusBadRequest)
-	//	return
-	//}
+	vehicles, err := vehicleModel.GetVehiclesForSaleByType(7)
+	if err != nil {
+		errorLog.Println(err)
+		helpers.ClientError(w, http.StatusBadRequest)
+		return
+	}
+
+	rowSets := make(map[string]interface{})
+	rowSets["vehicles"] = vehicles
 	//for _, x := range vehicles {
 	//	infoLog.Println(x.ID)
 	//	infoLog.Println(x.Make.Make, x.Model.Model, x.Trim, x.Cost)
@@ -38,7 +41,10 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{Page: pg})
+	helpers.Render(w, r, "motorcycles.page.tmpl", &templates.TemplateData{
+		Page:    pg,
+		RowSets: rowSets,
+	})
 }
 
 func TestHandler(w http.ResponseWriter, r *http.Request) {
