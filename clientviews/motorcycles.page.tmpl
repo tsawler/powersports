@@ -119,7 +119,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                {{paginate $currentPage $numVehicles 10 "/motorcycle-inventory" "blog-pager"}}
+                {{paginate $currentPage $numVehicles 10 (index .StringMap "pager-url") "blog-pager"}}
 
                 <table class="table table-striped table-condensed">
                     <thead>
@@ -136,16 +136,17 @@
                                     {{if gt $imageLength 0}}
                                         {{$img := index .Images 0}}
                                         <img src="https://www.wheelsanddeals.ca/storage/inventory/{{.ID}}/{{$img.Image}}"
-                                             class="img-fluid"  alt="image">
+                                             class="img-fluid" alt="image">
                                     {{else}}
-                                        <img src="https://www.wheelsanddeals.ca/vendor/wheelspackage/hug-in-progress.jpg" class="img-fluid"
+                                        <img src="https://www.wheelsanddeals.ca/vendor/wheelspackage/hug-in-progress.jpg"
+                                             class="img-fluid"
                                              style="min-width: 300px;">
                                     {{end}}
                                 </a>
                             </td>
                             <td>
                                 <h3 class="text-danger text-center">{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}</h3>
-
+                                <hr>
                                 {{safeHTML .Description}}
 
                                 <div class="row">
@@ -163,15 +164,52 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" style="min-width: 220px;">
                                 <h3 class="text-danger">{{formatCurrency .Cost}}</h3>
+                                <hr>
+                                <a class="btn btn-block btn-danger" href="/motorcycles/{{.ID}}">Vehicle
+                                    Details</a>
+
+                                <a class="btn btn-block btn-danger"
+                                   href="#!"
+                                   onclick="openQQ('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}')">
+                                    Quick Quote
+                                </a>
+
+                                <a class="btn btn-block btn-danger"
+                                   href="/get-pre-approved">0 Down Pre-approval</a>
+                                <br>
+
+
+
+                                <div class="text-center">
+                                    <input type="checkbox" name="compare[]" value="{{.ID}}" class="compare"
+                                           data-toggle="tooltip" data-placement="top"
+                                           title="You can compare a maximum of 3 vehicles at a time"> Compare
+
+                                    <br>
+                                    {{/*                                    <br>*/}}
+                                    {{/*                                    <strong>Your Benefits when buying from*/}}
+                                    {{/*                                        Wheels and Deals Include:</strong>*/}}
+                                    {{/*                                    @if($item->vehicle_makes_id == 47) <!-- mercury -->*/}}
+                                    {{/*                                    <div data-hide="true" class="hidden">*/}}
+                                    {{/*                                        <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Parts & Labor,First Service Included,Full Tank of Gas</span>*/}}
+                                    {{/*                                    </div>*/}}
+                                    {{/*                                    @else*/}}
+                                    {{/*                                    <div data-hide="true" class="hidden"> <!-- other powerports -->*/}}
+                                    {{/*                                        <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,No Charge 1st Scheduled Service "done by us",Full Tank of Gas</span>*/}}
+                                    {{/*                                    </div>*/}}
+                                    {{/*                                    @endif*/}}
+                                                                    </div>
+
                             </td>
                         </tr>
                     {{end}}
                     </tbody>
                 </table>
 
-                {{paginate $currentPage $numVehicles 10 "/motorcycle-inventory" "blog-pager"}}
+                {{paginate $currentPage $numVehicles 10 (index .StringMap "pager-url") "blog-pager"}}
+
             </div>
         </div>
     </div>
@@ -214,6 +252,17 @@
 {{define "js"}}
 
     {{ .Page.JS}}
+
+    <script>
+
+        $(document).ready(function(){
+            // $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+        });
+
+        function openQQ(id, v) {
+
+        }
+    </script>
 
     {{if .IsAuthenticated}}
         <form method="post" name="hiddensavepage" id="hiddensavepage" action="/admin/pages/ajax/savepage">
