@@ -53,9 +53,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 	`
 	rows, err := m.DB.Query(query, vehicleType)
 
-	if err == sql.ErrNoRows {
-		// do nothing
-	} else if err != nil {
+	if err != nil {
 		fmt.Println(err)
 		return v, err
 	}
@@ -96,6 +94,143 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			fmt.Println(err)
 			return v, err
 		}
+
+		// get make
+		vehicleMake := clientmodels.Make{}
+
+		query = `
+			SELECT 
+				id, 
+				make, 
+				created_at, 
+				updated_at 
+			FROM 
+				vehicle_makes 
+			WHERE 
+				id = ?`
+		makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
+
+		err = makeRow.Scan(
+			&vehicleMake.ID,
+			&vehicleMake.Make,
+			&vehicleMake.CreatedAt,
+			&vehicleMake.UpdatedAt)
+		if err != nil {
+			fmt.Println(err)
+			return v, err
+		}
+		c.Make = vehicleMake
+
+		// get model
+		model := clientmodels.Model{}
+
+		query = `
+			SELECT 
+				id, 
+				model, 
+				vehicle_makes_id,
+				created_at, 
+				updated_at 
+			FROM 
+				vehicle_models 
+			WHERE 
+				id = ?`
+		modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
+
+		err = modelRow.Scan(
+			&model.ID,
+			&model.Model,
+			&model.MakeID,
+			&model.CreatedAt,
+			&model.UpdatedAt)
+		if err != nil {
+			fmt.Println(err)
+			return v, err
+		}
+		c.Model = model
+
+		// get options
+		query = `
+			select 
+				vo.id, 
+				vo.vehicle_id,
+				vo.option_id,
+				vo.created_at,
+				vo.updated_at,
+				o.option_name
+			from 
+				vehicle_options vo
+				left join options o on (vo.option_id = o.id)
+			where
+				vo.vehicle_id = ?
+				and o.active = 1
+			order by 
+				o.option_name`
+		oRows, err := m.DB.Query(query, c.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		var vehicleOptions []*clientmodels.VehicleOption
+		for oRows.Next() {
+			o := &clientmodels.VehicleOption{}
+			err = oRows.Scan(
+				o.ID,
+				o.VehicleID,
+				o.OptionID,
+				o.CreatedAt,
+				o.UpdatedAt,
+				o.OptionName,
+			)
+
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				vehicleOptions = append(vehicleOptions, o)
+			}
+		}
+		c.VehicleOptions = vehicleOptions
+
+		// get images
+		query = `
+			select 
+				id, 
+				vehicle_id,
+				image,
+				created_at,
+				updated_at,
+				sort_order
+			from 
+				vehicle_images 
+			where
+				vehicle_id = ?
+			order by 
+				sort_order`
+		iRows, err := m.DB.Query(query, c.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		var vehicleImages []*clientmodels.Image
+		for iRows.Next() {
+			o := &clientmodels.Image{}
+			err = iRows.Scan(
+				o.ID,
+				o.VehicleID,
+				o.Image,
+				o.CreatedAt,
+				o.UpdatedAt,
+				o.SortOrder,
+			)
+
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				vehicleImages = append(vehicleImages, o)
+			}
+		}
+		c.Images = vehicleImages
+
 		current := *c
 		v = append(v, current)
 	}
