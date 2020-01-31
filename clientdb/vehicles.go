@@ -243,6 +243,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 	var v []clientmodels.Vehicle
 
 	where := ""
+	orderBy := "order by year desc"
 	if year > 0 {
 		where = fmt.Sprintf("and v.year = %d", year)
 	}
@@ -253,6 +254,12 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 
 	if model > 0 {
 		where = fmt.Sprintf("%s and v.vehicle_models_id = %d", where, model)
+	}
+
+	if price == 1 {
+		orderBy = "order by v.cost asc"
+	} else if price == 2 {
+		orderBy = "order by v.cost desc"
 	}
 
 	stmt := fmt.Sprintf(`
@@ -308,8 +315,8 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			and status = 1
 			%s
 
-		order by year desc
-		limit ? offset ?`, where)
+		%s
+		limit ? offset ?`, where, orderBy)
 
 	rows, err := m.DB.Query(query, vehicleTypeID, perPage, offset)
 	if err != nil {

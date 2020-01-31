@@ -164,8 +164,8 @@
                             <label for="price" class="mr-sm-2 sr-only">Price</label>
                             <select class="form-control mr-sm-2" name="price" id="price">
                                 <option value="0">All Prices</option>
-                                <option value="1">Low to High</option>
-                                <option value="2">High to Low</option>
+                                <option value="1" {{if eq $price 1}} selected {{end}}>Low to High</option>
+                                <option value="2" {{if eq $price 2}} selected {{end}}>High to Low</option>
                             </select>
                         </div>
 

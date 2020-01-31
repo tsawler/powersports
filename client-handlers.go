@@ -31,7 +31,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "motorcycle-inventory")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "motorcycle-inventory", false)
 }
 
 // GetAllBruteForce gets all brute force
@@ -47,7 +47,7 @@ func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-brute-force")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-brute-force", false)
 }
 
 // GetAllTeryx gets all teryx
@@ -63,7 +63,7 @@ func GetAllTeryx(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-teryx")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-teryx", false)
 }
 
 // GetAllMule gets all mules
@@ -79,7 +79,7 @@ func GetAllMule(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-mule")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-mule", false)
 }
 
 // GetAllJetSki gets all new jetskis
@@ -95,7 +95,7 @@ func GetAllJetSki(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "watercraft-jetski-kawaski")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "watercraft-jetski-kawaski", false)
 }
 
 // GetAllMercuryOutboard gets all mercury outboards
@@ -111,7 +111,7 @@ func GetAllMercuryOutboard(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "outboard-motors-mercury-outboards")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "outboard-motors-mercury-outboards", false)
 }
 
 // GetAllElectricBikes gets all pedegogo
@@ -127,7 +127,7 @@ func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "electric-bikes")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "electric-bikes", false)
 }
 
 // GetAllScooters gets all scooters
@@ -143,7 +143,7 @@ func GetAllScooters(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "vespa-piaggio-gas-and-electric-scooters-mopeds")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "vespa-piaggio-gas-and-electric-scooters-mopeds", false)
 }
 
 // GetAllPontoonBoats gets all pontoon boats (bennington & crestliner
@@ -159,11 +159,11 @@ func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "pontoon-boats-bennington-and-crestliner")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "pontoon-boats-bennington-and-crestliner", false)
 }
 
 // renderInventory renders inventory for a product type
-func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string) {
+func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string, used bool) {
 	var offset int
 	var selectedYear, selectedMake, selectedModel, selectedPrice int
 	pagerSuffix := ""
