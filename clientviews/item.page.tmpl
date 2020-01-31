@@ -104,9 +104,6 @@
 
 {{define "content"}}
 
-    <div id="content_edit" class="is-wrapper">
-        {{ index .Page.ContentMap .Lang}}
-    </div>
 
 {{end}}
 
@@ -115,9 +112,15 @@
     <div class="clearfix"></div>
     <div class="container is-content-1200">
         <div class="row">
-            <div class="col-md-12">
-
-
+            <div class="col-md-12 mt-5">
+                {{$item := index .RowSets "item"}}
+                <h3 class="text-center">
+                    {{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}
+                    <span class="text-danger">{{formatCurrency $item.Cost}}<sup>*</sup></span>
+                </h3>
+                {{if lt $item.TotalMSR $item.Cost}}
+                    <h5 class="text-center"><em>MSRP {{formatCurrency $item.TotalMSR}}</em></h5>
+                {{end}}
             </div>
         </div>
     </div>
