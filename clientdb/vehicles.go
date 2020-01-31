@@ -6,6 +6,7 @@ import (
 	"github.com/tsawler/goblender/client/clienthandlers/clientmodels"
 )
 
+// VehicleModel holds the db connection
 type VehicleModel struct {
 	DB *sql.DB
 }

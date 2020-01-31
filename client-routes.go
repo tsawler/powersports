@@ -18,6 +18,7 @@ var errorLog *log.Logger
 var pageModel repository.PageRepo
 var parentDB *driver.DB
 
+// ClientRoutes holds all app routes for the custom code
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
