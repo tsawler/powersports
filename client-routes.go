@@ -85,6 +85,13 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	mux.Get("/inventory/bennington-crestliner-pontoon-boats-inventory", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
 	mux.Get("/inventory/bennington-crestliner-pontoon-boats-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
 
+	// power boats
+	mux.Get("/speed-boats-aluminum-boats-power-boats", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/bennington-crestliner-pontoon-boats-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats/:pageIndex", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+
 	return mux, nil
 }
 

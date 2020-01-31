@@ -162,6 +162,22 @@ func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "pontoon-boats-bennington-and-crestliner", false)
 }
 
+// GetAllPowerBoats gets all power boats
+func GetAllPowerBoats(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/speed-boats-aluminum-boats-power-boats-inventory"
+	stringMap["item-link-prefix"] = "power-boats"
+	stringMap["pager-prefix"] = "power-boats"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 1
+	vehicleType := 15
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "speed-boats-aluminum-boats-power-boats", false)
+}
+
 // renderInventory renders inventory for a product type
 func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string, used bool) {
 	var offset int
