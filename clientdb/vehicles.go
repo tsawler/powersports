@@ -10,6 +10,7 @@ type VehicleModel struct {
 	DB *sql.DB
 }
 
+// GetVehiclesForSaleByType returns slice of vehicles by type
 func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels.Vehicle, error) {
 	var v []clientmodels.Vehicle
 
@@ -239,6 +240,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 	return v, nil
 }
 
+// AllVehiclesPaginated returns paginated slice of vehicles, by type
 func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year, make, model, price int) ([]clientmodels.Vehicle, int, error) {
 	var v []clientmodels.Vehicle
 
@@ -582,6 +584,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 	return v, num, nil
 }
 
+// GetYearsForVehicleType gets years for vehicle type
 func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 	var years []int
 	query := `
@@ -610,6 +613,7 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 	return years, nil
 }
 
+// GetMakesForVehicleType gets makes for vehicle type
 func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, error) {
 	var makes []clientmodels.Make
 
@@ -641,6 +645,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 	return makes, nil
 }
 
+// GetModelsForVehicleType gets models for vehicle type
 func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, error) {
 	var models []clientmodels.Model
 	query := `
