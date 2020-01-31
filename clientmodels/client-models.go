@@ -2,6 +2,7 @@ package clientmodels
 
 import "time"
 
+// Vehicle holds a vehicle
 type Vehicle struct {
 	ID              int
 	StockNo         string
@@ -37,6 +38,7 @@ type Vehicle struct {
 	VehicleOptions  []*VehicleOption
 }
 
+// Option holds vehicle options
 type Option struct {
 	ID         int
 	OptionName string
@@ -45,6 +47,7 @@ type Option struct {
 	UpdatedAt  time.Time
 }
 
+// VehicleOption holds option for a given vehicle
 type VehicleOption struct {
 	ID         int
 	VehicleID  int
@@ -54,6 +57,7 @@ type VehicleOption struct {
 	OptionName string
 }
 
+// Make is vehicle make (i.e. Volvo)
 type Make struct {
 	ID        int
 	Make      string
@@ -61,6 +65,7 @@ type Make struct {
 	UpdatedAt time.Time
 }
 
+// Model is vehicle model (i.e. Camry)
 type Model struct {
 	ID        int
 	Model     string
@@ -69,6 +74,7 @@ type Model struct {
 	UpdatedAt time.Time
 }
 
+// Image is a vehicle image
 type Image struct {
 	ID        int
 	VehicleID int
@@ -78,6 +84,7 @@ type Image struct {
 	UpdatedAt time.Time
 }
 
+// Video holds a video
 type Video struct {
 	ID                      int
 	VideoName               string
