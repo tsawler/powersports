@@ -43,7 +43,8 @@
             <meta name="twitter:url" content="https://{{.CurrentUrl}}">
             <meta name="twitter:description" content="{{.Post.Meta}}">
             {{if ne .Post.SEOImage 0}}
-                <meta name="twitter:image" content="{{.ServerUrl}}/static/site-content/post-uploads/{{.Post.ID}}/twitter.jpg">
+                <meta name="twitter:image"
+                      content="{{.ServerUrl}}/static/site-content/post-uploads/{{.Post.ID}}/twitter.jpg">
             {{end}}
 
         {{else if .Page.PageTitle}}
@@ -68,7 +69,8 @@
             <meta name="twitter:url" content="https://{{.CurrentUrl}}">
             <meta name="twitter:description" content="{{.Page.Meta}}">
             {{if ne .Page.SEOImage 0}}
-                <meta name="twitter:image" content="{{.ServerUrl}}/static/site-content/page-uploads/{{.Page.ID}}/twitter.jpg">
+                <meta name="twitter:image"
+                      content="{{.ServerUrl}}/static/site-content/page-uploads/{{.Page.ID}}/twitter.jpg">
             {{end}}
         {{else if .News.Title}}
             <meta name="description" content="{{.News.Meta}}">
@@ -92,7 +94,8 @@
             <meta name="twitter:url" content="https://{{.CurrentUrl}}">
             <meta name="twitter:description" content="{{.News.Meta}}">
             {{if ne .News.SEOImage 0}}
-                <meta name="twitter:image" content="{{.ServerUrl}}/static/site-content/news-uploads/{{.News.ID}}/twitter.jpg">
+                <meta name="twitter:image"
+                      content="{{.ServerUrl}}/static/site-content/news-uploads/{{.News.ID}}/twitter.jpg">
             {{end}}
         {{end}}
 
@@ -115,15 +118,16 @@
         <link href="/static/assets/minimalist-basic/content-bootstrap.css?v={{.CSSVersion}}" rel="stylesheet"/>
         <link href="/static/templates/spacial/dist/theme.min.css?v={{.CSSVersion}}" rel="stylesheet">
         {{if .IsAuthenticated}}
-            {{if hasRole "pages" .Auth.ID}}
-                <link href="/static/contentbuilder/contentbuilder.css?v={{.CSSVersion}}" rel="stylesheet">
-                <link href="/static/contentbox/contentbox.css?v={{.CSSVersion}}" rel="stylesheet">
-            {{end}}
-            <link rel="stylesheet"
-                  href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
-            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
-            <link rel="stylesheet" href="/static/css/BootSideMenu.css">
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                {{if hasRole "pages" .Auth.ID}}
+                    <link href="/static/contentbuilder/contentbuilder.css?v={{.CSSVersion}}" rel="stylesheet">
+                    <link href="/static/contentbox/contentbox.css?v={{.CSSVersion}}" rel="stylesheet">
+                {{end}}
+                <link rel="stylesheet"
+                      href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
+                <link rel="stylesheet"
+                      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
+                <link rel="stylesheet" href="/static/css/BootSideMenu.css">
+                <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         {{end}}
 
 
@@ -180,13 +184,15 @@
                 "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
                 {{end}}
             }
+
         </script>
     {{end}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="/static/templates/spacial/dist/theme.min.js?id={{.CSSVersion}}"></script>
-{{/*    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*/}}
-{{/*    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>*/}}
+    {{/*    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*/}}
+    {{/*    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>*/}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -210,23 +216,23 @@
 
             $(document).ready(function () {
                 {{if .IsAuthenticated}}
-                    // private channels
-                    let privateChannel = pusher.subscribe('private-channel-{{.Identifier}}-{{.Auth.ID}}');
-                    privateChannel.bind('warning-event', function (data) {
-                        warningAlert(data.message);
-                    });
-                    privateChannel.bind('error-event', function (data) {
-                        errorAlert(data.message);
-                    });
-                    privateChannel.bind('modal-event', function (data) {
-                        modalAlert(data.message);
-                    });
-                    privateChannel.bind('modal-message-event', function (data) {
-                        modalAlert(data.message);
-                    });
-                    privateChannel.bind('quite-message-event', function (data) {
-                        successAlert(data.message);
-                    });
+                // private channels
+                let privateChannel = pusher.subscribe('private-channel-{{.Identifier}}-{{.Auth.ID}}');
+                privateChannel.bind('warning-event', function (data) {
+                    warningAlert(data.message);
+                });
+                privateChannel.bind('error-event', function (data) {
+                    errorAlert(data.message);
+                });
+                privateChannel.bind('modal-event', function (data) {
+                    modalAlert(data.message);
+                });
+                privateChannel.bind('modal-message-event', function (data) {
+                    modalAlert(data.message);
+                });
+                privateChannel.bind('quite-message-event', function (data) {
+                    successAlert(data.message);
+                });
                 {{end}}
 
                 // public channels
@@ -251,10 +257,13 @@
         <script rel="preload" src="/static/contentbuilder/saveimages.js"></script>
         <script rel="preload" src="/static/contentbox/contentbox-src.js?v=2.1"></script>
         <script rel="preload" src="/static/js/BootSideMenu.js"></script>
-        <script rel="preload" src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.js"></script>
-        <script rel="preload" src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.ui.position.min.js"></script>
+        <script rel="preload"
+                src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.js"></script>
+        <script rel="preload"
+                src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.ui.position.min.js"></script>
         <script rel="preload" src="/static/js/dropzone.min.js"></script>
-        <script rel="preload" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/js/bootstrap-colorpicker.min.js"></script>
+        <script rel="preload"
+                src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/js/bootstrap-colorpicker.min.js"></script>
     {{end}}
 
     <script>
@@ -286,11 +295,11 @@
         }
 
         {{with .Flash}}
-            successAlert('{{.}}');
+        successAlert('{{.}}');
         {{end}}
 
         {{with .Error}}
-            errorAlert('{{.}}');
+        errorAlert('{{.}}');
         {{end}}
 
         $('.modal').on('hidden.bs.modal', function (e) {
@@ -302,51 +311,51 @@
         {{$sticky := index .PreferenceMap "sticky-menu"}}
 
         {{if eq .IsMobile false}}
-            {{if eq $sticky "1"}}
-                $(function () {
-                    let header = $("#main-nav");
-                    let links = $('.mitem');
+        {{if eq $sticky "1"}}
+        $(function () {
+            let header = $("#main-nav");
+            let links = $('.mitem');
 
-                    {{$topBar := index $.PreferenceMap "top-bar"}}
-                    $(window).scroll(function () {
-                        let scroll = $(window).scrollTop();
-                        if (scroll >= 50) {
-                            header.addClass("scrolled").addClass("fixed-top");
-                            $("#top-bar").addClass('d-none');
-                            {{if ne $invertedLogo ""}}
-                                $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$invertedLogo}}');
-                            {{end}}
-                            if (header.hasClass("bg-transparent")) {
-                                header.removeClass("bg-transparent").addClass("was-transparent");
-                            }
-                            {{$showBar := index .PreferenceMap "show-top-bar"}}
-                            {{if eq $showBar "1"}}
-                                {{if pushDown $topBar .Page.MenuTransparent}}
-                                    $("#top-nav-bar").attr("style", "");
-                                {{end}}
-                            {{end}}
-                            links.addClass("menu-scrolled");
-                            $("#search-input").addClass("scrolled-search-icon");
-                        } else {
-                            header.removeClass("scrolled").removeClass("fixed-top");
-                            $("#top-bar").removeClass('d-none');
-                            {{if ne $invertedLogo ""}}
-                                $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$logo}}');
-                            {{end}}
-                            if (header.hasClass("was-transparent")) {
-                                header.removeClass("was-transparent").addClass("bg-transparent");
-                            }
-                            {{if eq $showBar "1"}}
-                                {{if pushDown $topBar .Page.MenuTransparent}}
-                                    $("#top-nav-bar").attr("style", "margin-top: 60px;");
-                                {{end}}
-                            {{end}}
-                            links.removeClass("menu-scrolled");
-                            $("#search-input").removeClass("scrolled-search-icon");
-                        }
-                    });
-                });
-            {{end}}
+            {{$topBar := index $.PreferenceMap "top-bar"}}
+            $(window).scroll(function () {
+                let scroll = $(window).scrollTop();
+                if (scroll >= 50) {
+                    header.addClass("scrolled").addClass("fixed-top");
+                    $("#top-bar").addClass('d-none');
+                    {{if ne $invertedLogo ""}}
+                    $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$invertedLogo}}');
+                    {{end}}
+                    if (header.hasClass("bg-transparent")) {
+                        header.removeClass("bg-transparent").addClass("was-transparent");
+                    }
+                    {{$showBar := index .PreferenceMap "show-top-bar"}}
+                    {{if eq $showBar "1"}}
+                    {{if pushDown $topBar .Page.MenuTransparent}}
+                    $("#top-nav-bar").attr("style", "");
+                    {{end}}
+                    {{end}}
+                    links.addClass("menu-scrolled");
+                    $("#search-input").addClass("scrolled-search-icon");
+                } else {
+                    header.removeClass("scrolled").removeClass("fixed-top");
+                    $("#top-bar").removeClass('d-none');
+                    {{if ne $invertedLogo ""}}
+                    $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$logo}}');
+                    {{end}}
+                    if (header.hasClass("was-transparent")) {
+                        header.removeClass("was-transparent").addClass("bg-transparent");
+                    }
+                    {{if eq $showBar "1"}}
+                    {{if pushDown $topBar .Page.MenuTransparent}}
+                    $("#top-nav-bar").attr("style", "margin-top: 60px;");
+                    {{end}}
+                    {{end}}
+                    links.removeClass("menu-scrolled");
+                    $("#search-input").removeClass("scrolled-search-icon");
+                }
+            });
+        });
+        {{end}}
         {{end}}
     </script>
 
@@ -360,12 +369,12 @@
     {{end}}
 
     <noscript id="deferred-styles">
-{{/*        <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>*/}}
+        {{/*        <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>*/}}
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
         <link href="/static/css/basic.min.css" rel="stylesheet">
     </noscript>
     <script>
-        let loadDeferredStyles = function() {
+        let loadDeferredStyles = function () {
             let addStylesNode = document.getElementById("deferred-styles");
             let replacement = document.createElement("div");
             replacement.innerHTML = addStylesNode.textContent;
@@ -374,7 +383,9 @@
         };
         let raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
             window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-        if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+        if (raf) raf(function () {
+            window.setTimeout(loadDeferredStyles, 0);
+        });
         else window.addEventListener('load', loadDeferredStyles);
     </script>
     </body>
