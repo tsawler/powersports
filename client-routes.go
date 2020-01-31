@@ -73,10 +73,17 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// scooters
 	mux.Get("/vespa-piaggio-gas-and-electric-scooters-mopeds", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/outboard-motors-mercury-inventory", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory", standardMiddleWare.ThenFunc(GetAllElectricBikes))
-	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory", standardMiddleWare.ThenFunc(GetAllScooters))
+	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllScooters))
+
+	// pontoon boats
+	mux.Get("/pontoon-boats-bennington-and-crestliner", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/bennington-crestliner-pontoon-boats-inventory", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/bennington-crestliner-pontoon-boats-inventory", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
+	mux.Get("/inventory/bennington-crestliner-pontoon-boats-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
 
 	return mux, nil
 }

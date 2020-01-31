@@ -136,11 +136,25 @@ func GetAllScooters(w http.ResponseWriter, r *http.Request) {
 
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
-	vehicleType := 16
+	vehicleType := 17
 
 	templateName := "inventory.page.tmpl"
 
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "vespa-piaggio-gas-and-electric-scooters-mopeds")
+}
+func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory"
+	stringMap["item-link-prefix"] = "pontoon-boats"
+	stringMap["pager-prefix"] = "pontoon-boats"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 0
+	vehicleType := 9
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "pontoon-boats-bennington-and-crestliner")
 }
 
 func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string) {
