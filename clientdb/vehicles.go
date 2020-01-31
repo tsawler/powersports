@@ -262,24 +262,45 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		orderBy = "order by v.cost desc"
 	}
 
-	stmt := fmt.Sprintf(`
+	stmt := ""
+	var nRows *sql.Rows
+
+	if vehicleTypeID < 1000 {
+		stmt = fmt.Sprintf(`
 		select 
 			count(v.id) from vehicles v where status = 1 and vehicle_type = ? %s`, where)
-
-	nRows, err := m.DB.Query(stmt, vehicleTypeID)
-	if err != nil {
-		return nil, 0, err
+		n, err := m.DB.Query(stmt, vehicleTypeID)
+		if err != nil {
+			fmt.Println(err)
+			return nil, 0, err
+		}
+		nRows = n
+	} else {
+		stmt = fmt.Sprintf(`
+		select 
+			count(v.id) from vehicles v where status = 1 and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s and v.used = 1`, where)
+		n, err := m.DB.Query(stmt)
+		if err != nil {
+			fmt.Println(err)
+			return nil, 0, err
+		}
+		nRows = n
 	}
+
 	defer nRows.Close()
 
 	nRows.Next()
 	var num int
-	err = nRows.Scan(&num)
+	err := nRows.Scan(&num)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	query := fmt.Sprintf(`
+	query := ""
+	var rows *sql.Rows
+
+	if vehicleTypeID < 1000 {
+		query = fmt.Sprintf(`
 		select 
 		       id, 
 		       stock_no, 
@@ -314,16 +335,60 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			vehicle_type = ?
 			and status = 1
 			%s
-
-		%s
+			%s
 		limit ? offset ?`, where, orderBy)
-
-	rows, err := m.DB.Query(query, vehicleTypeID, perPage, offset)
-	if err != nil {
-		fmt.Println(err)
-		return nil, 0, err
+		rows, err = m.DB.Query(query, vehicleTypeID, perPage, offset)
+		if err != nil {
+			fmt.Println(err)
+			return nil, 0, err
+		}
+		defer rows.Close()
+	} else {
+		query = fmt.Sprintf(`
+		select 
+		       id, 
+		       stock_no, 
+		       coalesce(cost, 0),
+		       vin, 
+		       coalesce(odometer, 0),
+		       coalesce(year, 0),
+		       coalesce(trim, ''),
+		       vehicle_type,
+		       coalesce(body, ''),
+		       coalesce(seating_capacity,''),
+		       coalesce(drive_train,''),
+		       coalesce(engine,''),
+		       coalesce(exterior_color,''),
+		       coalesce(interior_color,''),
+		       coalesce(transmission,''),
+		       coalesce(options,''),
+		       coalesce(model_number, ''),
+		       coalesce(total_msr,0.0),
+		       v.status,
+		       coalesce(description, ''),
+		       vehicle_makes_id,
+		       vehicle_models_id,
+		       hand_picked,
+		       used,
+		       coalesce(price_for_display,''),
+		       created_at,
+		       updated_at
+		from 
+		     vehicles v 
+		where
+			vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14)
+			and status = 1
+			and v.used = 1
+			%s
+			%s
+		limit ? offset ?`, where, orderBy)
+		rows, err = m.DB.Query(query, perPage, offset)
+		if err != nil {
+			fmt.Println(err)
+			return nil, 0, err
+		}
+		defer rows.Close()
 	}
-	defer rows.Close()
 
 	for rows.Next() {
 		c := &clientmodels.Vehicle{}

@@ -87,10 +87,17 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// power boats
 	mux.Get("/speed-boats-aluminum-boats-power-boats", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/inventory/speed-boats-aluminum-boats-power-boats", http.StatusMovedPermanently)
+	}))
+	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats-inventory", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+
+	// used
+	mux.Get("/used-motorcycles-used-atv-used-boats-used-pontoons", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/inventory/bennington-crestliner-pontoon-boats-inventory", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats", standardMiddleWare.ThenFunc(GetAllPowerBoats))
-	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats/:pageIndex", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+	mux.Get("/inventory/used-motorcycles-used-atv-used-boats-used-pontoons-inventory", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
+	mux.Get("/inventory/used-motorcycles-used-atv-used-boats-used-pontoons-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
 
 	return mux, nil
 }
