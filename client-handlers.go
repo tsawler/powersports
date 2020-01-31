@@ -21,7 +21,7 @@ func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 // GetAllMotorcycles gets all motorcycles
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
+	stringMap["pager-url"] = "/inventory/motorcycle"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 7
