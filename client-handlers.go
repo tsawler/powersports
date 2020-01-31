@@ -1,10 +1,8 @@
 package clienthandlers
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
-	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/helpers"
 	"github.com/tsawler/goblender/pkg/templates"
 	"net/http"
@@ -13,16 +11,14 @@ import (
 
 var vehicleModel *clientdb.VehicleModel
 
-func NewClientVehicleHandlers(conn *sql.DB, app config.AppConfig) {
-	vehicleModel = &clientdb.VehicleModel{DB: conn}
-}
-
+// CompareVehicles Show 2 or 3 vehicles in table TODO
 func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 	ids := r.Form.Get("ids")
 	infoLog.Println("Ids:", ids)
 	helpers.Render(w, r, "compare.page.tmpl", &templates.TemplateData{})
 }
 
+// GetAllMotorcycles gets all motorcycles
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/motorcycle-inventory"
@@ -38,6 +34,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "motorcycle-inventory")
 }
 
+// GetAllBruteForce gets all brute force
 func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/atv-brute-force-inventory"
@@ -53,6 +50,7 @@ func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-brute-force")
 }
 
+// GetAllTeryx gets all teryx
 func GetAllTeryx(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/atv-teryx-inventory"
@@ -68,6 +66,7 @@ func GetAllTeryx(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-teryx")
 }
 
+// GetAllMule gets all mules
 func GetAllMule(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/atv-mule-inventory"
@@ -83,6 +82,7 @@ func GetAllMule(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-mule")
 }
 
+// GetAllJetSki gets all new jetskis
 func GetAllJetSki(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/watercraft-jetski-inventory"
@@ -98,6 +98,7 @@ func GetAllJetSki(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "watercraft-jetski-kawaski")
 }
 
+// GetAllMercuryOutboard gets all mercury outboards
 func GetAllMercuryOutboard(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/outboard-motors-mercury-inventory"
@@ -113,6 +114,7 @@ func GetAllMercuryOutboard(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "outboard-motors-mercury-outboards")
 }
 
+// GetAllElectricBikes gets all pedegogo
 func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/electric-bikes-inventory"
@@ -128,6 +130,7 @@ func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "electric-bikes")
 }
 
+// GetAllScooters gets all scooters
 func GetAllScooters(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory"
@@ -135,13 +138,15 @@ func GetAllScooters(w http.ResponseWriter, r *http.Request) {
 	stringMap["pager-prefix"] = "scooters"
 
 	intMap := make(map[string]int)
-	intMap["show-makes"] = 0
+	intMap["show-makes"] = 1
 	vehicleType := 17
 
 	templateName := "inventory.page.tmpl"
 
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "vespa-piaggio-gas-and-electric-scooters-mopeds")
 }
+
+// GetAllPontoonBoats gets all pontoon boats (bennington & crestliner
 func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds-inventory"
@@ -149,7 +154,7 @@ func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 	stringMap["pager-prefix"] = "pontoon-boats"
 
 	intMap := make(map[string]int)
-	intMap["show-makes"] = 0
+	intMap["show-makes"] = 1
 	vehicleType := 9
 
 	templateName := "inventory.page.tmpl"
@@ -157,6 +162,7 @@ func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "pontoon-boats-bennington-and-crestliner")
 }
 
+// renderInventory renders inventory for a product type
 func renderInventory(r *http.Request, stringMap map[string]string, vehicleType int, w http.ResponseWriter, intMap map[string]int, templateName, slug string) {
 	var offset int
 	var selectedYear, selectedMake, selectedModel, selectedPrice int
