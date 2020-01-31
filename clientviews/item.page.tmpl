@@ -8,12 +8,12 @@
 
     <style>
         video {
-            width: 100%    !important;
-            height: auto   !important;
+            width: 100% !important;
+            height: auto !important;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelementplayer.min.css"
-          integrity="sha256-ji1bfJaTGnyscoc7LzcV9yNJy5vGKJ0frO3KJo1oaGQ=" crossorigin="anonymous"/>
+    {{/*    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelementplayer.min.css"*/}}
+    {{/*          integrity="sha256-ji1bfJaTGnyscoc7LzcV9yNJy5vGKJ0frO3KJo1oaGQ=" crossorigin="anonymous"/>*/}}
 {{end}}
 
 {{define "flyout"}}
@@ -49,12 +49,53 @@
                     {{if ne $item.Video.VideoName ""}}
                         <div class="row">
                             <div class="col-md-12">
-                                    <video class="" controls autoplay muted>
-                                        <source type="video/mp4" src="https://www.wheelsanddeals.ca/storage/videos/{{$item.Video.ID}}-{{$item.Video.FileName}}"/>
-                                    </video>
+                                <video class="" controls autoplay muted
+                                       poster="https://www.wheelsanddeals/storate/videos/{{$item.Video.Thumb}}">
+                                    <source type="video/mp4"
+                                            src="https://www.wheelsanddeals.ca/storage/videos/{{$item.Video.ID}}-{{$item.Video.FileName}}"/>
+                                </video>
                             </div>
                         </div>
                     {{end}}
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div id="item-slider"
+                                 class="carousel slide carousel-fade"
+                                 data-ride="carousel"
+                                 data-interval="3000"
+                                 data-pause="hover">
+
+                                <ol class="carousel-indicators">
+                                    {{range $index, $value := $item.Images}}
+                                        {{if eq $index 0}}
+                                            <li data-target="#item-slider" data-slide-to="{{$index}}"
+                                                class="d-block active"></li>
+                                        {{else}}
+                                            <li data-target="#item-slider" data-slide-to="{{$index}}"
+                                                class="d-block"></li>
+                                        {{end}}
+                                    {{end}}
+                                </ol>
+                                <div class="carousel-inner">
+                                    {{$first := true}}
+                                    {{range $item.Images}}
+                                        {{if $first}}
+                                            <div class="carousel-item active">
+                                                <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/{{.Image}}">
+                                            </div>
+                                        {{else}}
+                                            <div class="carousel-item">
+                                                <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/{{.Image}}">
+                                            </div>
+                                        {{end}}
+                                        {{$first = false}}
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -92,8 +133,8 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelement-and-player.min.js"
-            integrity="sha256-z7JbZVaNbNzLvOCFHUNrjqnZRojZbRAxgr4KU2qL0qc=" crossorigin="anonymous"></script>
+    {{/*    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelement-and-player.min.js" */}}
+    {{/*            integrity="sha256-z7JbZVaNbNzLvOCFHUNrjqnZRojZbRAxgr4KU2qL0qc=" crossorigin="anonymous"></script>*/}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Morphext/2.4.4/morphext.min.js"></script>
     <script>
         function openQQ(id, v) {
