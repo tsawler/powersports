@@ -58,48 +58,76 @@
                         </div>
                     {{end}}
 
-                    <div class="row">
-                        <div class="col-md-12">
+                    {{if gt (len $item.Images) 0}}
+                        <div class="row">
+                            <div class="col-md-12">
 
-                            <div id="item-slider"
-                                 class="carousel slide carousel-fade"
-                                 data-ride="carousel"
-                                 data-interval="3000"
-                                 data-pause="hover">
+                                <div id="item-slider"
+                                     class="carousel slide carousel-fade"
+                                     data-ride="carousel"
+                                     data-interval="3000"
+                                     data-pause="hover">
 
-                                <ol class="carousel-indicators">
-                                    {{range $index, $value := $item.Images}}
-                                        {{if eq $index 0}}
-                                            <li data-target="#item-slider" data-slide-to="{{$index}}"
-                                                class="d-block active"></li>
-                                        {{else}}
-                                            <li data-target="#item-slider" data-slide-to="{{$index}}"
-                                                class="d-block"></li>
+                                    <ol class="carousel-indicators">
+                                        {{range $index, $value := $item.Images}}
+                                            {{if eq $index 0}}
+                                                <li data-target="#item-slider" data-slide-to="{{$index}}"
+                                                    class="d-block active"></li>
+                                            {{else}}
+                                                <li data-target="#item-slider" data-slide-to="{{$index}}"
+                                                    class="d-block"></li>
+                                            {{end}}
                                         {{end}}
-                                    {{end}}
-                                </ol>
-                                <div class="carousel-inner">
-                                    {{$first := true}}
-                                    {{range $item.Images}}
-                                        {{if $first}}
-                                            <div class="carousel-item active">
-                                                <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/{{.Image}}">
-                                            </div>
-                                        {{else}}
-                                            <div class="carousel-item">
-                                                <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/{{.Image}}">
-                                            </div>
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        {{$first := true}}
+                                        {{range $item.Images}}
+                                            {{if $first}}
+                                                <div class="carousel-item active">
+                                                    <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/{{.Image}}">
+                                                </div>
+                                            {{else}}
+                                                <div class="carousel-item">
+                                                    <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/{{.Image}}">
+                                                </div>
+                                            {{end}}
+                                            {{$first = false}}
                                         {{end}}
-                                        {{$first = false}}
-                                    {{end}}
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    {{end}}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{safeHTML $item.Description}}
+                            <hr>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
-                            <hr>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="card card-body bg-light" style="width: 18rem;">
+                                <div class="card-body">
+                                    <strong>Stock #:</strong> {{$item.StockNo}}<br>
+                                    <strong>Trim:</strong> {{$item.Trim}}<br>
+                                    <strong>Kilometers:</strong> {{$item.Odometer}}<br>
+                                    <strong>Exterior Color:</strong> {{$item.ExteriorColour}}<br>
+                                    <strong>Engine:</strong> {{$item.Engine}}<br>
+                                    <strong>VIN:</strong> {{$item.Vin}}<br>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 d-sm-none d-md-block"></div>
+
+                        <div class="col-md-3 col-xs-12">
+                            <div class="card card-body" style="width: 18rem;">
+                                <div class="card-body">
+abc
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
