@@ -102,7 +102,7 @@ func GetAllMercuryOutboards(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "outboard-motors-mercury-outboards", false)
 }
 
-// GetAllElectricBikes gets all pedegogo
+// GetAllElectricBikes gets all Pedegogo
 func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/electric-bikes"
