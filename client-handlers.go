@@ -99,10 +99,10 @@ func GetAllJetSki(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetAllMercuryOutboard gets all mercury outboards
-func GetAllMercuryOutboard(w http.ResponseWriter, r *http.Request) {
+func GetAllMercuryOutboards(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["pager-url"] = "/inventory/outboard-motors-mercury-inventory"
-	stringMap["item-link-prefix"] = "atv"
+	stringMap["item-link-prefix"] = "outboard-motor"
 	stringMap["pager-prefix"] = "mercury"
 
 	intMap := make(map[string]int)
@@ -296,4 +296,11 @@ func renderInventory(r *http.Request, stringMap map[string]string, vehicleType i
 		IntMap:    intMap,
 		StringMap: stringMap,
 	})
+}
+
+// fund ShowItem shows a product (i.e. ATV, whatever)
+func ShowItem(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(r.URL.Query().Get(":ID"))
+
+	w.Write([]byte(fmt.Sprintf("%d", id)))
 }
