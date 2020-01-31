@@ -255,7 +255,7 @@ func renderInventory(r *http.Request, stringMap map[string]string, vehicleType i
 
 // ShowItem shows a product (i.e. ATV, whatever)
 func ShowItem(w http.ResponseWriter, r *http.Request) {
-	//id, _ := strconv.Atoi(r.URL.Query().Get(":ID"))
+	id, _ := strconv.Atoi(r.URL.Query().Get(":ID"))
 
 	pg, err := pageModel.GetBySlug("power-sports-item")
 	if err != nil {
@@ -264,7 +264,17 @@ func ShowItem(w http.ResponseWriter, r *http.Request) {
 	}
 	pg.PageNotEditable = 1
 
+	item, err := vehicleModel.GetPowerSportItem(id)
+	if err != nil {
+		fmt.Fprint(w, "custom 404")
+		return
+	}
+
+	rowSets := make(map[string]interface{})
+	rowSets["item"] = item
+
 	helpers.Render(w, r, "item.page.tmpl", &templates.TemplateData{
-		Page: pg,
+		Page:    pg,
+		RowSets: rowSets,
 	})
 }
