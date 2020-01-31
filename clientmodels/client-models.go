@@ -100,3 +100,13 @@ type Video struct {
 	CreatedAt               time.Time
 	UpdatedAt               time.Time
 }
+
+// SalesStaff holds sales people
+type SalesStaff struct {
+	ID    int
+	Name  string
+	Slug  string
+	Email string
+	Phone string
+	Image string
+}

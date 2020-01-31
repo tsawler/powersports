@@ -918,3 +918,51 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 	c.Images = vehicleImages
 	return c, nil
 }
+
+// GetSales gets max six sales people
+func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
+	var s []clientmodels.SalesStaff
+
+	query := `
+		select 
+		       id, 
+		       coalesce(salesperson_name, ''),
+		       coalesce(slug, ''),
+		       coalesce(email, ''),
+		       coalesce(phone, ''),
+		       coalesce(image, '')
+		from 
+		     sales 
+		where
+			active = 1
+
+
+		order by RAND() limit 6`
+
+	rows, err := m.DB.Query(query)
+
+	if err != nil {
+		fmt.Println(err)
+		return s, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		c := &clientmodels.SalesStaff{}
+		err = rows.Scan(
+			&c.ID,
+			&c.Name,
+			&c.Slug,
+			&c.Email,
+			&c.Phone,
+			&c.Image,
+		)
+		if err != nil {
+			fmt.Println(err)
+			return s, err
+		}
+		staff := *c
+		s = append(s, staff)
+	}
+	return s, nil
+}

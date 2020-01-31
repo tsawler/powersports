@@ -33,6 +33,7 @@
         <div class="is-boxes">
             <div class="is-box-centered">
                 <div class="is-container is-builder container-fluid is-content-1100" id="contentareaKjBWooO">
+
                     <div class="row">
                         <div class="col-md-12 mt-5">
                             {{$item := index .RowSets "item"}}
@@ -102,11 +103,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             {{safeHTML $item.Description}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <hr>
                         </div>
                     </div>
 
                     <div class="row">
+
                         <div class="col-md-3 col-xs-12">
                             <div class="card card-body bg-light" style="width: 18rem;">
                                 <div class="card-body">
@@ -135,14 +142,34 @@
                                 </div>
                             {{end}}
 
+                            <div class="mt-5"></div>
+
+                            <img src="/client/static/logo.png" alt="logo" class="img img-fluid" style="max-width: 300px;">
+
+                            <div class="text-center">
+                                <a href="http://www.autofinance.cibc.com/#/pre-approval/redirect?dealerid=C05722"
+                                   target="_blank">
+                                    <img src="/client/static/cibc.png" alt="">
+                                </a>
+
+                                <p class="text-center">
+                                    <strong>DEALER INFORMATION:</strong><br>
+                                    Jim Gilbert's PowerSports<br>
+                                    402 St Marys St #2<br>
+                                    Fredericton, NB<br>
+                                    E3A 8H5<br>
+                                    Phone: (506) 459-6831
+                                </p>
+                            </div>
+
                         </div>
 
                         <div class="col-md-3 col-xs-12">
                             <div class="card card-body" style="width: 18rem;">
                                 <div class="card-body">
                                     <a class="btn btn-block btn-danger"
-                                    href="#!">
-                                    <i style="color: white;" class="fa fa-dollar-sign"></i> Fast Financing
+                                       href="#!">
+                                        <i style="color: white;" class="fa fa-dollar-sign"></i> Fast Financing
                                     </a>
 
                                     <a class="btn btn-block btn-danger"
@@ -161,59 +188,57 @@
                                     </a>
                                 </div>
                             </div>
-
-                            <div class="text-center">
-                                <a href="http://www.autofinance.cibc.com/#/pre-approval/redirect?dealerid=C05722" target="_blank">
-                                    <img src="/client/static/cibc.png" alt="">
-                                </a>
-                            </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p>&nbsp;</p>
-                                <h3>40 Years, over 20,000 Customers, more than a 1,000,000 Hugs</h3>
-
-                                <p>
-                                    <strong>You do save with a low kilometre, fully warrantied slightly used SUV, Car, Truck or Minivan... from us...</strong>
-                                    Our on-site licensed professionals fully service and detail every vehicle we sell. All our certified
-                                    vehicles have a new updated MVI 200% above industry standards. Plus… you get a Full tank of gas,
-                                    Paint sealant shine, Nitrogen filled tires, Walkaway credit & job loss protection, balance of
-                                    factory warranty and our huggable guarantee… a value to you of well over $2400.00. </p>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 d-sm-none d-md-block">
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <hr>
-                                <p>
-                                    * All advertised prices exclude government fees and taxes, any finance charges and any dealer
-                                    document preparation charges. While every reasonable effort is made to ensure the accuracy of this
-                                    data, we are not responsible for any errors or omissions contained on these pages. Please verify any
-                                    information in question with a dealership sales representative.
-                                </p>
-                                <hr>
-                                <p>
-                                    ** We accept all trade ins and recommend your purchase of credit protection and extended vehicle
-                                    protection, however "as always the choice is yours". Jim Gilbert's Wheels and Deals is Canada's Best
-                                    six acre Car Shopping Experience and we would love to share our Huggable knowledge with you. You
-                                    will receive many extras, the warm Huggable feeling and the good attention that has made Canada's
-                                    Huggable Car Dealer Famous. Shop us First, Feel the Difference... then compare.
-
-                                </p>
-                            </div>
-                        </div>
-
 
                     </div>
-                </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        {{$sales := index .RowSets "sales"}}
+                        {{range $sales}}
+                            <div class="col-md-2 text-center">
+                                <a href="https://www.wheelsanddeals.ca/sales/{{.Slug}}" target="_blank">
+                                    <img src="https://www.wheelsanddeals.ca/salesstaff/{{.Image}}" alt="image"
+                                         class="img img-fluid">
+                                </a>
+                            </div>
+                        {{end}}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                            <p>
+                                * All advertised prices exclude government fees and taxes, any finance charges and any
+                                dealer
+                                document preparation charges. While every reasonable effort is made to ensure the
+                                accuracy of this
+                                data, we are not responsible for any errors or omissions contained on these pages.
+                                Please verify any
+                                information in question with a dealership sales representative.
+                            </p>
+                            <hr>
+                            <p>
+                                ** We accept all trade ins and recommend your purchase of credit protection and extended
+                                vehicle
+                                protection, however "as always the choice is yours". Jim Gilbert's Wheels and Deals is
+                                Canada's Best
+                                six acre Car Shopping Experience and we would love to share our Huggable knowledge with
+                                you. You
+                                will receive many extras, the warm Huggable feeling and the good attention that has made
+                                Canada's
+                                Huggable Car Dealer Famous. Shop us First, Feel the Difference... then compare.
+
+                            </p>
+                        </div>
+                    </div>
+
+                </div> <!-- container -->
             </div>
         </div>
     </div>

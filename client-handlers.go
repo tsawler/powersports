@@ -273,6 +273,13 @@ func ShowItem(w http.ResponseWriter, r *http.Request) {
 	rowSets := make(map[string]interface{})
 	rowSets["item"] = item
 
+	staff, err := vehicleModel.GetSales()
+	if err != nil {
+		errorLog.Println(err)
+	}
+
+	rowSets["sales"] = staff
+
 	helpers.Render(w, r, "item.page.tmpl", &templates.TemplateData{
 		Page:    pg,
 		RowSets: rowSets,
