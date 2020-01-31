@@ -181,7 +181,7 @@ func GetAllPowerBoats(w http.ResponseWriter, r *http.Request) {
 // GetAllUsedPowerSports gets all used powersports
 func GetAllUsedPowerSports(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/used-motorcycles-used-atv-used-boats-used-pontoons"
+	stringMap["pager-url"] = "/inventory/used-motorcycles-used-atv-used-boats-used-pontoons-inventory"
 	stringMap["item-link-prefix"] = "used-power-sports"
 	stringMap["pager-prefix"] = "used-power-sports"
 
@@ -192,6 +192,22 @@ func GetAllUsedPowerSports(w http.ResponseWriter, r *http.Request) {
 	templateName := "inventory.page.tmpl"
 
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons", true)
+}
+
+// GetAllTrailers gets all used powersports
+func GetAllTrailers(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/inventory/atv-trailers-boattrailers-utility-trailers-inventory"
+	stringMap["item-link-prefix"] = "trailers"
+	stringMap["pager-prefix"] = "trailers"
+
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 1
+	vehicleType := 14
+
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "atv-trailers-boattrailers-utility-trailers", true)
 }
 
 // renderInventory renders inventory for a product type
