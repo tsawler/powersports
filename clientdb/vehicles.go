@@ -278,7 +278,13 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 	} else {
 		stmt = fmt.Sprintf(`
 		select 
-			count(v.id) from vehicles v where status = 1 and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s and v.used = 1`, where)
+			count(v.id) 
+		from 
+			vehicles v 
+		where 
+			status = 1 
+			and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s 
+			and v.used = 1`, where)
 		n, err := m.DB.Query(stmt)
 		if err != nil {
 			fmt.Println(err)
