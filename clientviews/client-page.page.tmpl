@@ -116,9 +116,10 @@
                 <div class="bottomBar text-center">
 
                     {{if gt .Page.ID 1}}
-                        <a class="btn btn-outline-info mb5 btn-rounded" href="/{{ .Page.Slug}}">Cancel</a>
+{{/*                        <a class="btn btn-outline-info mb5 btn-rounded" href="/{{ .Page.Slug}}">Cancel</a>*/}}
+                        <a class="btn btn-outline-info mb5 btn-rounded" href="/{{ .CurrentUrl}}">Cancel</a>
                     {{else}}
-                        <a class="btn btn-outline-info mb5 btn-rounded" href="/">Cancel</a>
+                        <a class="btn btn-outline-info mb5 btn-rounded" href="/">Cancel</a>a
                     {{end}}
 
                     {{if gt .Page.ID 1}}
