@@ -189,9 +189,9 @@
 
                 {{paginate $currentPage $numVehicles 10 (index .StringMap "pager-url") (index .StringMap "pager-prefix") (index .StringMap "pager-suffix")}}
 
-
+                    {{$shade := false}}
                     {{range $vehicles}}
-                        <div class="row mb-5 mt-5">
+                        <div class="row mb-5 mt-5 pt-3 pb-2 pl-2 pr-2" {{if eq $shade true}} style="background-color: rgba(0,0,0,.05);" {{end}}>
                             <div class="col-md-3 col-xs-12">
                                 {{$imageLength := len .Images}}
                                 <a href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}">
@@ -276,11 +276,11 @@
                                     {{end}}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <hr>
-                            </div>
+                            {{- if eq $shade true -}}
+                                {{- $shade = false -}}
+                            {{- else -}}
+                                {{- $shade = true }}
+                            {{- end -}}
                         </div>
                     {{end}}
 
