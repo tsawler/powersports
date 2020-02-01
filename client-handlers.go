@@ -1,6 +1,7 @@
 package clienthandlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
 	"github.com/tsawler/goblender/pkg/helpers"
@@ -10,6 +11,12 @@ import (
 )
 
 var vehicleModel *clientdb.VehicleModel
+
+// JSONResponse is a generic struct to hold json responses
+type JSONResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
 
 // CompareVehicles Show 2 or 3 vehicles in table TODO
 func CompareVehicles(w http.ResponseWriter, r *http.Request) {
@@ -284,4 +291,27 @@ func ShowItem(w http.ResponseWriter, r *http.Request) {
 		Page:    pg,
 		RowSets: rowSets,
 	})
+}
+
+func QuickQuote(w http.ResponseWriter, r *http.Request) {
+	infoLog.Println("HIt")
+	infoLog.Println(r.Form.Get("name"))
+
+	theData := JSONResponse{
+		OK: true,
+	}
+
+	// build the json response from the struct
+	out, err := json.MarshalIndent(theData, "", "    ")
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// send json to client
+	w.Header().Set("Content-Type", "application/json")
+	_, err = w.Write(out)
+	if err != nil {
+		errorLog.Println(err)
+	}
 }
