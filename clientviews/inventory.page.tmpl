@@ -240,7 +240,7 @@
 
                                 <a class="btn btn-block btn-danger"
                                    href="#!"
-                                   onclick="openQQ('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}')">
+                                   onclick="openQQ('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}', '{{.StockNo}}')">
                                     Quick Quote
                                 </a>
 
@@ -350,12 +350,7 @@
     <script>
 
         $(document).ready(function () {
-            // $('[data-toggle="tooltip"]').tooltip({container: 'body'});
         });
-
-        function openQQ(id, v) {
-
-        }
 
         $(".compare-button").click(function () {
             let allValues = [];
@@ -396,17 +391,7 @@
 
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Morphext/2.4.4/morphext.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".rotator").Morphext({
-                animation: "fadeInDown",
-                separator: ",",
-                speed: 2000,
-            });
-            $("[data-hide]").removeClass("hidden");
-        });
-    </script>
+    {{template "powersports-js" .}}
 
     {{if .IsAuthenticated}}
         <form method="post" name="hiddensavepage" id="hiddensavepage" action="/admin/pages/ajax/savepage">

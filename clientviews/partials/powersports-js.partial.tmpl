@@ -1,0 +1,19 @@
+{{define "powersports-js"}}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Morphext/2.4.4/morphext.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".rotator").Morphext({
+                animation: "fadeInDown",
+                separator: ",",
+                speed: 2000,
+            });
+            $("[data-hide]").removeClass("hidden");
+        });
+
+        function openQQ(id, item, stockNo) {
+            bootbox.alert("VID: " + id + " - " +  item + " " + stockNo);
+        }
+    </script>
+
+{{end}}
