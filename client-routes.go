@@ -24,7 +24,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
 	mux.Post("/power-sports/quick-quote", standardMiddleWare.ThenFunc(QuickQuote))
-	mux.Post("/power-sports/test-rive", standardMiddleWare.ThenFunc(TestDrive))
+	mux.Post("/power-sports/test-drive", standardMiddleWare.ThenFunc(TestDrive))
 
 	// motorcycles
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {

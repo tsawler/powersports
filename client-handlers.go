@@ -308,7 +308,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 			<strong>Name:</strong> %s <br>
 			<strong>Email:</strong> %s <br>
 			<strong>Phone:</strong> %s <br>
-			<strong>Intersted In:</strong><br><br>
+			<strong>Interested In:</strong><br><br>
 			%s
 		</p>
 `, name, email, phone, interest)
@@ -354,6 +354,8 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")
 	phone := r.Form.Get("phone")
 	interest := r.Form.Get("interested")
+	pDate := r.Form.Get("preferred_date")
+	pTime := r.Form.Get("preferred_time")
 
 	content := fmt.Sprintf(`
 		<p>
@@ -361,20 +363,23 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 			<strong>Name:</strong> %s <br>
 			<strong>Email:</strong> %s <br>
 			<strong>Phone:</strong> %s <br>
-			<strong>Intersted In:</strong><br><br>
+			<strong>Preferred Date:</strong> %s<br>
+			<strong>Preferred Time:</strong> %s<br>
+			<strong>Interested In:</strong><br><br>
 			%s
 		</p>
-`, name, email, phone, interest)
+`, name, email, phone, pDate, pTime, interest)
 
 	var cc []string
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 
 	mailMessage := maildata.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
 		FromAddress: app.PreferenceMap["smtp-from-email"],
-		Subject:     "PowerSports Quick Quote Request",
+		Subject:     "PowerSports Test Drive Request",
 		Content:     template.HTML(content),
 		Template:    "generic-email.mail.tmpl",
 		CC:          cc,

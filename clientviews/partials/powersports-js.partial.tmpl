@@ -294,6 +294,8 @@
                 formData.append('name', $("#td-name").val());
                 formData.append('email', $("#td-email").val());
                 formData.append('phone', $("#td-phone").val());
+                formData.append('preferred_date', $("#td-date").val());
+                formData.append('preferred_time', $("#td-time").val());
                 formData.append('interested', $("#td-interested-in-item").html());
                 formData.append('csrf_token', {{.CSRFToken}});
                 let ajax = new XMLHttpRequest();
