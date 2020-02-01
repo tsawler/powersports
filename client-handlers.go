@@ -417,12 +417,12 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 			Hi:
 			<br>
 			<br>
-			%s thought you might be interested in this item at Jim Gilberts PowerSports:
+			%s thought you might be interested in this item at Jim Gilbert's PowerSports:
 			<br><br>
 			%s
 			<br><br>
 			You can see the item by following this link:
-			<a href='%s'>Click here to see the item!</a>
+			<a href='http://%s'>Click here to see the item!</a>
 		</p>
 `, name, interest, url)
 
