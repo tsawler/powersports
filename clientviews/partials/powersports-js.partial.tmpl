@@ -305,13 +305,129 @@
                 ajax.onreadystatechange = function () {
                     if (ajax.readyState === 4) {
                         $("#tdModal").modal('hide');
-                        successAlert("Test Request sent!!");
+                        successAlert("Test Drive Request sent!!");
                     }
                 }
             }
         }
 
         $("#tdModal").on('hidden.bs.modal', function () {
+            $(this).data('bs.modal', null);
+            $(".is-invalid").each(function (index) {
+                $(this).removeClass('is-invalid')
+            });
+            $(".was-validated").each(function (index) {
+                $(this).removeClass('was-validated')
+            });
+        });
+    </script>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="sfModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Send to a Friend</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="sf-form" class="needs-validation" method="post" action="/power-sports/send-to-friend"
+                          novalidate>
+                        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
+                        <div class="form-group">
+                            <label for="sf-name">Your Name</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-user fa-fw"></i></span>
+                                </div>
+                                <input class="form-control required"
+                                       id="sf-name"
+                                       autocomplete="off" type='text'
+                                       name='name' required>
+                                <div class="invalid-feedback">
+                                    Required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sf-email">Your Friend's Email:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
+                                </div>
+                                <input class="form-control required"
+                                       id="sf-email"
+                                       autocomplete="off" type='email'
+                                       name='email' required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-12">
+                                <div class="card card-body bg-light" style="width: 100%;">
+                                    <div class="card-body">
+                                        <p class="text-center"><strong>Your friend might be interested in:</strong>
+                                            <span id="sf-interested-in-item"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            onclick="valSF()">
+                        Send to your Friend
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openSF(id, item, stockNo) {
+            $("#sf-interested-in-item").html(item + ", Stock Number: " + stockNo);
+            $('#sfModal').modal({backdrop: true})
+        }
+
+        function valSF() {
+            let form = $("#sf-form");
+            if (form[0].checkValidity() === false) {
+                this.event.preventDefault();
+                this.event.stopPropagation();
+            }
+            form.addClass('was-validated');
+            if (form[0].checkValidity() === true) {
+                let formData = new FormData();
+                formData.append('name', $("#sf-name").val());
+                formData.append('email', $("#sf-email").val());
+                formData.append('interested', $("#sf-interested-in-item").html());
+                formData.append('csrf_token', {{.CSRFToken}});
+                formData.append('url', '{{.CurrentUrl}}');
+                let ajax = new XMLHttpRequest();
+                ajax.responseType = "json";
+                ajax.open("POST", "/power-sports/send-to-friend");
+                ajax.send(formData);
+                ajax.onreadystatechange = function () {
+                    if (ajax.readyState === 4) {
+                        $("#tdModal").modal('hide');
+                        successAlert("Email sent!!");
+                    }
+                }
+            }
+        }
+
+        $("#sfModal").on('hidden.bs.modal', function () {
             $(this).data('bs.modal', null);
             $(".is-invalid").each(function (index) {
                 $(this).removeClass('is-invalid')

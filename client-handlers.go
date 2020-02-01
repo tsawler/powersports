@@ -405,3 +405,54 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 		errorLog.Println(err)
 	}
 }
+
+// SendFriend sends to a friend
+func SendFriend(w http.ResponseWriter, r *http.Request) {
+	name := r.Form.Get("name")
+	interest := r.Form.Get("interested")
+	url := r.Form.Get("url")
+
+	content := fmt.Sprintf(`
+		<p>
+			Hi:
+			<br>
+			<br>
+			%s thought you might be interested in this item at Jim Gilberts PowerSports:
+			<br><br>
+			%s
+			<br><br>
+			You can see the item by following this link:
+			%s
+		</p>
+`, name, interest, url)
+
+	mailMessage := maildata.MailData{
+		ToName:      "",
+		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
+		FromName:    app.PreferenceMap["smtp-from-name"],
+		FromAddress: app.PreferenceMap["smtp-from-email"],
+		Subject:     fmt.Sprintf("%s thought you might be intersted in this item from Jim Gilbert's PowerSports", name),
+		Content:     template.HTML(content),
+		Template:    "generic-email.mail.tmpl",
+	}
+
+	helpers.SendEmail(mailMessage)
+
+	theData := JSONResponse{
+		OK: true,
+	}
+
+	// build the json response from the struct
+	out, err := json.MarshalIndent(theData, "", "    ")
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// send json to client
+	w.Header().Set("Content-Type", "application/json")
+	_, err = w.Write(out)
+	if err != nil {
+		errorLog.Println(err)
+	}
+}
