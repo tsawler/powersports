@@ -127,17 +127,20 @@
                     if (ajax.readyState === 4) {
                         $("#qqModal").modal('hide');
                         successAlert("Quick Quote Request sent!!");
-                        $("#qqModal").data('bs.modal', null);
-                        $( ".is-invalid" ).each(function( index ) {
-                            $(this).removeClass('is-invalid')
-                        });
-                        $( ".was-validated" ).each(function( index ) {
-                            $(this).removeClass('was-validated')
-                        });
                     }
                 }
             }
         }
+
+        $("#qqModal").on('hidden.bs.modal', function () {
+            $(this).data('bs.modal', null);
+            $( ".is-invalid" ).each(function( index ) {
+                $(this).removeClass('is-invalid')
+            });
+            $( ".was-validated" ).each(function( index ) {
+                $(this).removeClass('was-validated')
+            });
+        });
 
     </script>
 
