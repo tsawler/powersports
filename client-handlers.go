@@ -295,6 +295,7 @@ func ShowItem(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// QuickQuote sends a quick quote request
 func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	name := r.Form.Get("name")
 	email := r.Form.Get("email")
@@ -304,6 +305,59 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	content := fmt.Sprintf(`
 		<p>
 			<strong>PowerSports Quick Quote Request</strong>:<br><br>
+			<strong>Name:</strong> %s <br>
+			<strong>Email:</strong> %s <br>
+			<strong>Phone:</strong> %s <br>
+			<strong>Intersted In:</strong><br><br>
+			%s
+		</p>
+`, name, email, phone, interest)
+
+	var cc []string
+	cc = append(cc, "wheelsanddeals@pbssystems.com")
+
+	mailMessage := maildata.MailData{
+		ToName:      "",
+		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
+		FromName:    app.PreferenceMap["smtp-from-name"],
+		FromAddress: app.PreferenceMap["smtp-from-email"],
+		Subject:     "PowerSports Quick Quote Request",
+		Content:     template.HTML(content),
+		Template:    "generic-email.mail.tmpl",
+		CC:          cc,
+	}
+
+	helpers.SendEmail(mailMessage)
+
+	theData := JSONResponse{
+		OK: true,
+	}
+
+	// build the json response from the struct
+	out, err := json.MarshalIndent(theData, "", "    ")
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// send json to client
+	w.Header().Set("Content-Type", "application/json")
+	_, err = w.Write(out)
+	if err != nil {
+		errorLog.Println(err)
+	}
+}
+
+// TestDrive sends a test drive request
+func TestDrive(w http.ResponseWriter, r *http.Request) {
+	name := r.Form.Get("name")
+	email := r.Form.Get("email")
+	phone := r.Form.Get("phone")
+	interest := r.Form.Get("interested")
+
+	content := fmt.Sprintf(`
+		<p>
+			<strong>PowerSports Test Drive Request</strong>:<br><br>
 			<strong>Name:</strong> %s <br>
 			<strong>Email:</strong> %s <br>
 			<strong>Phone:</strong> %s <br>

@@ -21,8 +21,10 @@ var parentDB *driver.DB
 // ClientRoutes holds all app routes for the custom code
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
+	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
 	mux.Post("/power-sports/quick-quote", standardMiddleWare.ThenFunc(QuickQuote))
+	mux.Post("/power-sports/test-rive", standardMiddleWare.ThenFunc(TestDrive))
 
 	// motorcycles
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
