@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
+	"github.com/tsawler/goblender/pkg/forms"
 	"github.com/tsawler/goblender/pkg/helpers"
 	"github.com/tsawler/goblender/pkg/maildata"
 	"github.com/tsawler/goblender/pkg/templates"
@@ -455,4 +456,21 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errorLog.Println(err)
 	}
+}
+
+// CreditApp displays credit app page
+func CreditApp(w http.ResponseWriter, r *http.Request) {
+	pg, err := pageModel.GetBySlug("credit-application")
+
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	infoLog.Println("rendering page")
+
+	helpers.Render(w, r, "credit-app.page.tmpl", &templates.TemplateData{
+		Form: forms.New(nil),
+		Page: pg,
+	})
 }

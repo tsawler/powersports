@@ -27,6 +27,9 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	mux.Post("/power-sports/test-drive", standardMiddleWare.ThenFunc(TestDrive))
 	mux.Post("/power-sports/send-to-friend", standardMiddleWare.ThenFunc(SendFriend))
 
+	// credit app
+	mux.Get("/credit-application", standardMiddleWare.ThenFunc(CreditApp))
+
 	// motorcycles
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/inventory/motorcycle", http.StatusMovedPermanently)
