@@ -10,6 +10,7 @@
             height: auto;
         }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
 {{end}}
 
 {{define "flyout"}}
@@ -115,7 +116,8 @@
         <div class="row">
             <div class="col-md-3 d-none d-sm-block"></div>
             <div class="col-md-6 col-xs-12">
-                <h3>Credit Application</h3>
+                <h3 class="text-center">Credit Application</h3>
+                <hr>
                 <form id="credit-form" class="needs-validation" method="post" action="/credit-application"
                       novalidate>
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
@@ -158,7 +160,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-calendar-o fa-fw"></i></span>
                             </div>
-                            <input class="form-control required {{with .Form.Errors.Get "dob"}} is-invalid {{end}}"
+                            <input class="form-control datepicker required {{with .Form.Errors.Get "dob"}} is-invalid {{end}}"
                                    id="dob"
                                    autocomplete="off" type='text'
                                    name='dob' required value='{{or (.Form.Get "dob") ""}}'>
@@ -268,7 +270,7 @@
                         <label for="rent">Rent/Mortgage per month</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-dollar-sign fa-fw"></i></span>
+                                <span class="input-group-text"><i class="fa fa-dollar fa-fw"></i></span>
                             </div>
                             <input class="form-control required {{with .Form.Errors.Get "rent"}} is-invalid {{end}}"
                                    id="rent"
@@ -300,7 +302,7 @@
                         <label for="income">Income - Hourly wage & average hours per week</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-dollar-sign fa-fw"></i></span>
+                                <span class="input-group-text"><i class="fa fa-dollar fa-fw"></i></span>
                             </div>
                             <input class="form-control required {{with .Form.Errors.Get "income"}} is-invalid {{end}}"
                                    id="income"
@@ -384,6 +386,7 @@
 
 {{define "js"}}
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 
     {{ .Page.JS}}
 
@@ -402,7 +405,12 @@
         }
 
         $(document).ready(function () {
-
+            $('.datepicker').datepicker({
+                startView: 'years',
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd'
+            });
         });
 
     </script>
