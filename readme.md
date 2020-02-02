@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/tsawler/powersports)](https://goreportcard.com/report/github.com/tsawler/powersports)
+
 # PowerSports
 
 PowerSports inventory for Jim Gilbert's Wheels & Deals / Jim Gilbert's PowerSports.
