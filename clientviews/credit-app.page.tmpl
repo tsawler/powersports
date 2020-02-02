@@ -125,10 +125,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-user fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "first_name"}} is-invalid {{end}}"
                                    id="first-name"
                                    autocomplete="off" type='text'
-                                   name='first_name' required>
+                                   name='first_name' required value='{{or (.Form.Get "first_name") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -141,10 +141,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-user fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "last_Name"}} is-invalid {{end}}"
                                    id="last-name"
                                    autocomplete="off" type='text'
-                                   name='last_name' required>
+                                   name='last_name' required value='{{or (.Form.Get "last_name") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -157,10 +157,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-calendar-o fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "dob"}} is-invalid {{end}}"
                                    id="dob"
                                    autocomplete="off" type='text'
-                                   name='dob' required>
+                                   name='dob' required value='{{or (.Form.Get "dob") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -173,10 +173,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-phone fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "phone"}} is-invalid {{end}}"
                                    id="phone"
                                    autocomplete="off" type='text'
-                                   name='phone' required>
+                                   name='phone' required value='{{or (.Form.Get "phone") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -189,10 +189,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "email"}} is-invalid {{end}}"
                                    id="email"
                                    autocomplete="off" type='email'
-                                   name='email' required>
+                                   name='email' required value='{{or (.Form.Get "email") ""}}'>
                             <div class="invalid-feedback">
                                 Please enter a valid email address
                             </div>
@@ -205,10 +205,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-map-marker fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "address"}} is-invalid {{end}}"
                                    id="address"
                                    autocomplete="off" type='text'
-                                   name='address' required>
+                                   name='address' required value='{{or (.Form.Get "address") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -221,10 +221,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-map-marker fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "city"}} is-invalid {{end}}"
                                    id="city"
                                    autocomplete="off" type='text'
-                                   name='city' required>
+                                   name='city' required  value='{{or (.Form.Get "city") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -237,10 +237,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-map-marker fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "province"}} is-invalid {{end}}"
                                    id="province"
                                    autocomplete="off" type='text'
-                                   name='province' required>
+                                   name='province' required value='{{or (.Form.Get "province") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -253,10 +253,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-map-marker fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "zip"}} is-invalid {{end}}"
                                    id="zip"
                                    autocomplete="off" type='text'
-                                   name='zip' required>
+                                   name='zip' required value='{{or (.Form.Get "zip") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -269,10 +269,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-dollar-sign fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "rent"}} is-invalid {{end}}"
                                    id="rent"
                                    autocomplete="off" type='text'
-                                   name='rent' required>
+                                   name='rent' required value='{{or (.Form.Get "rent") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -285,10 +285,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-building fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "employer"}} is-invalid {{end}}"
                                    id="employer"
                                    autocomplete="off" type='text'
-                                   name='employer' required>
+                                   name='employer' required value='{{or (.Form.Get "employer") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -301,10 +301,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-dollar-sign fa-fw"></i></span>
                             </div>
-                            <input class="form-control required"
+                            <input class="form-control required {{with .Form.Errors.Get "income"}} is-invalid {{end}}"
                                    id="income"
                                    autocomplete="off" type='text'
-                                   name='income' required>
+                                   name='income' required value='{{or (.Form.Get "income") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -316,10 +316,10 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-motorcycle fa-fw"></i></span>
                         </div>
-                        <input class="form-control required"
+                        <input class="form-control required {{with .Form.Errors.Get "vehicle"}} is-invalid {{end}}"
                                id="vehicle"
                                autocomplete="off" type='text'
-                               name='vehicle' required>
+                               name='vehicle' required value='{{or (.Form.Get "interested") ""}}'>
                         <div class="invalid-feedback">
                             Required
                         </div>
@@ -327,14 +327,22 @@
 
 
                     <div class="custom-control custom-checkbox mt-5">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1" required>
                         <label class="custom-control-label" for="customCheck1">I authorize Wheels and Deals to begin a No commitment credit pre-approval and
                             contact lenders, financial institutions, or other third parties discreetly.</label>
                     </div>
 
+
+                    {{with .Form.Errors.Get "g-captcha-response"}}
+                        <label class='text-danger'>{{.}}</label>
+                    {{end}}
+
+                    {{$recaptchaKey := index .PreferenceMap "recaptcha-key"}}
+                    <div class="g-recaptcha mt-5" data-sitekey="{{$recaptchaKey}}"></div>
+
                     <hr>
 
-                    <input type="submit" class="btn btn-primary" value="Submit">
+                    <a class="btn btn-primary" href="#!" onclick="val()">Submit</a>
 
                 </form>
             </div>
@@ -373,10 +381,23 @@
 
 
 {{define "js"}}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 
     {{ .Page.JS}}
 
     <script>
+
+        function val() {
+            let form = $("#credit-form");
+            if (form[0].checkValidity() === false) {
+                this.event.preventDefault();
+                this.event.stopPropagation();
+            }
+            form.addClass('was-validated');
+            if (form[0].checkValidity() === true) {
+                $("#credit-form").submit();
+            }
+        }
 
         $(document).ready(function () {
 
