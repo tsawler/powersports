@@ -485,10 +485,92 @@ func CreditApp(w http.ResponseWriter, r *http.Request) {
 
 func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
-	form.Required("first_name", "last_name", "email", "dob", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle", "g-recaptcha-response")
+	form.Required("first_name", "last_name", "email", "y", "m", "y", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle", "g-recaptcha-response")
+
+	form.RecaptchaValid(r.RemoteAddr)
 
 	if !form.Valid() {
-		helpers.Render(w, r, "credit-app.page.tmpl", &templates.TemplateData{Form: form})
+		rowSets := make(map[string]interface{})
+		var years []int
+		for y := time.Now().Year(); y > (time.Now().Year() - 100); y-- {
+			years = append(years, y)
+		}
+		pg, _ := pageModel.GetBySlug("credit-application")
+
+		rowSets["years"] = years
+		app.Session.Put(r.Context(), "error", "There are errors on the form!")
+		helpers.Render(w, r, "credit-app.page.tmpl", &templates.TemplateData{
+			Form:    form,
+			Page:    pg,
+			RowSets: rowSets})
 		return
 	}
+
+	// create email
+	content := fmt.Sprintf(`
+		<p>
+			<strong>PowerSports Credit Application</strong>:<br><br>
+			<strong>Name:</strong> %s  %s<br>
+			<strong>Date of birth:</strong> %s <br>
+			<strong>Email:</strong> %s <br>
+			<strong>Phone:</strong> %s <br>
+			<strong>Address:</strong> %s %s, %s, %s<br>
+			<strong>Rent/Mortgage</strong>: %s<br>
+			<strong>Employer</strong>: %s<br>
+			<strong>Income</strong>: %s<br>
+			<strong>Interested In:</strong><br><br>
+			%s
+		</p>
+`,
+		form.Get("first_name"),
+		form.Get("last_name"),
+		fmt.Sprintf("%s-%s-%s", form.Get("y"), form.Get("m"), form.Get("d")),
+		form.Get("phone"),
+		form.Get("email"),
+		form.Get("address"),
+		form.Get("city"),
+		form.Get("province"),
+		form.Get("zip"),
+		form.Get("rent"),
+		form.Get("employer"),
+		form.Get("income"),
+		form.Get("vehicle"),
+	)
+
+	var cc []string
+	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "john.eliakis@wheelsanddeals.ca")
+	cc = append(cc, "chelsea.gilbert@wheelsanddeals.ca")
+
+	mailMessage := maildata.MailData{
+		ToName:      "",
+		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
+		FromName:    app.PreferenceMap["smtp-from-name"],
+		FromAddress: app.PreferenceMap["smtp-from-email"],
+		Subject:     "PowerSports Credit Application",
+		Content:     template.HTML(content),
+		Template:    "generic-email.mail.tmpl",
+		CC:          cc,
+	}
+
+	helpers.SendEmail(mailMessage)
+
+	theData := JSONResponse{
+		OK: true,
+	}
+
+	// build the json response from the struct
+	out, err := json.MarshalIndent(theData, "", "    ")
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// send json to client
+	w.Header().Set("Content-Type", "application/json")
+	_, err = w.Write(out)
+	if err != nil {
+		errorLog.Println(err)
+	}
+
 }

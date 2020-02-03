@@ -161,7 +161,7 @@
                             <div class="form-group">
                                 <label for="dob-y">Date of Birth: Year</label>
                                 <div class="input-group">
-                                    <select id="dob-y" class="form-control" required>
+                                    <select id="dob-y" name="y" class="form-control" required>
                                         <option value="">Choose...</option>
                                         {{range index .RowSets "years"}}
                                             <option value="{{.}}">{{.}}</option>
@@ -175,7 +175,7 @@
                             <div class="form-group">
                                 <label for="dob-m">Month</label>
                                 <div class="input-group">
-                                    <select id="dob-m" class="form-control" required>
+                                    <select id="dob-m" class="form-control" required name="m">
                                         <option value="">Choose...</option>
                                         <option value="01">January</option>
                                         <option value="02">February</option>
@@ -198,7 +198,7 @@
                             <div class="form-group">
                                 <label for="dob-d">Day</label>
                                 <div class="input-group">
-                                    <select id="dob-d" class="form-control" required>
+                                    <select id="dob-d" class="form-control" name="d" required>
                                         <option value="">Choose...</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -390,7 +390,7 @@
                         <input class="form-control required {{with .Form.Errors.Get "vehicle"}} is-invalid {{end}}"
                                id="vehicle"
                                autocomplete="off" type='text'
-                               name='vehicle' required value='{{or (.Form.Get "interested") ""}}'>
+                               name='vehicle' required value='{{or (.Form.Get "vehicle") ""}}'>
                         <div class="invalid-feedback">
                             Required
                         </div>
