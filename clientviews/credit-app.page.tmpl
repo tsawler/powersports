@@ -405,6 +405,13 @@
                             contact lenders, financial institutions, or other third parties discreetly.</label>
                     </div>
 
+                    {{with .Form.Errors.Get "g-captcha-response"}}
+                        <label class='text-danger'>{{.}}</label>
+                    {{end}}
+
+                    {{$recaptchaKey := index .PreferenceMap "recaptcha-key"}}
+                    <div class="g-recaptcha mt-5" data-sitekey="{{$recaptchaKey}}"></div>
+
                     <hr>
 
                     <a class="btn btn-primary" href="#!" onclick="val()">Submit</a>
@@ -459,6 +466,16 @@
 
     <script>
         function val() {
+            var response = grecaptcha.getResponse();
+            var okay = false;
+            if (!response) {
+                modalAlert("You must prove you are human! Please check your response, and try again");
+                this.event.preventDefault();
+                this.event.stopPropagation();
+                return false;
+            }
+
+            console.log("past");
             let form = $("#credit-form");
             if (form[0].checkValidity() === false) {
                 this.event.preventDefault();
@@ -483,6 +500,7 @@
                 formData.append('income', $("#income").val());
                 formData.append('vehicle', $("#vehicle").val());
                 formData.append('csrf_token', {{.CSRFToken}});
+                formData.append("g-recaptcha-response", response);
                 let ajax = new XMLHttpRequest();
                 ajax.responseType = "json";
                 ajax.open("POST", "/credit-application");

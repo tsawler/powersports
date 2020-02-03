@@ -485,7 +485,9 @@ func CreditApp(w http.ResponseWriter, r *http.Request) {
 
 func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
-	form.Required("first_name", "last_name", "email", "y", "m", "y", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle")
+	form.Required("first_name", "last_name", "email", "y", "m", "y", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle", "g-recaptcha-response")
+
+	form.RecaptchaValid(r.RemoteAddr)
 
 	if !form.Valid() {
 		theData := JSONResponse{
