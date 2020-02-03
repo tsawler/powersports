@@ -120,6 +120,7 @@
             <div class="col-md-6 col-xs-12">
                 <h3 class="text-center">Credit Application</h3>
                 <hr>
+                <div id="credit-form-div">
                 <form id="credit-form" class="needs-validation" method="post" action="/credit-application"
                       novalidate>
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
@@ -404,19 +405,16 @@
                             contact lenders, financial institutions, or other third parties discreetly.</label>
                     </div>
 
-
-                    {{with .Form.Errors.Get "g-captcha-response"}}
-                        <label class='text-danger'>{{.}}</label>
-                    {{end}}
-
-                    {{$recaptchaKey := index .PreferenceMap "recaptcha-key"}}
-                    <div class="g-recaptcha mt-5" data-sitekey="{{$recaptchaKey}}"></div>
-
                     <hr>
 
                     <a class="btn btn-primary" href="#!" onclick="val()">Submit</a>
 
                 </form>
+                </div>
+
+                <div id="thanks" class="d-none">
+                    <p></p>Thanks! Your application has been received, and someone will be in touch shortly!</p>
+                </div>
             </div>
             <div class="col-md-3 d-none d-sm-block"></div>
         </div>
@@ -468,7 +466,40 @@
             }
             form.addClass('was-validated');
             if (form[0].checkValidity() === true) {
-                $("#credit-form").submit();
+                let formData = new FormData();
+                formData.append('first_name', $("#first-name").val());
+                formData.append('last_name', $("#last-name").val());
+                formData.append('y', $("#dob-y").val());
+                formData.append('m', $("#dob-m").val());
+                formData.append('d', $("#dob-d").val());
+                formData.append('phone', $("#phone").val());
+                formData.append('email', $("#email").val());
+                formData.append('address', $("#address").val());
+                formData.append('city', $("#city").val());
+                formData.append('province', $("#province").val());
+                formData.append('zip', $("#zip").val());
+                formData.append('rent', $("#rent").val());
+                formData.append('employer', $("#employer").val());
+                formData.append('income', $("#income").val());
+                formData.append('vehicle', $("#vehicle").val());
+                formData.append('csrf_token', {{.CSRFToken}});
+                let ajax = new XMLHttpRequest();
+                ajax.responseType = "json";
+                ajax.open("POST", "/credit-application");
+                ajax.send(formData);
+                ajax.onreadystatechange = function () {
+                    if (ajax.readyState === 4) {
+                        let resp = ajax.response;
+                        let json = $.parseJSON(JSON.stringify(resp));
+                        if (!json.ok) {
+                            errorAlert("Errors: " + json.message);
+                        } else {
+                            $("#credit-form-div").addClass('d-none');
+                            $("#thanks").removeClass('d-none');
+                            successAlert("Credit application sent!!");
+                        }
+                    }
+                }
             }
         }
 

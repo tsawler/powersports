@@ -485,24 +485,27 @@ func CreditApp(w http.ResponseWriter, r *http.Request) {
 
 func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
-	form.Required("first_name", "last_name", "email", "y", "m", "y", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle", "g-recaptcha-response")
-
-	form.RecaptchaValid(r.RemoteAddr)
+	form.Required("first_name", "last_name", "email", "y", "m", "y", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle")
 
 	if !form.Valid() {
-		rowSets := make(map[string]interface{})
-		var years []int
-		for y := time.Now().Year(); y > (time.Now().Year() - 100); y-- {
-			years = append(years, y)
+		theData := JSONResponse{
+			OK:      false,
+			Message: "Form error",
 		}
-		pg, _ := pageModel.GetBySlug("credit-application")
 
-		rowSets["years"] = years
-		app.Session.Put(r.Context(), "error", "There are errors on the form!")
-		helpers.Render(w, r, "credit-app.page.tmpl", &templates.TemplateData{
-			Form:    form,
-			Page:    pg,
-			RowSets: rowSets})
+		// build the json response from the struct
+		out, err := json.MarshalIndent(theData, "", "    ")
+		if err != nil {
+			helpers.ServerError(w, err)
+			return
+		}
+
+		// send json to client
+		w.Header().Set("Content-Type", "application/json")
+		_, err = w.Write(out)
+		if err != nil {
+			errorLog.Println(err)
+		}
 		return
 	}
 
@@ -552,6 +555,8 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 		Template:    "generic-email.mail.tmpl",
 		CC:          cc,
 	}
+
+	infoLog.Println("Sending email")
 
 	helpers.SendEmail(mailMessage)
 
