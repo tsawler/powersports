@@ -29,6 +29,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// credit app
 	mux.Get("/credit-application", standardMiddleWare.ThenFunc(CreditApp))
+	mux.Post("/credit-application", standardMiddleWare.ThenFunc(PostCreditApp))
 
 	// motorcycles
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {

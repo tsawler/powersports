@@ -10,7 +10,9 @@
             height: auto;
         }
     </style>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+          integrity="sha256-yMjaV542P+q1RnH6XByCPDfUFhmOafWbeLPmqKh11zo=" crossorigin="anonymous"/>
 {{end}}
 
 {{define "flyout"}}
@@ -154,21 +156,87 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="dob">Date of Birth</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-calendar-o fa-fw"></i></span>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dob-y">Date of Birth: Year</label>
+                                <div class="input-group">
+                                    <select id="dob-y" class="form-control" required>
+                                        <option value="">Choose...</option>
+                                        {{range index .RowSets "years"}}
+                                            <option value="{{.}}">{{.}}</option>
+                                        {{end}}
+                                    </select>
+                                </div>
                             </div>
-                            <input class="form-control datepicker required {{with .Form.Errors.Get "dob"}} is-invalid {{end}}"
-                                   id="dob"
-                                   autocomplete="off" type='text'
-                                   name='dob' required value='{{or (.Form.Get "dob") ""}}'>
-                            <div class="invalid-feedback">
-                                Required
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dob-m">Month</label>
+                                <div class="input-group">
+                                    <select id="dob-m" class="form-control" required>
+                                        <option value="">Choose...</option>
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dob-d">Day</label>
+                                <div class="input-group">
+                                    <select id="dob-d" class="form-control" required>
+                                        <option value="">Choose...</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
+
 
                     <div class="form-group">
                         <label for="phone">Best contact phone number</label>
@@ -227,7 +295,7 @@
                             <input class="form-control required {{with .Form.Errors.Get "city"}} is-invalid {{end}}"
                                    id="city"
                                    autocomplete="off" type='text'
-                                   name='city' required  value='{{or (.Form.Get "city") ""}}'>
+                                   name='city' required value='{{or (.Form.Get "city") ""}}'>
                             <div class="invalid-feedback">
                                 Required
                             </div>
@@ -386,12 +454,12 @@
 
 {{define "js"}}
     <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
     {{ .Page.JS}}
 
     <script>
-
         function val() {
             let form = $("#credit-form");
             if (form[0].checkValidity() === false) {
@@ -403,15 +471,6 @@
                 $("#credit-form").submit();
             }
         }
-
-        $(document).ready(function () {
-            $('.datepicker').datepicker({
-                startView: 'years',
-                autoclose: true,
-                todayHighlight: true,
-                format: 'yyyy-mm-dd'
-            });
-        });
 
     </script>
 

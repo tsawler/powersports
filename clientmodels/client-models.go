@@ -110,3 +110,20 @@ type SalesStaff struct {
 	Phone string
 	Image string
 }
+
+// CreditApp holds a credit application
+type CreditApp struct {
+	ID        int
+	FirstName string
+	LastName  string
+	Email     string
+	Phone     string
+	Address   string
+	City      string
+	Province  string
+	Zip       string
+	Vehicle   string
+	Processed int
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}

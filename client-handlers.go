@@ -11,6 +11,7 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 var vehicleModel *clientdb.VehicleModel
@@ -467,10 +468,27 @@ func CreditApp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	infoLog.Println("rendering page")
+	rowSets := make(map[string]interface{})
+	var years []int
+	for y := time.Now().Year(); y > (time.Now().Year() - 100); y-- {
+		years = append(years, y)
+	}
+
+	rowSets["years"] = years
 
 	helpers.Render(w, r, "credit-app.page.tmpl", &templates.TemplateData{
-		Form: forms.New(nil),
-		Page: pg,
+		Form:    forms.New(nil),
+		Page:    pg,
+		RowSets: rowSets,
 	})
+}
+
+func PostCreditApp(w http.ResponseWriter, r *http.Request) {
+	form := forms.New(r.PostForm)
+	form.Required("first_name", "last_name", "email", "dob", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle", "g-recaptcha-response")
+
+	if !form.Valid() {
+		helpers.Render(w, r, "credit-app.page.tmpl", &templates.TemplateData{Form: form})
+		return
+	}
 }

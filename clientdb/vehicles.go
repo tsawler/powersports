@@ -966,3 +966,40 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 	}
 	return s, nil
 }
+
+func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
+	stmt := `
+	INSERT INTO credit_applications (first_name, last_name, email, phone, address, city, province, zip, 
+	                   vehicle, processed, created_at, updated_at)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `
+
+	_, err := m.DB.Exec(stmt,
+		a.FirstName,
+		a.LastName,
+		a.Email,
+		a.Phone,
+		a.Address,
+		a.City,
+		a.Province,
+		a.Zip,
+		a.Vehicle,
+		a.Processed,
+		a.CreatedAt,
+		a.UpdatedAt,
+	)
+	if err != nil {
+		return err
+	}
+
+	stmt = "SELECT LAST_INSERT_ID()"
+	row := m.DB.QueryRow(stmt)
+
+	var id int
+	err = row.Scan(&id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
