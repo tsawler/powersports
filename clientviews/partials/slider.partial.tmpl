@@ -118,6 +118,7 @@
                                             {{if eq .BackgroundVideo 0}}
                                                 <div class="text-center">
                                                     <video controls autoplay muted playsinline
+                                                           poster="/static/site-content/videos/{{.Thumb}}"
                                                            loop="loop">
                                                         <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                     </video>
