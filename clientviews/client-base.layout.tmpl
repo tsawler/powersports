@@ -118,16 +118,16 @@
         <link href="/static/assets/minimalist-basic/content-bootstrap.css?v={{.CSSVersion}}" rel="stylesheet"/>
         <link href="/static/templates/spacial/dist/theme.min.css?v={{.CSSVersion}}" rel="stylesheet">
         {{if .IsAuthenticated}}
-                {{if hasRole "pages" .Auth.ID}}
-                    <link href="/static/contentbuilder/contentbuilder.css?v={{.CSSVersion}}" rel="stylesheet">
-                    <link href="/static/contentbox/contentbox.css?v={{.CSSVersion}}" rel="stylesheet">
-                {{end}}
-                <link rel="stylesheet"
-                      href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
-                <link rel="stylesheet"
-                      href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
-                <link rel="stylesheet" href="/static/css/BootSideMenu.css">
-                <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            {{if hasRole "pages" .Auth.ID}}
+                <link href="/static/contentbuilder/contentbuilder.css?v={{.CSSVersion}}" rel="stylesheet">
+                <link href="/static/contentbox/contentbox.css?v={{.CSSVersion}}" rel="stylesheet">
+            {{end}}
+            <link rel="stylesheet"
+                  href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
+            <link rel="stylesheet"
+                  href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
+            <link rel="stylesheet" href="/static/css/BootSideMenu.css">
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         {{end}}
 
 
@@ -137,6 +137,16 @@
             {{ safeHTML $siteWideCss}}
         {{end}}
 
+        <style>
+            .nav-tbar-link {
+                display: block;
+                padding: 0.1rem 1rem;
+            }
+
+            .nav-tbar-link:hover, .nav-link:focus {
+                text-decoration: none;
+            }
+        </style>
 
         {{block "css" .}}
 
@@ -184,6 +194,7 @@
                 "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
                 {{end}}
             }
+
 
         </script>
     {{end}}
