@@ -118,12 +118,12 @@
                                             {{if eq .BackgroundVideo 0}}
                                                 <div class="text-center">
                                                     <video controls autoplay muted playsinline
-                                                           width="768" loop="loop">
+                                                           loop="loop">
                                                         <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                     </video>
                                                 </div>
                                             {{else}}
-                                                <video playsinline="playsinline" autoplay="autoplay" muted="muted" controls
+                                                <video controls autoplay muted playsinline
                                                        loop="loop" style="min-width: 100%;">
                                                     <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                 </video>
