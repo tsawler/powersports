@@ -11,7 +11,7 @@
             {{$image := index .Images 0}}
             {{$vid := .ID}}
             {{if ne $image.Image ""}}
-                <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$vid}}/{{$image.Image}}" class="card-img-top" alt="image">
+                <img src="https://www.wheelsanddeals.ca/storage/inventory/thumbs/{{$vid}}/{{$image.Image}}" class="card-img-top" alt="image">
             {{else}}
                 <img src="https://www.wheelsanddeals.ca//vendor/wheelspackage/hug-in-progress.jpg" class="card-img-top" alt="image">
             {{end}}
