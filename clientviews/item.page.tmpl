@@ -50,7 +50,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <video class="" controls autoplay muted playsinline
-                                       poster="https://www.wheelsanddeals/storate/videos/{{$item.Video.Thumb}}">
+                                       poster="https://www.wheelsanddeals/storage/videos/{{$item.Video.Thumb}}">
                                     <source type="video/mp4"
                                             src="https://www.wheelsanddeals.ca/storage/videos/{{$item.Video.ID}}-{{$item.Video.FileName}}"/>
                                 </video>
@@ -97,6 +97,9 @@
                                 </div>
                             </div>
                         </div>
+
+                    {{else}}
+                        <img src="https://www.wheelsanddeals.ca//vendor/wheelspackage/hug-in-progress.jpg" class="img-fluid" alt="image">
                     {{end}}
 
                     <div class="row">

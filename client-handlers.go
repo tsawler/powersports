@@ -12,6 +12,7 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -25,9 +26,24 @@ type JSONResponse struct {
 
 // CompareVehicles Show 2 or 3 vehicles in table TODO
 func CompareVehicles(w http.ResponseWriter, r *http.Request) {
-	ids := r.Form.Get("ids")
-	infoLog.Println("Ids:", ids)
-	helpers.Render(w, r, "compare.page.tmpl", &templates.TemplateData{})
+	idString := r.Form.Get("ids")
+	infoLog.Println("Ids:", idString)
+
+	ids := strings.Split(idString, ",")
+	var items []clientmodels.Vehicle
+
+	for _, x := range ids {
+		infoLog.Println("ID:", x)
+		vid, _ := strconv.Atoi(x)
+		v, _ := vehicleModel.GetPowerSportItem(vid)
+		items = append(items, v)
+	}
+
+	rowSets := make(map[string]interface{})
+	rowSets["items"] = items
+	helpers.Render(w, r, "compare.page.tmpl", &templates.TemplateData{
+		RowSets: rowSets,
+	})
 }
 
 // GetAllMotorcycles gets all motorcycles
