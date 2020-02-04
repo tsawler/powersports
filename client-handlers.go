@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
+	"github.com/tsawler/goblender/client/clienthandlers/clientmodels"
 	"github.com/tsawler/goblender/pkg/forms"
 	"github.com/tsawler/goblender/pkg/helpers"
 	"github.com/tsawler/goblender/pkg/maildata"
@@ -562,6 +563,27 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	infoLog.Println("Sending email")
 
 	helpers.SendEmail(mailMessage)
+
+	// save the application
+	creditApp := clientmodels.CreditApp{
+		FirstName: form.Get("first_name"),
+		LastName:  form.Get("last_name"),
+		Email:     form.Get("email"),
+		Phone:     form.Get("phone"),
+		Address:   form.Get("address"),
+		City:      form.Get("city"),
+		Province:  form.Get("province"),
+		Zip:       form.Get("zip"),
+		Vehicle:   form.Get("vehicle"),
+		Processed: 0,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	err := vehicleModel.InsertCreditApp(creditApp)
+	if err != nil {
+		errorLog.Println(err)
+	}
 
 	theData := JSONResponse{
 		OK: true,

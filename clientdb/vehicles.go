@@ -967,6 +967,7 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 	return s, nil
 }
 
+// InsertCreditApp saves a credit application
 func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 	stmt := `
 	INSERT INTO credit_applications (first_name, last_name, email, phone, address, city, province, zip, 
@@ -988,15 +989,6 @@ func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 		a.CreatedAt,
 		a.UpdatedAt,
 	)
-	if err != nil {
-		return err
-	}
-
-	stmt = "SELECT LAST_INSERT_ID()"
-	row := m.DB.QueryRow(stmt)
-
-	var id int
-	err = row.Scan(&id)
 	if err != nil {
 		return err
 	}
