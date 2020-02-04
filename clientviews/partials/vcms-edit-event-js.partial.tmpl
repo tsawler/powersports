@@ -1,0 +1,98 @@
+{{define "vcms-edit-event-js"}}
+    <script>
+        $(document).ready(function () {
+            $('#mySidenav').BootSideMenu({
+                side: "right",
+                closeOnClick: false,
+                remember: false,
+                pushBody: false,
+                duration: 250,
+                icons: {
+                    left: 'fa fa-chevron-left',
+                    right: 'fa fa-chevron-right',
+                    down: 'fa fa-chevron-down'
+                }
+            });
+        });
+
+        function makePageEditable() {
+            let hide = document.getElementsByClassName("hide-on-edit");
+            var i;
+            for (i = 0; i < hide.length; i++) {
+                hide[i].style.display = "none";
+            }
+            $("#bottomSaveBar").removeClass('d-none');
+            $("#mySidenav").removeClass('d-none');
+            if ($("#accordion").length > 0) {
+                initFaqs();
+            }
+            $(".collapse").each(function (index) {
+                $(this).addClass('in')
+            });
+
+            $(".is-wrapper").contentbox({
+                framework: 'bootstrap',
+                snippetFile: '/static/assets/minimalist-basic/snippets-bootstrap.html',
+                snippetOpen: true,
+                toolbar: 'top',
+                coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
+                modulePath: '/static/assets/modules/',
+                designPath: '/static/assets/designs/',
+                contentStylePath: '/static/assets/styles/',
+                iconselect: '/static/assets/ionicons/selecticon-dark.html',
+                fileselect: '/admin/pages/file-manager',
+                imageselect: '/admin/pages/image-manager',
+                snippetPathReplace: ['assets/minimalist-basic/', '/static/assets/minimalist-basic/'],
+                moduleConfig: [{
+                    "moduleSaveImageHandler": "/admin/save-cb-image"
+                }],
+                useSidebar: true,
+                enableContentStyle: true
+            });
+        }
+
+        function saveEditedPage() {
+            if ($("#thetitledata").val() == '') {
+                bootbox.alert('You must give the page a name!');
+                $("#thetitledata").addClass('glowing-border');
+                return false;
+            }
+
+            $("#faqbuttons").addClass('hidden');
+            $(".delicon").addClass('hidden');
+
+            bootbox.dialog({
+                message: '<p class="text-center">Saving Changes...<br><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></p>',
+                closeButton: false,
+                backdrop: false,
+            });
+
+            // figure out what fonts we need to add to this page, if any
+            var sMainCss = $('#content_edit').data('contentbox').mainCss();
+            var sSectionCss = $('#content_edit').data('contentbox').sectionCss();
+            var custom_css = sMainCss + sSectionCss;
+            $("#hidden_page_styles").val(custom_css);
+
+            $("#content_edit").saveimages({
+                customval: $('meta[name=csrf-token]').attr("content"),
+                handler: '/admin/cms/uploadimages',
+                onComplete: function () {
+                    $(".collapse").each(function (index) {
+                        if (index != 1) {
+                            $(this).removeClass('in');
+                        }
+                    });
+                    $("#hidden_thedata").val($('.is-wrapper').data('contentbox').html());
+                    $("#hidden_thetitledata").val($("#thetitledata").val());
+                    $("#hiddensavepage").submit();
+                }
+            });
+            $("#content_edit").data('saveimages').save();
+            $(".bottomBar").addClass('d-none');
+        }
+
+        function initFaqs() {
+            // stub
+        }
+    </script>
+{{end}}
