@@ -13,8 +13,8 @@
         }
 
         #myCarousel .list-inline {
-            white-space:nowrap;
-            overflow-x:auto;
+            white-space: nowrap;
+            overflow-x: auto;
         }
 
         #item-slider .carousel-indicators {
@@ -34,7 +34,8 @@
             opacity: 0.7;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css" integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css"
+          integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous"/>
 {{end}}
 
 {{define "flyout"}}
@@ -110,13 +111,15 @@
                                         {{range $index, $value := $item.Images}}
                                             {{if eq $index 0}}
                                                 <li class="list-inline-item active">
-                                                    <a id="carousel-selector-{{$index}}" class="selected" data-slide-to="{{$index}}" data-target="#item-slider">
+                                                    <a id="carousel-selector-{{$index}}" class="selected"
+                                                       data-slide-to="{{$index}}" data-target="#item-slider">
                                                         <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/thumbs/{{.Image}}">
                                                     </a>
                                                 </li>
                                             {{else}}
                                                 <li class="list-inline-item">
-                                                    <a id="carousel-selector-{{$index}}" data-slide-to="{{$index}}" data-target="#item-slider">
+                                                    <a id="carousel-selector-{{$index}}" data-slide-to="{{$index}}"
+                                                       data-target="#item-slider">
                                                         <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/thumbs/{{.Image}}">
                                                     </a>
                                                 </li>
@@ -130,7 +133,12 @@
                         </div>
 
                     {{else}}
-                        <img src="https://www.wheelsanddeals.ca//vendor/wheelspackage/hug-in-progress.jpg" class="img-fluid" alt="image">
+                        <div class="row">
+                            <div class="col text-center">
+                                <img src="https://www.wheelsanddeals.ca//vendor/wheelspackage/hug-in-progress.jpg"
+                                     class="img-fluid" alt="image">
+                            </div>
+                        </div>
                     {{end}}
 
                     <div class="row">
@@ -177,7 +185,8 @@
 
                             <div class="mt-5"></div>
 
-                            <img src="/static/site-content/photos/logo.png" alt="logo" class="img img-fluid" style="max-width: 300px;">
+                            <img src="/static/site-content/photos/logo.png" alt="logo" class="img img-fluid"
+                                 style="max-width: 300px;">
 
                             <div class="text-center">
                                 <a href="http://www.autofinance.cibc.com/#/pre-approval/redirect?dealerid=C05722"
@@ -219,7 +228,7 @@
 
                                     <a class="btn btn-block btn-danger"
                                        href="#!"
-                                        onclick="openQQ('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
+                                       onclick="openQQ('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
                                         Quick Quote
                                     </a>
                                 </div>
@@ -288,7 +297,8 @@
 {{define "js"}}
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.min.js" integrity="sha256-voP3sbDhk+YDZKsGO8dpMGk9qzne1cf3f1CRgjwRnrk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.min.js"
+            integrity="sha256-voP3sbDhk+YDZKsGO8dpMGk9qzne1cf3f1CRgjwRnrk=" crossorigin="anonymous"></script>
 
     {{template "powersports-js" .}}
 
