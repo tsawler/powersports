@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-var app config.AppConfig
+var app *config.AppConfig
 var infoLog *log.Logger
 var errorLog *log.Logger
 var pageModel repository.PageRepo
@@ -125,7 +125,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 }
 
 // ClientInit gives us access to site values for client code.
-func ClientInit(c config.AppConfig, p *driver.DB) {
+func ClientInit(c *config.AppConfig, p *driver.DB) {
 	app = c
 	conn := app.Connections["wheels"]
 	vehicleModel = &clientdb.VehicleModel{DB: conn}
