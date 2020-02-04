@@ -10,12 +10,15 @@
             <div class="card-header"><strong>{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}</strong></div>
             {{$image := index .Images 0}}
             {{$vid := .ID}}
-            {{if ne $image.Image ""}}
-                <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$vid}}/thumbs/{{$image.Image}}" class="card-img-top" alt="image">
-            {{else}}
-                <img src="https://www.wheelsanddeals.ca//vendor/wheelspackage/hug-in-progress.jpg" class="card-img-top" alt="image">
-            {{end}}
+
             <div class="card-body">
+
+                {{if ne $image.Image ""}}
+                    <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$vid}}/thumbs/{{$image.Image}}" class="img-fluid" alt="image">
+                {{else}}
+                    <img src="https://www.wheelsanddeals.ca//vendor/wheelspackage/hug-in-progress.jpg" class="img-fluid" alt="image">
+                {{end}}
+
                 <table class="table table-condensed table-striped">
                     <tr>
                         <td><strong>Price:</strong> {{formatCurrency .Cost}}</td>
