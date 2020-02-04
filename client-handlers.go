@@ -304,6 +304,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")
 	phone := r.Form.Get("phone")
 	interest := r.Form.Get("interested")
+	vid, _ := strconv.Atoi(r.Form.Get("vehicle_id"))
 
 	content := fmt.Sprintf(`
 		<p>
@@ -331,6 +332,21 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.SendEmail(mailMessage)
+
+	qq := clientmodels.QuickQuote{
+		UsersName: name,
+		Email:     email,
+		Phone:     phone,
+		VehicleID: vid,
+		Processed: 0,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	err := vehicleModel.InsertQuickQuote(qq)
+	if err != nil {
+		errorLog.Println(err)
+	}
 
 	theData := JSONResponse{
 		OK: true,

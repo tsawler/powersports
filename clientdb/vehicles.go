@@ -1021,3 +1021,27 @@ func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
 
 	return nil
 }
+
+// InsertQuickQuote saves a quick quote
+func (m *VehicleModel) InsertQuickQuote(a clientmodels.QuickQuote) error {
+	stmt := `
+	INSERT INTO quick_quotes (users_name, email, phone, vehicle_id, 
+	                   processed, created_at, updated_at)
+    VALUES(?, ?, ?, ?, ?, ?, ?)
+    `
+
+	_, err := m.DB.Exec(stmt,
+		a.UsersName,
+		a.Email,
+		a.Phone,
+		a.VehicleID,
+		a.Processed,
+		a.CreatedAt,
+		a.UpdatedAt,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

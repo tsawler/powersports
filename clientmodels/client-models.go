@@ -141,3 +141,15 @@ type TestDrive struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }
+
+// QuickQuote holds a quick quote
+type QuickQuote struct {
+	ID        int
+	UsersName string
+	Email     string
+	Phone     string
+	VehicleID int
+	Processed int
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}

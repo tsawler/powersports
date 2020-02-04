@@ -31,6 +31,7 @@
                     <form id="qq-form" class="needs-validation" method="post" action="/power-sports/quick-quote"
                           novalidate>
                         <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                        <input type="hidden" name="qq-vid" id="qq-vid">
 
                         <div class="form-group">
                             <label for="qq-name">Your Name</label>
@@ -73,7 +74,7 @@
                                 <input class="form-control required"
                                        id="qq-phone"
                                        autocomplete="off" type='text'
-                                       name='phone' required>
+                                       name='phone'>
                                 <div class="invalid-feedback">
                                     Required
                                 </div>
@@ -106,6 +107,7 @@
     <script>
         function openQQ(id, item, stockNo) {
             $("#interested-in-item").html(item + ", Stock Number: " + stockNo);
+            $("#qq-vid").val(id)
             $('#qqModal').modal({backdrop: true})
         }
 
@@ -122,6 +124,7 @@
                 formData.append('email', $("#qq-email").val());
                 formData.append('phone', $("#qq-phone").val());
                 formData.append('interested', $("#interested-in-item").html());
+                formData.append('vehicle_id', $("#qq-vid").val())
                 formData.append('csrf_token', {{.CSRFToken}});
                 let ajax = new XMLHttpRequest();
                 ajax.responseType = "json";
