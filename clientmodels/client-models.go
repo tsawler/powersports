@@ -127,3 +127,17 @@ type CreditApp struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+// TestDrive holds a test drive
+type TestDrive struct {
+	ID            int
+	UsersName     string
+	Email         string
+	Phone         string
+	PreferredDate string
+	PreferredTime string
+	VehicleID     int
+	Processed     int
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+}

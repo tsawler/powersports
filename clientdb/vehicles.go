@@ -995,3 +995,29 @@ func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 
 	return nil
 }
+
+// InsertCreditApp saves a credit application
+func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
+	stmt := `
+	INSERT INTO test_drives (users_name, email, phone, preferred_date, preferred_time, vehicle_id, 
+	                   processed, created_at, updated_at)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `
+
+	_, err := m.DB.Exec(stmt,
+		a.UsersName,
+		a.Email,
+		a.Phone,
+		a.PreferredDate,
+		a.PreferredTime,
+		a.VehicleID,
+		a.Processed,
+		a.CreatedAt,
+		a.UpdatedAt,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

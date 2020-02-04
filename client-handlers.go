@@ -359,6 +359,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 	interest := r.Form.Get("interested")
 	pDate := r.Form.Get("preferred_date")
 	pTime := r.Form.Get("preferred_time")
+	vid, _ := strconv.Atoi(r.Form.Get("vehicle_id"))
 
 	content := fmt.Sprintf(`
 		<p>
@@ -389,6 +390,21 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.SendEmail(mailMessage)
+
+	// save
+	td := clientmodels.TestDrive{
+		UsersName:     name,
+		Email:         email,
+		Phone:         phone,
+		PreferredDate: pDate,
+		PreferredTime: pTime,
+		VehicleID:     vid,
+		Processed:     0,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
+	}
+
+	err := vehicleModel.InsertTestDrive(td)
 
 	theData := JSONResponse{
 		OK: true,

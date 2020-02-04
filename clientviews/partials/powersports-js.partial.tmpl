@@ -162,7 +162,7 @@
                     <form id="td-form" class="needs-validation" method="post" action="/power-sports/test-drive"
                           novalidate>
                         <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-
+                        <input type="hidden" name="td-vid" id="td-vid">
                         <div class="form-group">
                             <label for="td-name">Your Name</label>
                             <div class="input-group">
@@ -279,6 +279,7 @@
     <script>
         function openTD(id, item, stockNo) {
             $("#td-interested-in-item").html(item + ", Stock Number: " + stockNo);
+            $("#td-vid").val(id);
             $('#tdModal').modal({backdrop: true})
         }
 
@@ -297,6 +298,7 @@
                 formData.append('preferred_date', $("#td-date").val());
                 formData.append('preferred_time', $("#td-time").val());
                 formData.append('interested', $("#td-interested-in-item").html());
+                formData.append('vehicle_id', $("#td-vid").val());
                 formData.append('csrf_token', {{.CSRFToken}});
                 let ajax = new XMLHttpRequest();
                 ajax.responseType = "json";
