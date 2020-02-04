@@ -11,6 +11,28 @@
             width: 100% !important;
             height: auto !important;
         }
+
+        #myCarousel .list-inline {
+            white-space:nowrap;
+            overflow-x:auto;
+        }
+
+        #item-slider .carousel-indicators {
+            position: static;
+            left: initial;
+            width: initial;
+            margin-left: initial;
+        }
+
+        #item-slider .carousel-indicators > li {
+            width: initial;
+            height: initial;
+            text-indent: initial;
+        }
+
+        #item-slider .carousel-indicators > li.active img {
+            opacity: 0.7;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css" integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous" />
 {{end}}
@@ -68,17 +90,6 @@
                                      data-interval="3000"
                                      data-pause="hover">
 
-                                    <ol class="carousel-indicators">
-                                        {{range $index, $value := $item.Images}}
-                                            {{if eq $index 0}}
-                                                <li data-target="#item-slider" data-slide-to="{{$index}}"
-                                                    class="d-block active"></li>
-                                            {{else}}
-                                                <li data-target="#item-slider" data-slide-to="{{$index}}"
-                                                    class="d-block"></li>
-                                            {{end}}
-                                        {{end}}
-                                    </ol>
                                     <div class="carousel-inner">
                                         {{$first := true}}
                                         {{range $item.Images}}
@@ -94,6 +105,26 @@
                                             {{$first = false}}
                                         {{end}}
                                     </div>
+
+                                    <ul class="carousel-indicators list-inline mx-auto border px-2">
+                                        {{range $index, $value := $item.Images}}
+                                            {{if eq $index 0}}
+                                                <li class="list-inline-item active">
+                                                    <a id="carousel-selector-{{$index}}" class="selected" data-slide-to="{{$index}}" data-target="#item-slider">
+                                                        <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/thumbs/{{.Image}}">
+                                                    </a>
+                                                </li>
+                                            {{else}}
+                                                <li class="list-inline-item">
+                                                    <a id="carousel-selector-{{$index}}" data-slide-to="{{$index}}" data-target="#item-slider">
+                                                        <img src="https://www.wheelsanddeals.ca/storage/inventory/{{$item.ID}}/thumbs/{{.Image}}">
+                                                    </a>
+                                                </li>
+                                            {{end}}
+                                        {{end}}
+
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>
