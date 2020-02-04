@@ -1022,7 +1022,7 @@ func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
 	return nil
 }
 
-// InsertQuickQuote saves a quick quote
+// InsertQuickQuote saves a quick quote to remote dataabase
 func (m *VehicleModel) InsertQuickQuote(a clientmodels.QuickQuote) error {
 	stmt := `
 	INSERT INTO quick_quotes (users_name, email, phone, vehicle_id, 
