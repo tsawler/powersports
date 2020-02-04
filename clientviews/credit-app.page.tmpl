@@ -435,7 +435,7 @@
                 <div class="bottomBar text-center">
 
                     {{if gt .Page.ID 1}}
-                        <a class="btn btn-outline-info mb5 btn-rounded" href="http://{{ .CurrentUrl}}">Cancel</a>
+                        <a class="btn btn-outline-info mb5 btn-rounded" href="{{ .LastPage}}">Cancel</a>
                     {{else}}
                         <a class="btn btn-outline-info mb5 btn-rounded" href="/">Cancel</a>
                     {{end}}
