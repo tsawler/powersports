@@ -147,6 +147,25 @@
 
     {{ .Page.JS}}
 
+    <script>
+        $(document).ready(function(){
+            let hasSlider = document.getElementById("main-slider");
+            if(hasSlider){
+                $('#main-slider').on('slid.bs.carousel', function () {
+                    let activeSlide = $("#main-slider .carousel-item.active");
+                    $('.vid').each(function() {
+                        $(this).get(0).pause();
+                    });
+                    let newID = activeSlide.attr('data-id');
+                    let newVideo = document.getElementById(newID);
+                    if (newVideo) {
+                        newVideo.play();
+                    }
+                });
+            }
+        });
+    </script>
+
     {{if .IsAuthenticated}}
         <form method="post" name="hiddensavepage" id="hiddensavepage" action="/admin/pages/ajax/savepage">
             <input type="hidden" name="page_id" value="{{.Page.ID}}" id="hidden_page_id">
