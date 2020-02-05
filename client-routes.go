@@ -4,9 +4,9 @@ import (
 	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
+	"github.com/tsawler/goblender/pkg/apphandlers"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/driver"
-	"github.com/tsawler/goblender/pkg/handlers"
 	"github.com/tsawler/goblender/pkg/repository"
 	"github.com/tsawler/goblender/pkg/repository/page"
 	"log"
@@ -20,15 +20,14 @@ var pageModel repository.PageRepo
 var parentDB *driver.DB
 
 // ClientRoutes holds all app routes for the custom code
-func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain,
-	postHandlers *handlers.PostDBRepo, pageHandlers *handlers.PageDBRepo) (*pat.PatternServeMux, error) {
+func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, appHandlers apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
 
 	mux.Get("/blog", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/motorsportsnews", http.StatusMovedPermanently)
 	}))
 
 	// blog
-	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(postHandlers.ShowBlogPage))
+	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(appHandlers.PostHandlers.ShowBlogPage))
 
 	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
