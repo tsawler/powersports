@@ -20,14 +20,14 @@ var pageModel repository.PageRepo
 var parentDB *driver.DB
 
 // ClientRoutes holds all app routes for the custom code
-func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, appHandlers apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
+func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, ah apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
 
 	mux.Get("/blog", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/motorsportsnews", http.StatusMovedPermanently)
 	}))
 
 	// blog
-	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(appHandlers.PostHandlers.ShowBlogPage))
+	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(ah.PostHandlers.ShowBlogPage))
 
 	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
