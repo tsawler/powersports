@@ -18,9 +18,12 @@ var infoLog *log.Logger
 var errorLog *log.Logger
 var pageModel repository.PageRepo
 var parentDB *driver.DB
+var ah apphandlers.AppHandlers
 
 // ClientRoutes holds all app routes for the custom code
-func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, ah apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
+func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, appHan apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
+	ah = appHan
+	mux.Get("/", dynamicMiddleware.ThenFunc(ShowHome))
 
 	mux.Get("/blog", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/motorsportsnews", http.StatusMovedPermanently)
