@@ -996,7 +996,7 @@ func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 	return nil
 }
 
-// InsertCreditApp saves a credit application
+// InsertTestDrive saves a test drive application
 func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
 	stmt := `
 	INSERT INTO test_drives (users_name, email, phone, preferred_date, preferred_time, vehicle_id, 
