@@ -1,6 +1,6 @@
 {{template "client-base" .}}
 
-{{define "title"}}{{ index (.Page.TitleMap) $.Lang}}{{end}}
+{{define "title"}}{{ index (.Page.TitleMap) $.Lang}} - {{index .PreferenceMap "org-name"}}{{end}}
 
 {{define "css"}}
     {{ .Page.PageStyles}}

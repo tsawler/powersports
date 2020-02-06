@@ -1,7 +1,8 @@
 {{template "client-base" .}}
 
 {{define "title"}}
-    {{ index (.Page.TitleMap) $.Lang}}
+    {{$item := index .RowSets "item"}}
+    {{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} - {{index .PreferenceMap "org-name"}}
 {{end}}
 
 {{define "css"}}
