@@ -26,8 +26,8 @@ type JSONResponse struct {
 
 // ShowHome returns the home page using our local page template for the client
 func ShowHome(w http.ResponseWriter, r *http.Request) {
-	ah.PageHandlers.SetDefaultPageTemplate("client-page.page.tmpl")
-	ah.PageHandlers.Home(w, r)
+	pageHandlers.SetDefaultPageTemplate("client-page.page.tmpl")
+	pageHandlers.Home(w, r)
 }
 
 // CompareVehicles Show 2 or 3 vehicles in table TODO
