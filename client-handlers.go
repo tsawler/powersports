@@ -26,7 +26,7 @@ type JSONResponse struct {
 
 // Home returns the home page using our local page template for the client
 func ShowHome(w http.ResponseWriter, r *http.Request) {
-	ah.PageHandlers.SetHomePageTemplate("client-page.page.tmpl")
+	ah.PageHandlers.SetDefaultPageTemplate("client-page.page.tmpl")
 	ah.PageHandlers.Home(w, r)
 }
 
