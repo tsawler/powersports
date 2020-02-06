@@ -123,7 +123,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	mux.Get("/inventory/atv-trailers-boat-trailers-utility-trailers", standardMiddleWare.ThenFunc(GetAllTrailers))
 	mux.Get("/inventory/atv-trailers-boat-trailers-utility-trailers/:pageIndex", standardMiddleWare.ThenFunc(GetAllTrailers))
 
-	mux.Get("/inventory/:productType/:prefix/:ID", standardMiddleWare.ThenFunc(ShowItem))
+	mux.Get("/inventory/:productType/:prefix/:ID/:description", standardMiddleWare.ThenFunc(ShowItem))
 
 	// public folder
 	fileServer := http.FileServer(http.Dir("./client/clienthandlers/public/"))

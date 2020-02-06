@@ -194,7 +194,7 @@
                         <div class="row mb-5 mt-5 pt-3 pb-2 pl-2 pr-2" {{if eq $shade true}} style="background-color: rgba(0,0,0,.05);" {{end}}>
                             <div class="col-md-3 col-xs-12">
                                 {{$imageLength := len .Images}}
-                                <a href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}">
+                                <a href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}/{{slug .Year}}-{{slug .Make.Make}}-{{slug .Model.Model}}">
                                     {{if gt $imageLength 0}}
                                         {{$img := index .Images 0}}
                                         <img src="https://www.wheelsanddeals.ca/storage/inventory/{{.ID}}/thumbs/{{$img.Image}}"
@@ -207,7 +207,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-xs-12">
-                                <a href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}">
+                                <a href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}/{{slug .Year}}-{{slug .Make.Make}}-{{slug .Model.Model}}">
                                     <h3 class="text-danger text-center">
                                         {{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}
                                     </h3></a>
@@ -234,7 +234,7 @@
                                 <h3 class="text-danger">{{formatCurrency .Cost}}</h3>
                                 <hr>
                                 <a class="btn btn-block btn-danger"
-                                   href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}">
+                                   href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}/{{slug .Year}}-{{slug .Make.Make}}-{{slug .Model.Model}}">
                                     Details
                                 </a>
 
