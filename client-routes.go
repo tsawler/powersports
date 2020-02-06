@@ -4,7 +4,6 @@ import (
 	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
-	"github.com/tsawler/goblender/pkg/apphandlers"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/driver"
 	"github.com/tsawler/goblender/pkg/handlers"
@@ -19,17 +18,16 @@ var infoLog *log.Logger
 var errorLog *log.Logger
 var pageModel repository.PageRepo
 var parentDB *driver.DB
-var ah apphandlers.AppHandlers
 
 var preferenceHandlers *handlers.PreferenceDBRepo
 var pageHandlers *handlers.PageDBRepo
 var userHandlers *handlers.UserDBRepo
 var roleHandlers *handlers.RoleDBRepo
 var historyHandlers *handlers.HistoryDBRepo
+var postHandlers *handlers.PostDBRepo
 
 // ClientRoutes holds all app routes for the custom code
-func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, appHan apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
-	ah = appHan
+func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
 	mux.Get("/", dynamicMiddleware.ThenFunc(ShowHome))
 
@@ -38,7 +36,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	}))
 
 	// blog
-	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(ah.PostHandlers.ShowBlogPage))
+	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(postHandlers.ShowBlogPage))
 
 	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
@@ -158,4 +156,5 @@ func ClientInit(c config.AppConfig, p *driver.DB) {
 	roleHandlers = handlers.NewRoleHandlers(p, historyHandlers)
 	userHandlers = handlers.NewUserHandlers(app, p, roleHandlers)
 	pageHandlers = handlers.NewPageHandler(app, p, userHandlers, preferenceHandlers)
+	postHandlers = handlers.NewPostHandlers(app, p, pageHandlers)
 }
