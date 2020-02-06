@@ -443,6 +443,9 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := vehicleModel.InsertTestDrive(td)
+	if err != nil {
+		errorLog.Println(err)
+	}
 
 	theData := JSONResponse{
 		OK: true,
