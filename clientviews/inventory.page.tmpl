@@ -233,18 +233,18 @@
                             <div class="col-md-3 col-xs-12 text-center">
                                 <h3 class="text-danger">{{formatCurrency .Cost}}</h3>
                                 <hr>
-                                <a class="btn btn-block btn-danger"
+                                <a class="btn btn-block btn-danger text-white"
                                    href="{{index $.StringMap "pager-url"}}/{{index $.StringMap "item-link-prefix"}}/{{.ID}}/{{slug .Year}}-{{slug .Make.Make}}-{{slug .Model.Model}}">
                                     Details
                                 </a>
 
-                                <a class="btn btn-block btn-danger"
+                                <a class="btn btn-block btn-danger text-white"
                                    href="#!"
                                    onclick="openQQ('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}', '{{.StockNo}}')">
                                     Quick Quote
                                 </a>
 
-                                <a class="btn btn-block btn-danger"
+                                <a class="btn btn-block btn-danger text-white"
                                    href="/credit-application">0 Down Pre-approval</a>
                                 <br>
 
