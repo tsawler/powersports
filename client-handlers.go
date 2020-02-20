@@ -184,6 +184,18 @@ func GetAllUsedPowerSports(w http.ResponseWriter, r *http.Request) {
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons")
 }
 
+// GetAllUsedBoats gets all used boats
+func GetAllUsedBoats(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers"
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 1
+	vehicleType := 1000
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons")
+}
+
 // GetAllTrailers gets all used powersports
 func GetAllTrailers(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
