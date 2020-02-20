@@ -26,9 +26,9 @@
                                     {{if eq .Active 1}}
                                         {{if eq $index 0}}
                                             <li data-target="#main-slider" data-slide-to="{{$index}}"
-                                                class="d-block active"></li>
+                                                class="d-block active is-slider-button"></li>
                                         {{else}}
-                                            <li data-target="#main-slider" data-slide-to="{{$index}}" class="d-block"></li>
+                                            <li data-target="#main-slider" data-slide-to="{{$index}}" class="d-block is-slider-button"></li>
                                         {{end}}
                                     {{end}}
                                 {{end}}
@@ -125,14 +125,14 @@
                                         <div data-id="video-{{.ID}}" class="carousel-item active" style="min-height: 432px;"  {{if gt .Delay 0}} data-interval="{{.Delay}}" {{else}} data-interval="{{$delay}}" {{end}}>
                                             {{if eq .BackgroundVideo 0}}
                                                 <div class="text-center">
-                                                    <video controls autoplay muted playsinline poster="/static/site-content/videos/{{.Thumbnail}}"
+                                                    <video controls onloadstart="this.volume=0.3" playsinline poster="/static/site-content/videos/{{.Thumbnail}}"
                                                            width="768" loop class="vid" style="max-width: 100vw;" id="video-{{.ID}}">
                                                         <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                     </video>
                                                 </div>
                                             {{else}}
                                                 <div style="width: 100vw; max-height: 100vh; overflow: hidden; display: block;">
-                                                    <video playsinline="playsinline" autoplay="autoplay" muted="muted"
+                                                    <video playsinline="playsinline"  onloadstart="this.volume=0.3"
                                                            loop="loop" style="min-width: 100vw;" id="video-{{.ID}}">
                                                         <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                     </video>
@@ -143,14 +143,14 @@
                                         <div data-id="video-{{.ID}}"  class="carousel-item" style="min-height: 432px;"  {{if gt .Delay 0}} data-interval="{{.Delay}}" {{else}} data-interval="{{$delay}}" {{end}}>
                                             {{if eq .BackgroundVideo 0}}
                                                 <div class="text-center">
-                                                    <video controls preload="none" muted class="vid" poster="/static/site-content/videos/{{.Thumbnail}}"
+                                                    <video controls preload="none" onloadstart="this.volume=0.3" class="vid" poster="/static/site-content/videos/{{.Thumbnail}}"
                                                            width="768" loop id="video-{{.ID}}" style="max-width: 100vw;" >
                                                         <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                     </video>
                                                 </div>
                                             {{else}}
                                                 <div style="width: 100vw; max-height: 100vh; overflow: hidden; display: block;">
-                                                    <video playsinline="playsinline" autoplay="autoplay" muted="muted"
+                                                    <video playsinline="playsinline"  onloadstart="this.volume=0.3"
                                                            loop="loop" style="min-width: 100vw;" id="video-{{.ID}}">
                                                         <source src="/static/site-content/videos/{{.MediaSrc}}" type="video/mp4">
                                                     </video>
