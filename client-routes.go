@@ -4,25 +4,37 @@ import (
 	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
-	"github.com/tsawler/goblender/pkg/apphandlers"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/driver"
+	"github.com/tsawler/goblender/pkg/handlers"
 	"github.com/tsawler/goblender/pkg/repository"
 	"github.com/tsawler/goblender/pkg/repository/page"
 	"log"
 	"net/http"
 )
 
-var app *config.AppConfig
+var app config.AppConfig
 var infoLog *log.Logger
 var errorLog *log.Logger
 var pageModel repository.PageRepo
 var parentDB *driver.DB
-var ah apphandlers.AppHandlers
+
+var preferenceHandlers *handlers.PreferenceDBRepo
+var pageHandlers *handlers.PageDBRepo
+var userHandlers *handlers.UserDBRepo
+var roleHandlers *handlers.RoleDBRepo
+var historyHandlers *handlers.HistoryDBRepo
+var postHandlers *handlers.PostDBRepo
 
 // ClientRoutes holds all app routes for the custom code
-func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain, appHan apphandlers.AppHandlers) (*pat.PatternServeMux, error) {
-	ah = appHan
+func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
+
+	// public folder
+	fileServer := http.FileServer(http.Dir("./client/clienthandlers/public/"))
+	mux.Get("/client/static/", http.StripPrefix("/client/static", fileServer))
+	fileServer = http.FileServer(http.Dir("./ui/static/"))
+	mux.Get("/static/", http.StripPrefix("/static", fileServer))
+
 	mux.Get("/", dynamicMiddleware.ThenFunc(ShowHome))
 
 	mux.Get("/blog", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -30,7 +42,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	}))
 
 	// blog
-	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(ah.PostHandlers.ShowBlogPage))
+	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(postHandlers.ShowBlogPage))
 
 	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
@@ -51,31 +63,31 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// atvs - brute force
 	mux.Get("/atv-brute-force", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/atv-brute-force", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/atvs/brute-force-inventory", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/atv-brute-force", standardMiddleWare.ThenFunc(GetAllBruteForce))
-	mux.Get("/inventory/atv-brute-force/:pageIndex", standardMiddleWare.ThenFunc(GetAllBruteForce))
+	mux.Get("/atvs/brute-force-inventory", standardMiddleWare.ThenFunc(GetAllBruteForce))
+	mux.Get("/atvs/brute-force-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllBruteForce))
 
 	// atvs - teryx
 	mux.Get("/atv-teryx", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/atv-teryx", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/sidexsides/teryx-for-sale", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/atv-teryx", standardMiddleWare.ThenFunc(GetAllTeryx))
-	mux.Get("/inventory/atv-teryx/:pageIndex", standardMiddleWare.ThenFunc(GetAllTeryx))
+	mux.Get("/sidexsides/teryx-for-sale", standardMiddleWare.ThenFunc(GetAllTeryx))
+	mux.Get("/sidexsides/teryx-for-sale/:pageIndex", standardMiddleWare.ThenFunc(GetAllTeryx))
 
 	// atvs - mule
 	mux.Get("/atv-mule", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/atv-mule", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/utvs/kawasaki mules-for-sale", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/atv-mule", standardMiddleWare.ThenFunc(GetAllMule))
-	mux.Get("/inventory/atv-mule/:pageIndex", standardMiddleWare.ThenFunc(GetAllMule))
+	mux.Get("/utvs/kawasaki-mules-for-sale", standardMiddleWare.ThenFunc(GetAllMule))
+	mux.Get("/utvs/kawasaki-mules-for-sale/:pageIndex", standardMiddleWare.ThenFunc(GetAllMule))
 
 	// jetski
 	mux.Get("/watercraft-jetski", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/watercraft-jetski", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/personalwatercraft/new-jetskis-forsale", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/watercraft-jetski", standardMiddleWare.ThenFunc(GetAllJetSki))
-	mux.Get("/inventory/watercraft-jetski/:pageIndex", standardMiddleWare.ThenFunc(GetAllJetSki))
+	mux.Get("/personalwatercraft/new-jetskis-forsale", standardMiddleWare.ThenFunc(GetAllJetSki))
+	mux.Get("/personalwatercraft/new-jetskis-forsale/:pageIndex", standardMiddleWare.ThenFunc(GetAllJetSki))
 
 	// mercury outboards
 	mux.Get("/outboard-motors-mercury-outboards", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -86,57 +98,57 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// electric bikes
 	mux.Get("/electric-bikes", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/outboard-motors-mercury", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/ebikes/pedego-inventory", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/electric-bikes", standardMiddleWare.ThenFunc(GetAllElectricBikes))
-	mux.Get("/inventory/electric-bikes/:pageIndex", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+	mux.Get("/ebikes/pedego-inventory", standardMiddleWare.ThenFunc(GetAllElectricBikes))
+	mux.Get("/ebikes/pedego-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllElectricBikes))
 
 	// scooters
 	mux.Get("/vespa-piaggio-gas-and-electric-scooters-mopeds", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/scooters-mopeds/vespa-piaggio-gas-electric", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds", standardMiddleWare.ThenFunc(GetAllScooters))
-	mux.Get("/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds/:pageIndex", standardMiddleWare.ThenFunc(GetAllScooters))
+	mux.Get("/scooters-mopeds/vespa-piaggio-gas-electric", standardMiddleWare.ThenFunc(GetAllScooters))
+	mux.Get("/scooters-mopeds/vespa-piaggio-gas-electric/:pageIndex", standardMiddleWare.ThenFunc(GetAllScooters))
 
 	// pontoon boats
 	mux.Get("/pontoon-boats-bennington-and-crestliner", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/bennington-crestliner-pontoon-boats", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/pontoon-boats/bennington-crestliner-dealer", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/bennington-crestliner-pontoon-boats", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
-	mux.Get("/inventory/bennington-crestliner-pontoon-boats/:pageIndex", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
+	mux.Get("/pontoon-boats/bennington-crestliner-dealer", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
+	mux.Get("/pontoon-boats/bennington-crestliner-dealer/:pageIndex", standardMiddleWare.ThenFunc(GetAllPontoonBoats))
 
 	// power boats
 	mux.Get("/speed-boats-aluminum-boats-power-boats", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/speed-boats-aluminum-boats-power-boats", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/boatsforsale/fishing-speed-jon-aluminum-power-glastron", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats", standardMiddleWare.ThenFunc(GetAllPowerBoats))
-	mux.Get("/inventory/speed-boats-aluminum-boats-power-boats/:pageIndex", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+	mux.Get("/boatsforsale/fishing-speed-jon-aluminum-power-glastron", standardMiddleWare.ThenFunc(GetAllPowerBoats))
+	mux.Get("/boatsforsale/fishing-speed-jon-aluminum-power-glastron/:pageIndex", standardMiddleWare.ThenFunc(GetAllPowerBoats))
 
 	// used
 	mux.Get("/used-motorcycles-used-atv-used-boats-used-pontoons", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/used-motorcycles-used-atv-used-boats-used-pontoons", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/used/used-motorbikes-atvs-wheelers-trailers", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/used-motorcycles-used-atv-used-boats-used-pontoons", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
-	mux.Get("/inventory/used-motorcycles-used-atv-used-boats-used-pontoons/:pageIndex", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
+	mux.Get("/used/used-motorbikes-atvs-wheelers-trailers", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
+	mux.Get("/used/used-motorbikes-atvs-wheelers-trailers/:pageIndex", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
+
+	// used boats
+	mux.Get("/used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers", standardMiddleWare.ThenFunc(GetAllUsedBoats))
+	mux.Get("/used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers/:pageIndex", standardMiddleWare.ThenFunc(GetAllUsedBoats))
 
 	// trailers
 	mux.Get("/atv-trailers-boattrailers-utility-trailers", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/atv-trailers-boat-trailers-utility-trailers", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/newtrailers/boat-stv-utility", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/atv-trailers-boat-trailers-utility-trailers", standardMiddleWare.ThenFunc(GetAllTrailers))
-	mux.Get("/inventory/atv-trailers-boat-trailers-utility-trailers/:pageIndex", standardMiddleWare.ThenFunc(GetAllTrailers))
+	mux.Get("/newtrailers/boat-stv-utility", standardMiddleWare.ThenFunc(GetAllTrailers))
+	mux.Get("/newtrailers/boat-stv-utility/:pageIndex", standardMiddleWare.ThenFunc(GetAllTrailers))
 
-	mux.Get("/inventory/:productType/:prefix/:ID/:description", standardMiddleWare.ThenFunc(ShowItem))
-
-	// public folder
-	fileServer := http.FileServer(http.Dir("./client/clienthandlers/public/"))
-	mux.Get("/client/static/", http.StripPrefix("/client/static", fileServer))
+	mux.Get("/:item/:productType/:prefix/:ID/:description", standardMiddleWare.ThenFunc(ShowItem))
 
 	return mux, nil
 }
 
 // ClientInit gives us access to site values for client code.
-func ClientInit(c *config.AppConfig, p *driver.DB) {
+func ClientInit(c config.AppConfig, p *driver.DB) {
 	app = c
 	conn := app.Connections["wheels"]
 	vehicleModel = &clientdb.VehicleModel{DB: conn}
@@ -144,4 +156,11 @@ func ClientInit(c *config.AppConfig, p *driver.DB) {
 	errorLog = app.ErrorLog
 	pageModel = page.NewSQLPageRepo(p.SQL)
 	parentDB = p
+
+	preferenceHandlers = handlers.NewPreferenceHandlers(p)
+	historyHandlers = handlers.NewHistoryHandler(p)
+	roleHandlers = handlers.NewRoleHandlers(p, historyHandlers)
+	userHandlers = handlers.NewUserHandlers(app, p, roleHandlers)
+	pageHandlers = handlers.NewPageHandler(app, p, userHandlers, preferenceHandlers)
+	postHandlers = handlers.NewPostHandlers(app, p, pageHandlers)
 }

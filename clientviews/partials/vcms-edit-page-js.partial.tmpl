@@ -5,18 +5,6 @@
         let editor2 = ace.edit("pageLevelJSEditor");
 
         $(document).ready(function () {
-            $('#mySidenav').BootSideMenu({
-                side: "right",
-                closeOnClick: true,
-                remember: false,
-                pushBody: false,
-                duration: 250,
-                icons: {
-                    left: 'fa fa-chevron-left',
-                    right: 'fa fa-chevron-right',
-                    down: 'fa fa-chevron-down'
-                }
-            });
 
             $("#sliderBtn").click(function () {
                 var options = {backdrop: false,};
@@ -58,11 +46,38 @@
                     });
                 }
             });
-
-
             sortSlider();
-
         });
+
+        function enableContentEdit() {
+            $(".is-wrapper").contentbox({
+                framework: 'bootstrap',
+                snippetData: '/static/assets/minimalist-blocks/snippetlist.html',
+                scriptPath: '/static/contentbuilder/',
+                assetPath: '/static/assets/',
+                fontAssetPath: '/static/assets/fonts/',
+                snippetOpen: true,
+                toolbar: 'top',
+                coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
+                modulePath: '/static/assets/modules/',
+                designPath: '/static/assets/designs/',
+                contentStylePath: '/static/assets/styles/',
+                iconselect: '/static/assets/ionicons/selecticon-dark.html',
+                fileselect: '/admin/pages/file-manager',
+                imageselect: '/admin/pages/image-manager',
+                {{if ne (index .Auth.Preferences "advanced-editing") "1"}}
+                columnHtmlEditor: false,
+                rowHtmlEditor: false,
+                builderMode: 'minimal',
+                {{end}}
+                snippetPathReplace: ['assets/minimalist-blocks/', '/static/assets/minimalist-blocks/'],
+                moduleConfig: [{
+                    "moduleSaveImageHandler": "/admin/save-cb-image"
+                }],
+                useSidebar: true,
+                enableContentStyle: true,
+            });
+        }
 
         function makePageEditable() {
             if ($(".is-wrapper").length) {
@@ -80,7 +95,8 @@
                                 hide[i].style.display = "none";
                             }
                             $("#bottomSaveBar").removeClass('d-none');
-                            $("#mySidenav").removeClass('d-none');
+                            $("#page-details-opener").removeClass('d-none');
+                            // $("#edit-page-details").modal({backdrop: false});
                             $('#content_edit').html(obj.content);
 
                             if ($("#accordion").length > 0) {
@@ -93,25 +109,7 @@
                             {{if eq .Page.HasSlider 1}}
                             $("#sliderDiv").removeClass("d-none");
                             {{end}}
-                            $(".is-wrapper").contentbox({
-                                framework: 'bootstrap',
-                                snippetFile: '/static/assets/minimalist-basic/snippets-bootstrap.html',
-                                snippetOpen: true,
-                                toolbar: 'top',
-                                coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
-                                modulePath: '/static/assets/modules/',
-                                designPath: '/static/assets/designs/',
-                                contentStylePath: '/static/assets/styles/',
-                                iconselect: '/static/assets/ionicons/selecticon-dark.html',
-                                fileselect: '/admin/pages/file-manager',
-                                imageselect: '/admin/pages/image-manager',
-                                snippetPathReplace: ['assets/minimalist-basic/', '/static/assets/minimalist-basic/'],
-                                moduleConfig: [{
-                                    "moduleSaveImageHandler": "/admin/save-cb-image"
-                                }],
-                                useSidebar: true,
-                                enableContentStyle: true
-                            });
+                            enableContentEdit();
                         } else {
                             bootbox.alert('Cannot get content for edit!')
                         }
@@ -123,33 +121,15 @@
                         hide[i].style.display = "none";
                     }
                     $("#bottomSaveBar").removeClass('d-none');
-                    $("#mySidenav").removeClass('d-none');
-
+                    $("#page-details-opener").removeClass('d-none');
+                    // $("#edit-page-details").modal({backdrop: false});
                     if ($("#accordion").length > 0) {
                         initFaqs();
                     }
                     $(".collapse").each(function (index) {
                         $(this).addClass('in')
                     });
-                    $(".is-wrapper").contentbox({
-                        framework: 'bootstrap',
-                        snippetFile: '/static/assets/minimalist-basic/snippets-bootstrap.html',
-                        snippetOpen: true,
-                        toolbar: 'top',
-                        coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
-                        modulePath: '/static/assets/modules/',
-                        designPath: '/static/assets/designs/',
-                        contentStylePath: '/static/assets/styles/',
-                        iconselect: '/static/assets/ionicons/selecticon-dark.html',
-                        fileselect: '/admin/pages/file-manager',
-                        imageselect: '/admin/pages/image-manager',
-                        snippetPathReplace: ['assets/minimalist-basic/', '/static/assets/minimalist-basic/'],
-                        moduleConfig: [{
-                            "moduleSaveImageHandler": "/admin/save-cb-image"
-                        }],
-                        useSidebar: true,
-                        enableContentStyle: true
-                    });
+                    enableContentEdit();
                 }
             } else {
                 bootbox.alert("No editable content on this page!")
@@ -160,6 +140,7 @@
 
             if ($("#thetitledata").val() == '') {
                 bootbox.alert('You must give the page a name!');
+                $("#edit-page-details").modal({backdrop: true});
                 $("#thetitledata").addClass('glowing-border');
                 return false;
             }

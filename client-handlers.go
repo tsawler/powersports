@@ -26,8 +26,8 @@ type JSONResponse struct {
 
 // ShowHome returns the home page using our local page template for the client
 func ShowHome(w http.ResponseWriter, r *http.Request) {
-	ah.PageHandlers.SetDefaultPageTemplate("client-page.page.tmpl")
-	ah.PageHandlers.Home(w, r)
+	pageHandlers.SetDefaultPageTemplate("client-home.page.tmpl")
+	pageHandlers.Home(w, r)
 }
 
 // CompareVehicles Show 2 or 3 vehicles in table TODO
@@ -67,7 +67,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 // GetAllBruteForce gets all brute force
 func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/atv-brute-force"
+	stringMap["pager-url"] = "/atvs/brute-force-inventory"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 8
@@ -79,7 +79,7 @@ func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 // GetAllTeryx gets all teryx
 func GetAllTeryx(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/atv-teryx"
+	stringMap["pager-url"] = "/sidexsides/teryx-for-sale"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 12
@@ -91,7 +91,7 @@ func GetAllTeryx(w http.ResponseWriter, r *http.Request) {
 // GetAllMule gets all mules
 func GetAllMule(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/atv-mule"
+	stringMap["pager-url"] = "/utvs/kawasaki-mules-for-sale"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 11
@@ -103,7 +103,7 @@ func GetAllMule(w http.ResponseWriter, r *http.Request) {
 // GetAllJetSki gets all new jetskis
 func GetAllJetSki(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/watercraft-jetski"
+	stringMap["pager-url"] = "/personalwatercraft/new-jetskis-forsale"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 13
@@ -127,7 +127,7 @@ func GetAllMercuryOutboards(w http.ResponseWriter, r *http.Request) {
 // GetAllElectricBikes gets all Pedegogo
 func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/electric-bikes"
+	stringMap["pager-url"] = "/ebikes/pedego-inventory"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 16
@@ -139,7 +139,7 @@ func GetAllElectricBikes(w http.ResponseWriter, r *http.Request) {
 // GetAllScooters gets all scooters
 func GetAllScooters(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/vespa-piaggio-gas-and-electric-scooters-mopeds"
+	stringMap["pager-url"] = "/scooters-mopeds/vespa-piaggio-gas-electric"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1
 	vehicleType := 17
@@ -151,7 +151,7 @@ func GetAllScooters(w http.ResponseWriter, r *http.Request) {
 // GetAllPontoonBoats gets all pontoon boats (bennington & crestliner
 func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/bennington-crestliner-pontoon-boats"
+	stringMap["pager-url"] = "/pontoon-boats/bennington-crestliner-dealer"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1
 	vehicleType := 9
@@ -163,7 +163,7 @@ func GetAllPontoonBoats(w http.ResponseWriter, r *http.Request) {
 // GetAllPowerBoats gets all power boats
 func GetAllPowerBoats(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/speed-boats-aluminum-boats-power-boats"
+	stringMap["pager-url"] = "/boatsforsale/fishing-speed-jon-aluminum-power-glastron"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1
 	vehicleType := 15
@@ -175,7 +175,19 @@ func GetAllPowerBoats(w http.ResponseWriter, r *http.Request) {
 // GetAllUsedPowerSports gets all used powersports
 func GetAllUsedPowerSports(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/used-motorcycles-used-atv-used-boats-used-pontoons"
+	stringMap["pager-url"] = "/used/used-motorbikes-atvs-wheelers-trailers"
+	intMap := make(map[string]int)
+	intMap["show-makes"] = 1
+	vehicleType := 1000
+	templateName := "inventory.page.tmpl"
+
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons")
+}
+
+// GetAllUsedBoats gets all used boats
+func GetAllUsedBoats(w http.ResponseWriter, r *http.Request) {
+	stringMap := make(map[string]string)
+	stringMap["pager-url"] = "/used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1
 	vehicleType := 1000
@@ -187,7 +199,7 @@ func GetAllUsedPowerSports(w http.ResponseWriter, r *http.Request) {
 // GetAllTrailers gets all used powersports
 func GetAllTrailers(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/atv-trailers-boat-trailers-utility-trailers"
+	stringMap["pager-url"] = "/newtrailers/boat-stv-utility"
 	stringMap["item-link-prefix"] = "view"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1

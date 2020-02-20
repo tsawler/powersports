@@ -1,5 +1,5 @@
 {{define "slider-modal"}}
-    <div class="modal fade" id="sliderModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="sliderModal" tabindex="-1" role="dialog" style="z-index: 100001">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -177,13 +177,6 @@
                                         <option {{if eq .Page.Slider.Width "boxed"}} selected {{end}}
                                                 value="boxed">Boxed
                                         </option>
-                                        <option{{if eq .Page.Slider.Width "boxed-smaller"}} selected {{end}}
-                                                value="boxed-smaller">Boxed - smaller
-                                        </option>
-                                        <option {{if eq .Page.Slider.Width "boxed-verysmall"}} selected {{end}}
-                                                value="boxed-verysmall">Boxed - very small
-                                        </option>
-
                                     </select>
                                 </div>
                             </div>
@@ -246,7 +239,7 @@
         </div>
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="uploadProgressModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="uploadProgressModal" style="z-index: 100002">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

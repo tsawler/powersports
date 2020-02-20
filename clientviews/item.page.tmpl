@@ -34,6 +34,10 @@
         #item-slider .carousel-indicators > li.active img {
             opacity: 0.7;
         }
+
+        #compareModal, #qqModal, #tdModal, #sfModal {
+            z-index: 20003;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css"
           integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous"/>
@@ -186,7 +190,7 @@
 
                             <div class="mt-5"></div>
 
-                            <img src="/static/site-content/photos/logo.png" alt="logo" class="img img-fluid"
+                            <img src="/static/site-content/photos/logo-2020.png" alt="logo" class="img img-fluid"
                                  style="max-width: 300px;">
 
                             <div class="text-center">
@@ -206,24 +210,24 @@
                         <div class="col-md-3 col-xs-12">
                             <div class="card card-body" style="width: 18rem;">
                                 <div class="card-body">
-                                    <a class="btn btn-block btn-danger"
+                                    <a class="btn btn-block btn-danger text-white"
                                        href="/credit-application">
                                         <i style="color: white;" class="fa fa-dollar"></i> Fast Financing
                                     </a>
 
-                                    <a class="btn btn-block btn-danger"
+                                    <a class="btn btn-block btn-danger text-white"
                                        href="#!"
                                        onclick="openTD('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
                                         <i style="color: white;" class="fa fa-car"></i> Request a test drive
                                     </a>
 
-                                    <a class="btn btn-block btn-danger"
+                                    <a class="btn btn-block btn-danger text-white"
                                        href="#!"
                                        onclick="openSF('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
                                         <i style="color: white;" class="fa fa-envelope"></i> Email a Friend
                                     </a>
 
-                                    <a class="btn btn-block btn-danger"
+                                    <a class="btn btn-block btn-danger text-white"
                                        href="#!"
                                        onclick="openQQ('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
                                         Quick Quote
@@ -266,16 +270,27 @@
                             </p>
                             <hr>
                             <p>
-                                ** We accept all trade ins and recommend your purchase of credit protection and extended
-                                vehicle
-                                protection, however "as always the choice is yours". Jim Gilbert's Wheels and Deals is
-                                Canada's Best
-                                six acre Car Shopping Experience and we would love to share our Huggable knowledge with
-                                you. You
-                                will receive many extras, the warm Huggable feeling and the good attention that has made
-                                Canada's
-                                Huggable Car Dealer Famous. Shop us First, Feel the Difference... then compare.
-
+                                ** If it has a registration you can trade it in.... With over 40 years’ experience and an
+                                understanding that it is all about the customer Experience. I know deep down that caring
+                                for people is job one. I do not want to be the dealer trying to be everything to
+                                everyone and failing you time after time. Jim Gilbert’s PowerSports wants to be the best
+                                Kawasaki Dealer not a hit and miss bike dealer, we want to be the Best Mercury Outboard
+                                motor dealer not a general small engine repair shop, we want to be the Best Bennington
+                                Pontoon Boat, the best Glastron power boat dealer and the best Crestliner pontoon,
+                                fishing &amp; Jon boat dealer... not a hit and miss try to patch up on anything boat dealer,
+                                we want to specialize in Vespa Mopeds & Scooters and Pedego E-Bikes. We want to be the
+                                BEST in the products we sell to you, so you know you are getting our best for your
+                                dollar.
+                            </p>
+                            <p>
+                                And speaking of savings dollars... besides a warm smile and a hug... when you become a
+                                Huggable Jim Gilbert's PowerSports Customer you will receive discounts on Parts, Labor,
+                                Accessories and a Ton load of extras that says we appreciate you and care about you.
+                                Not only today but everyday... That is the Jim Gilbert’s PowerSports Advantage..
+                            </p>
+                            <p>
+                                Extended warranties, life and disability insurance is always recommended but "as always
+                                the choice is yours".
                             </p>
                         </div>
                     </div>

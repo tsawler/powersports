@@ -1,34 +1,48 @@
 {{define "vcms-edit-news-js"}}
-    <script src="//cdn.jsdelivr.net/npm/flatpickr"></script>
+{{/*    <script src="//cdn.jsdelivr.net/npm/flatpickr"></script>*/}}
     <script src="/static/js/ace/ace.js"></script>
     <script>
         var editor = ace.edit("pageLevelCSSEditor");
         var editor2 = ace.edit("pageLevelJSEditor");
 
         $(document).ready(function () {
-            $('#mySidenav').BootSideMenu({
-                side: "right",
-                closeOnClick: false,
-                remember: false,
-                pushBody: false,
-                duration: 250,
-                icons: {
-                    left: 'fa fa-chevron-left',
-                    right: 'fa fa-chevron-right',
-                    down: 'fa fa-chevron-down'
-                }
-            });
 
-            flatpickr(".news_date", {
-                enableTime: false,
-                dateFormat: "Y-m-d",
-            });
         });
 
 
         function appendImage(t) {
             var $this = $(t), $clone = $this.clone();
             $this.after($clone).appendTo($("#hiddensavepage"))
+        }
+
+        function enableContentEdit() {
+            $(".is-wrapper").contentbox({
+                framework: 'bootstrap',
+                snippetData: '/static/assets/minimalist-blocks/snippetlist.html',
+                scriptPath: '/static/contentbuilder/',
+                assetPath: '/static/assets/',
+                fontAssetPath: '/static/assets/fonts/',
+                snippetOpen: true,
+                toolbar: 'top',
+                coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
+                modulePath: '/static/assets/modules/',
+                designPath: '/static/assets/designs/',
+                contentStylePath: '/static/assets/styles/',
+                iconselect: '/static/assets/ionicons/selecticon-dark.html',
+                fileselect: '/admin/pages/file-manager',
+                imageselect: '/admin/pages/image-manager',
+                {{if ne (index .Auth.Preferences "advanced-editing") "1"}}
+                columnHtmlEditor: false,
+                rowHtmlEditor: false,
+                builderMode: 'minimal',
+                {{end}}
+                snippetPathReplace: ['assets/minimalist-blocks/', '/static/assets/minimalist-blocks/'],
+                moduleConfig: [{
+                    "moduleSaveImageHandler": "/admin/save-cb-image"
+                }],
+                useSidebar: true,
+                enableContentStyle: true
+            });
         }
 
         function makePageEditable() {
@@ -47,7 +61,8 @@
                                 hide[i].style.display = "none";
                             }
                             $("#bottomSaveBar").removeClass('d-none');
-                            $("#mySidenav").removeClass('d-none');
+                            $("#page-details-opener").removeClass('d-none');
+                            // $("#edit-page-details").modal({backdrop: false});
                             $('#content_edit').html(obj.content);
                             $("#post-preview-text").html(obj.preview);
                             $("#hidden_preview").val(obj.preview);
@@ -58,25 +73,7 @@
                                 $(this).addClass('in')
                             });
 
-                            $(".is-wrapper").contentbox({
-                                framework: 'bootstrap',
-                                snippetFile: '/static/assets/minimalist-basic/snippets-bootstrap.html',
-                                snippetOpen: true,
-                                toolbar: 'top',
-                                coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
-                                modulePath: '/static/assets/modules/',
-                                designPath: '/static/assets/designs/',
-                                contentStylePath: '/static/assets/styles/',
-                                iconselect: '/static/assets/ionicons/selecticon-dark.html',
-                                fileselect: '/admin/pages/file-manager',
-                                imageselect: '/admin/pages/image-manager',
-                                snippetPathReplace: ['assets/minimalist-basic/', '/static/assets/minimalist-basic/'],
-                                moduleConfig: [{
-                                    "moduleSaveImageHandler": "/admin/save-cb-image"
-                                }],
-                                useSidebar: true,
-                                enableContentStyle: true
-                            });
+                            enableContentEdit();
                         } else {
                             bootbox.alert('Cannot get content for edit!')
                         }
@@ -88,7 +85,8 @@
                         hide[i].style.display = "none";
                     }
                     $("#bottomSaveBar").removeClass('d-none');
-                    $("#mySidenav").removeClass('d-none');
+                    $("#page-details-opener").removeClass('d-none');
+                    // $("#edit-page-details").modal({backdrop: false});
 
                     if ($("#accordion").length > 0) {
                         initFaqs();
@@ -96,25 +94,7 @@
                     $(".collapse").each(function (index) {
                         $(this).addClass('in')
                     });
-                    $(".is-wrapper").contentbox({
-                        framework: 'bootstrap',
-                        snippetFile: '/static/assets/minimalist-basic/snippets-bootstrap.html',
-                        snippetOpen: true,
-                        toolbar: 'top',
-                        coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
-                        modulePath: '/static/assets/modules/',
-                        designPath: '/static/assets/designs/',
-                        contentStylePath: '/static/assets/styles/',
-                        iconselect: '/static/assets/ionicons/selecticon-dark.html',
-                        fileselect: '/admin/pages/file-manager',
-                        imageselect: '/admin/pages/image-manager',
-                        snippetPathReplace: ['assets/minimalist-basic/', '/static/assets/minimalist-basic/'],
-                        moduleConfig: [{
-                            "moduleSaveImageHandler": "/admin/save-cb-image"
-                        }],
-                        useSidebar: true,
-                        enableContentStyle: true
-                    });
+                    enableContentEdit();
                 }
             } else {
                 bootbox.alert("No editable content on this page!")
@@ -193,7 +173,7 @@
             $('#menuSettingsModal').modal(options);
         }
 
-        function setPageMenuSettings(){
+        function setPageMenuSettings() {
             $("#hidden_menu_bg_color").val($("#menu_bg_color").val());
             $("#hidden_menu_transparent").val($("#menu_transparent").val());
         }

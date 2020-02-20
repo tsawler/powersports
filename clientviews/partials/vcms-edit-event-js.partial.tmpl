@@ -1,18 +1,7 @@
 {{define "vcms-edit-event-js"}}
     <script>
         $(document).ready(function () {
-            $('#mySidenav').BootSideMenu({
-                side: "right",
-                closeOnClick: false,
-                remember: false,
-                pushBody: false,
-                duration: 250,
-                icons: {
-                    left: 'fa fa-chevron-left',
-                    right: 'fa fa-chevron-right',
-                    down: 'fa fa-chevron-down'
-                }
-            });
+
         });
 
         function makePageEditable() {
@@ -22,7 +11,8 @@
                 hide[i].style.display = "none";
             }
             $("#bottomSaveBar").removeClass('d-none');
-            $("#mySidenav").removeClass('d-none');
+            $("#page-details-opener").removeClass('d-none');
+            // $("#edit-page-details").modal({backdrop: false});
             if ($("#accordion").length > 0) {
                 initFaqs();
             }
@@ -32,7 +22,10 @@
 
             $(".is-wrapper").contentbox({
                 framework: 'bootstrap',
-                snippetFile: '/static/assets/minimalist-basic/snippets-bootstrap.html',
+                snippetData: '/static/assets/minimalist-blocks/snippetlist.html',
+                scriptPath: '/static/contentbuilder/',
+                assetPath: '/static/assets/',
+                fontAssetPath: '/static/assets/fonts/',
                 snippetOpen: true,
                 toolbar: 'top',
                 coverImageHandler: '/admin/pages/ajax/save-cb-cover-image',
@@ -42,7 +35,12 @@
                 iconselect: '/static/assets/ionicons/selecticon-dark.html',
                 fileselect: '/admin/pages/file-manager',
                 imageselect: '/admin/pages/image-manager',
-                snippetPathReplace: ['assets/minimalist-basic/', '/static/assets/minimalist-basic/'],
+                {{if ne (index .Auth.Preferences "advanced-editing") "1"}}
+                columnHtmlEditor: false,
+                rowHtmlEditor: false,
+                builderMode: 'minimal',
+                {{end}}
+                snippetPathReplace: ['assets/minimalist-blocks/', '/static/assets/minimalist-blocks/'],
                 moduleConfig: [{
                     "moduleSaveImageHandler": "/admin/save-cb-image"
                 }],
