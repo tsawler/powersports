@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{{template "title" .}} </title>
+        <title>{{template "title" .}}</title>
         <meta name="generator"
               content="goblender version {{.GbVersion}} by Verilion Inc. - https://www.verilion.com. All rights reserved.">
         <meta name="csrf-token" content="{{.CSRFToken}}">
@@ -115,7 +115,7 @@
         {{end}}
 
         <link href="/static/box/box.css?v={{.CSSVersion}}" rel="stylesheet"/>
-        <link href="/static/assets/minimalist-basic/content-bootstrap.css?v={{.CSSVersion}}" rel="stylesheet"/>
+        <link href="/static/assets/minimalist-blocks/content.css?v={{.CSSVersion}}" rel="stylesheet"/>
         <link href="/static/templates/spacial/dist/theme.min.css?v={{.CSSVersion}}" rel="stylesheet">
         {{if .IsAuthenticated}}
             {{if hasRole "pages" .Auth.ID}}
@@ -126,27 +126,28 @@
                   href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
             <link rel="stylesheet"
                   href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
-            <link rel="stylesheet" href="/static/css/BootSideMenu.css">
+{{/*            <link rel="stylesheet" href="/static/css/BootSideMenu.css">*/}}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         {{end}}
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css"
+              integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous"/>
+
+{{/*        <link rel="stylesheet"*/}}
+{{/*              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"*/}}
+{{/*              integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />*/}}
 
         <link rel="stylesheet" href="/static/custom.css?v={{.CSSVersion}}">
         {{ $siteWideCss := index .PreferenceMap "css"}}
         {{if ne $siteWideCss ""}}
             {{ safeHTML $siteWideCss}}
         {{end}}
-
         <style>
-            .nav-tbar-link {
-                display: block;
-                padding: 0.5rem 0.1rem;
-            }
 
-            .nav-tbar-link:hover, .nav-link:focus {
-                text-decoration: none;
-            }
+
+
         </style>
+
 
         {{block "css" .}}
 
@@ -195,19 +196,20 @@
                 {{end}}
             }
 
-
         </script>
     {{end}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
     <script src="/static/templates/spacial/dist/theme.min.js?id={{.CSSVersion}}"></script>
-    {{/*    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*/}}
-    {{/*    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>*/}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="/static/assets/scripts/slick/slick.min.js"></script>
+{{/*    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"*/}}
+{{/*            integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>*/}}
     {{if eq (index .PreferenceMap "use-pusher") "1"}}
         <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
         <script>
@@ -263,16 +265,18 @@
             });
         </script>
     {{end}}
+
     {{if .IsAuthenticated}}
-        <script rel="preload" src="/static/contentbuilder/contentbuilder.js"></script>
+        <script rel="preload" src="/static/contentbuilder/contentbuilder.js?v=4.0.12"></script>
+        <script rel="preload" src="/static/assets/minimalist-blocks/content.js"></script>
         <script rel="preload" src="/static/contentbuilder/saveimages.js"></script>
-        <script rel="preload" src="/static/contentbox/contentbox-src.js?v=2.1"></script>
-        <script rel="preload" src="/static/js/BootSideMenu.js"></script>
+        {{if ne (index .Auth.Preferences "advanced-editing") "1"}}
+            <script rel="preload" src="/static/contentbox/contentbox-src-nohtml.js?v=4.0.8"></script>
+        {{else}}
+            <script rel="preload" src="/static/contentbox/contentbox-src.js?v=4.0.8"></script>
+        {{end}}
         <script rel="preload"
                 src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.js"></script>
-        <script rel="preload"
-                src="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.ui.position.min.js"></script>
-        <script rel="preload" src="/static/js/dropzone.min.js"></script>
         <script rel="preload"
                 src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/js/bootstrap-colorpicker.min.js"></script>
     {{end}}
@@ -313,8 +317,24 @@
         errorAlert('{{.}}');
         {{end}}
 
+        {{with .Warning}}
+        warningAlert('{{.}}');
+        {{end}}
+
+        {{with .Modal}}
+        modalAlert('{{.}}');
+        {{end}}
+
         $('.modal').on('hidden.bs.modal', function (e) {
-            this.modal('dispose');
+            $(this).modal('dispose');
+        });
+
+        $(document).on('shown.bs.modal', '#edit-page-details', function(){
+           $("#page-details-opener").addClass('d-none');
+        });
+
+        $(document).on('hidden.bs.modal', '#edit-page-details', function(){
+            $("#page-details-opener").removeClass('d-none');
         });
 
         {{$logo := index .PreferenceMap "logo"}}
@@ -374,17 +394,46 @@
     {{if ne $js ""}}
         {{ safeHTML $js}}
     {{end}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.min.js"
+            integrity="sha256-voP3sbDhk+YDZKsGO8dpMGk9qzne1cf3f1CRgjwRnrk=" crossorigin="anonymous"></script>
 
     {{block "js" .}}
 
     {{end}}
 
     <noscript id="deferred-styles">
-        {{/*        <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>*/}}
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
         <link href="/static/css/basic.min.css" rel="stylesheet">
     </noscript>
     <script>
+
+        function post(path, params, method='post') {
+            const form = document.createElement('form');
+            form.method = method;
+            form.action = path;
+
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    const hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = key;
+                    hiddenField.value = params[key];
+
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            let csrfField = document.createElement('input');
+            csrfField.type = 'hidden';
+            csrfField.name = 'csrf_token';
+            csrfField.value = '{{.CSRFToken}}';
+            form.appendChild(csrfField);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+
         let loadDeferredStyles = function () {
             let addStylesNode = document.getElementById("deferred-styles");
             let replacement = document.createElement("div");

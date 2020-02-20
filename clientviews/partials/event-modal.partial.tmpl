@@ -1,5 +1,5 @@
 {{define "event-modal"}}
-<div class="modal fade" tabindex="-1" role="dialog" id="event-modal">
+<div class="modal fade" tabindex="-1" role="dialog" id="event-modal" style="z-index: 100001">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -75,13 +75,13 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <div class="col-md-6 text-left">
-                    <a id="delbtn" href="#!" class="btn btn-danger float-left d-none" onclick="deleteEvent()">Delete</a>
+                <div class="float-left">
+                <a id="delbtn" href="#!" class="btn btn-danger text-white float-left d-none" onclick="deleteEvent()">Delete</a>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="float-right">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="submitEvent()">Save</button>
-                </div>
+                    </div>
             </div>
         </div>
     </div>

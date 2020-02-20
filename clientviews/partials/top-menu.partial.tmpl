@@ -142,7 +142,7 @@
                                     <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
                                 {{end}}
                                 <div class="dropdown-divider"></div>
-                                {{if and (hasRole "pages" .Auth.ID) .Page.PageTitle (eq .Page.PageNotEditable 0)}}
+                                {{if and (hasRole "pages" .Auth.ID) .Page.PageTitle}}
                                     <a class="dropdown-item" onclick="makePageEditable()" href="#!">Edit Page</a>
                                     <div class="dropdown-divider"></div>
                                 {{end}}

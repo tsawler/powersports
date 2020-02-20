@@ -67,7 +67,7 @@ func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 // GetAllBruteForce gets all brute force
 func GetAllBruteForce(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/atv-brute-force"
+	stringMap["pager-url"] = "/atvs/brute-force-inventory"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 8

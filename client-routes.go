@@ -29,6 +29,12 @@ var postHandlers *handlers.PostDBRepo
 // ClientRoutes holds all app routes for the custom code
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
 
+	// public folder
+	fileServer := http.FileServer(http.Dir("./client/clienthandlers/public/"))
+	mux.Get("/client/static/", http.StripPrefix("/client/static", fileServer))
+	fileServer = http.FileServer(http.Dir("./ui/static/"))
+	mux.Get("/static/", http.StripPrefix("/static", fileServer))
+
 	mux.Get("/", dynamicMiddleware.ThenFunc(ShowHome))
 
 	mux.Get("/blog", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -57,10 +63,10 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// atvs - brute force
 	mux.Get("/atv-brute-force", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/atv-brute-force", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/atvs/brute-force-inventory", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/atv-brute-force", standardMiddleWare.ThenFunc(GetAllBruteForce))
-	mux.Get("/inventory/atv-brute-force/:pageIndex", standardMiddleWare.ThenFunc(GetAllBruteForce))
+	mux.Get("/atvs/brute-force-inventory", standardMiddleWare.ThenFunc(GetAllBruteForce))
+	mux.Get("/atvs/brute-force-inventory/:pageIndex", standardMiddleWare.ThenFunc(GetAllBruteForce))
 
 	// atvs - teryx
 	mux.Get("/atv-teryx", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -132,11 +138,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	mux.Get("/inventory/atv-trailers-boat-trailers-utility-trailers", standardMiddleWare.ThenFunc(GetAllTrailers))
 	mux.Get("/inventory/atv-trailers-boat-trailers-utility-trailers/:pageIndex", standardMiddleWare.ThenFunc(GetAllTrailers))
 
-	mux.Get("/inventory/:productType/:prefix/:ID/:description", standardMiddleWare.ThenFunc(ShowItem))
-
-	// public folder
-	fileServer := http.FileServer(http.Dir("./client/clienthandlers/public/"))
-	mux.Get("/client/static/", http.StripPrefix("/client/static", fileServer))
+	mux.Get("/:item/:productType/:prefix/:ID/:description", standardMiddleWare.ThenFunc(ShowItem))
 
 	return mux, nil
 }
