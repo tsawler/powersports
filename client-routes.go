@@ -126,7 +126,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// used
 	mux.Get("/used-motorcycles-used-atv-used-boats-used-pontoons", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/used-motorbikes-atvs-wheelers--trailers", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/used-motorbikes-atvs-wheelers-trailers", http.StatusMovedPermanently)
 	}))
 	mux.Get("/used/used-motorbikes-atvs-wheelers-trailers", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
 	mux.Get("/used/used-motorbikes-atvs-wheelers-trailers/:pageIndex", standardMiddleWare.ThenFunc(GetAllUsedPowerSports))
