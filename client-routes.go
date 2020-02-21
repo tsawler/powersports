@@ -56,10 +56,10 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 
 	// motorcycles
 	mux.Get("/motorcycle-inventory", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/inventory/motorcycle", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/motorcyclesforsale/fredericton", http.StatusMovedPermanently)
 	}))
-	mux.Get("/inventory/motorcycle", standardMiddleWare.ThenFunc(GetAllMotorcycles))
-	mux.Get("/inventory/motorcycle/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
+	mux.Get("/motorcyclesforsale/fredericton", standardMiddleWare.ThenFunc(GetAllMotorcycles))
+	mux.Get("/motorcyclesforsale/fredericton/:pageIndex", standardMiddleWare.ThenFunc(GetAllMotorcycles))
 
 	// atvs - brute force
 	mux.Get("/atv-brute-force", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
