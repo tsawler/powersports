@@ -193,7 +193,7 @@ func GetAllUsedBoats(w http.ResponseWriter, r *http.Request) {
 	vehicleType := 1001
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-boats")
 }
 
 // GetAllTrailers gets all used powersports

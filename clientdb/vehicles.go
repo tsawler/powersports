@@ -300,6 +300,23 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			return nil, 0, err
 		}
 		nRows = n
+	} else if vehicleTypeID == 1001 {
+		fmt.Println("Doing used")
+		stmt = fmt.Sprintf(`
+		select 
+			count(v.id) 
+		from 
+			vehicles v 
+		where 
+			status = 1 
+			and vehicle_type in (13, 10, 9, 15) %s 
+			and v.used = 1`, where)
+		n, err := m.DB.Query(stmt)
+		if err != nil {
+			fmt.Println(err)
+			return nil, 0, err
+		}
+		nRows = n
 	}
 
 	defer nRows.Close()
