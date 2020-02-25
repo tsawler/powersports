@@ -283,7 +283,8 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			return nil, 0, err
 		}
 		nRows = n
-	} else {
+	} else if vehicleTypeID == 1000 {
+		fmt.Println("Doing used")
 		stmt = fmt.Sprintf(`
 		select 
 			count(v.id) 
@@ -396,6 +397,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 			%s
 		limit ? offset ?`, where, orderBy)
+
 		rows, err = m.DB.Query(query, perPage, offset)
 		if err != nil {
 			fmt.Println(err)
@@ -617,8 +619,10 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 // GetMakesForVehicleType gets makes for vehicle type
 func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, error) {
 	var makes []clientmodels.Make
+	query := ""
 
-	query := `
+	if id < 1000 {
+		query = `
 			select  
 				m.id, m.make
 			from 
@@ -627,6 +631,31 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and vehicle_type = ?)
 			order by 
 				m.make`
+	} else if id == 1000 {
+		query = `
+			select  
+				m.id, m.make
+			from 
+				vehicle_makes m
+			where
+				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and used = 1 and vehicle_type  in
+				(8, 11, 12, 16, 7, 17, 14, ?)
+)
+			order by 
+				m.make`
+	} else if id == 1001 {
+		query = `
+			select  
+				m.id, m.make
+			from 
+				vehicle_makes m
+			where
+				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and used = 1 and vehicle_type  in
+				(13, 10, 9, 15, ?)
+)
+			order by 
+				m.make`
+	}
 	rows, err := m.DB.Query(query, id)
 	if err != nil {
 		fmt.Println(err)

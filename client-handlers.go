@@ -190,7 +190,7 @@ func GetAllUsedBoats(w http.ResponseWriter, r *http.Request) {
 	stringMap["pager-url"] = "/used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1
-	vehicleType := 1000
+	vehicleType := 1001
 	templateName := "inventory.page.tmpl"
 
 	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons")
