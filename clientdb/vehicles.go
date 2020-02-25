@@ -358,7 +358,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			return nil, 0, err
 		}
 		defer rows.Close()
-	} else {
+	} else if vehicleTypeID == 1000 {
 		query = fmt.Sprintf(`
 		select 
 		       id, 
@@ -391,7 +391,53 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		from 
 		     vehicles v 
 		where
-			vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14)
+			vehicle_type in (8, 11, 12, 16, 7, 17, 14)
+			and status = 1
+			and v.used = 1
+			%s
+			%s
+		limit ? offset ?`, where, orderBy)
+
+		rows, err = m.DB.Query(query, perPage, offset)
+		if err != nil {
+			fmt.Println(err)
+			return nil, 0, err
+		}
+		defer rows.Close()
+	} else if vehicleTypeID == 1001 {
+		query = fmt.Sprintf(`
+		select 
+		       id, 
+		       stock_no, 
+		       coalesce(cost, 0),
+		       vin, 
+		       coalesce(odometer, 0),
+		       coalesce(year, 0),
+		       coalesce(trim, ''),
+		       vehicle_type,
+		       coalesce(body, ''),
+		       coalesce(seating_capacity,''),
+		       coalesce(drive_train,''),
+		       coalesce(engine,''),
+		       coalesce(exterior_color,''),
+		       coalesce(interior_color,''),
+		       coalesce(transmission,''),
+		       coalesce(options,''),
+		       coalesce(model_number, ''),
+		       coalesce(total_msr,0.0),
+		       v.status,
+		       coalesce(description, ''),
+		       vehicle_makes_id,
+		       vehicle_models_id,
+		       hand_picked,
+		       used,
+		       coalesce(price_for_display,''),
+		       created_at,
+		       updated_at
+		from 
+		     vehicles v 
+		where
+			vehicle_type in (13, 10, 9, 15)
 			and status = 1
 			and v.used = 1
 			%s
