@@ -55,7 +55,7 @@ func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 // GetAllMotorcycles gets all motorcycles
 func GetAllMotorcycles(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
-	stringMap["pager-url"] = "/inventory/motorcycle"
+	stringMap["pager-url"] = "/motorcyclesforsale/fredericton"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 0
 	vehicleType := 7
@@ -190,10 +190,10 @@ func GetAllUsedBoats(w http.ResponseWriter, r *http.Request) {
 	stringMap["pager-url"] = "/used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers"
 	intMap := make(map[string]int)
 	intMap["show-makes"] = 1
-	vehicleType := 1000
+	vehicleType := 1001
 	templateName := "inventory.page.tmpl"
 
-	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-motorcycles-used-atv-used-boats-used-pontoons")
+	renderInventory(r, stringMap, vehicleType, w, intMap, templateName, "used-boats")
 }
 
 // GetAllTrailers gets all used powersports
@@ -481,8 +481,10 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 // SendFriend sends to a friend
 func SendFriend(w http.ResponseWriter, r *http.Request) {
 	name := r.Form.Get("name")
+	email := r.Form.Get("email")
 	interest := r.Form.Get("interested")
 	url := r.Form.Get("url")
+	infoLog.Println("url is ", url)
 
 	content := fmt.Sprintf(`
 		<p>
@@ -500,7 +502,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 
 	mailMessage := maildata.MailData{
 		ToName:      "",
-		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
+		ToAddress:   email,
 		FromName:    app.PreferenceMap["smtp-from-name"],
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     fmt.Sprintf("%s thought you might be intersted in this item from Jim Gilbert's PowerSports", name),
