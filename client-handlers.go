@@ -481,6 +481,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 // SendFriend sends to a friend
 func SendFriend(w http.ResponseWriter, r *http.Request) {
 	name := r.Form.Get("name")
+	email := r.Form.Get("email")
 	interest := r.Form.Get("interested")
 	url := r.Form.Get("url")
 
@@ -500,7 +501,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 
 	mailMessage := maildata.MailData{
 		ToName:      "",
-		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
+		ToAddress:   email,
 		FromName:    app.PreferenceMap["smtp-from-name"],
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     fmt.Sprintf("%s thought you might be intersted in this item from Jim Gilbert's PowerSports", name),
