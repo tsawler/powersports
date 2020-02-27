@@ -484,6 +484,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")
 	interest := r.Form.Get("interested")
 	url := r.Form.Get("url")
+	infoLog.Println("url is ", url)
 
 	content := fmt.Sprintf(`
 		<p>
