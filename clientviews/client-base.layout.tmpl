@@ -339,6 +339,19 @@
             $("#page-details-opener").removeClass('d-none');
         });
 
+        {{$menuColor := "navbar-light"}}
+        {{$menuTransparent := 0}}
+
+        {{if .Page.PageTitle}}
+        {{$menuColor = .Page.MenuColor}}
+        {{$menuTransparent = .Page.MenuTransparent}}
+        {{end}}
+
+        {{if .Post.Title}}
+        {{$menuColor = .Post.MenuColor}}
+        {{$menuTransparent = .Post.MenuTransparent}}
+        {{end}}
+
         {{$logo := index .PreferenceMap "logo"}}
         {{$invertedLogo := index .PreferenceMap "reverse-logo"}}
         {{$sticky := index .PreferenceMap "sticky-menu"}}
@@ -355,12 +368,18 @@
                 if (scroll >= 50) {
                     header.addClass("scrolled").addClass("fixed-top");
                     $("#top-bar").addClass('d-none');
+                    $("#top-bar-search-field").addClass("search__field-scrolled");
+
                     {{if ne $invertedLogo ""}}
                     $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$invertedLogo}}');
                     {{end}}
+
                     if (header.hasClass("bg-transparent")) {
                         header.removeClass("bg-transparent").addClass("was-transparent");
                     }
+
+                    $("#search-form-button").addClass("text-white");
+
                     {{$showBar := index .PreferenceMap "show-top-bar"}}
                     {{if eq $showBar "1"}}
                     {{if pushDown $topBar .Page.MenuTransparent}}
@@ -372,12 +391,19 @@
                 } else {
                     header.removeClass("scrolled").removeClass("fixed-top");
                     $("#top-bar").removeClass('d-none');
+                    $("#top-bar-search-field").removeClass("search__field-scrolled");
+
                     {{if ne $invertedLogo ""}}
                     $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$logo}}');
                     {{end}}
                     if (header.hasClass("was-transparent")) {
                         header.removeClass("was-transparent").addClass("bg-transparent");
                     }
+
+                    {{if eq $menuColor "navbar-light"}}
+                    $("#search-form-button").removeClass("text-white");
+                    {{end}}
+
                     {{if eq $showBar "1"}}
                     {{if pushDown $topBar .Page.MenuTransparent}}
                     $("#top-nav-bar").attr("style", "margin-top: 60px;");

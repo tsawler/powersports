@@ -6,6 +6,7 @@
     {{$logo := index .PreferenceMap "logo"}}
     {{$invertedLogo := index .PreferenceMap "reverse-logo"}}
     {{$createAccount := index .PreferenceMap "create-account"}}
+    {{$sticky := index .PreferenceMap "sticky-menu"}}
 
     {{$menuColor := "navbar-light"}}
     {{$menuTransparent := 0}}
@@ -25,7 +26,7 @@
 
         {{template "top-bar" .}}
 
-        <div id="top-nav-bar"
+        <div id="top-nav-bar" {{if eq $sticky "1"}}data-toggle="sticky-onscroll" {{end}}
              class="container-fluid no-override" {{if eq $showBar "1"}}{{if pushDown $topBar $menuTransparent}} style="margin-top: 60px;" {{end}}{{end}}>
 
             <a class="navbar-brand " href="/">
@@ -194,8 +195,8 @@
                 <form class="form-inline my-2 my-lg-2search" method="post" action="/search/search-site">
                     <div class="search__wrapper">
                         <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-                        <input type="text"  autocomplete="off" class="search__field {{if eq $menuTransparent 1}} search-form-transparent {{else}}search-form{{end}}" name="search" >
-                        <button type="submit" class="fa fa-search search__icon {{if eq $menuTransparent 1}} text-white {{end}}"></button>
+                        <input id="top-bar-search-field" type="text"  autocomplete="off" class="search__field {{if eq $menuTransparent 1}} search-form-transparent {{else}}search-form{{end}}" name="search" >
+                        <button id="search-form-button" type="submit" class="fa fa-search search__icon {{if eq $menuTransparent 1}} text-white {{end}}"></button>
                     </div>
                 </form>
             </div>
