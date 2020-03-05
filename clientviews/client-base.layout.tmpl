@@ -8,7 +8,7 @@
         <meta name="generator"
               content="goblender version {{.GbVersion}} by Verilion Inc. - https://www.verilion.com. All rights reserved.">
         <meta name="csrf-token" content="{{.CSRFToken}}">
-        <link rel="canonical" href="https://{{.CurrentUrl}}">
+        <link rel="canonical" href="{{.CurrentUrl}}">
 
         <!-- open graph tags -->
         {{$fbAppID := index .PreferenceMap "fb-app-id"}}
@@ -450,6 +450,7 @@
         });
         else window.addEventListener('load', loadDeferredStyles);
     </script>
+    <script src="/static/box/box.js"></script>
     </body>
     </html>
 {{end}}

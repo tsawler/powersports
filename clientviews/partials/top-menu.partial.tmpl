@@ -53,9 +53,9 @@
                                             data-mitem-id="{{.ID}}"
                                             href="{{.Url}}">
                                         {{if eq .Active 0}}
-                                            <span class="text-muted"><em>{{index .TitleMap $.Lang}}</em></span>
+                                            <span class="text-muted"><em>{{safeHTML (index .TitleMap $.Lang)}}</em></span>
                                         {{else}}
-                                            {{index .TitleMap $.Lang}}
+                                            {{safeHTML (index .TitleMap $.Lang)}}
                                         {{end}}
                                     </a>
                                 </li>
@@ -63,7 +63,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle mitem" href="#" data-mitem-id="{{.ID}}"
                                        role="button" data-toggle="dropdown">
-                                        {{index .TitleMap $.Lang}}
+                                        {{safeHTML (index .TitleMap $.Lang)}}
                                         <i class="ion-chevron-down"></i>
                                     </a>
 
@@ -98,14 +98,14 @@
                                                 class="nav-link nodd mitem"
                                                 data-mitem-id="{{.ID}}"
                                                 href="{{.Url}}">
-                                            {{index .TitleMap $.Lang}}
+                                            {{safeHTML (index .TitleMap $.Lang)}}
                                         </a>
                                     </li>
                                 {{else}}
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle mitem" href="#" data-mitem-id="{{.ID}}"
                                            role="button" data-toggle="dropdown">
-                                            {{index .TitleMap $.Lang}}
+                                            {{safeHTML (index .TitleMap $.Lang)}}
                                             <i class="ion-chevron-down"></i>
                                         </a>
 
@@ -190,11 +190,13 @@
                         {{end}}
                     {{end}}
                 </ul>
-                <form class="form-inline my-2 my-lg-2" method="post" action="/search/search-site"
-                      style="padding-right: 1em;">
-                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-                    <input class="form-control {{if eq $menuTransparent 1}} search-form-transparent {{else}}search-form{{end}} no-border" autocomplete="off" name="search" type="search"
-                           id="search-input" placeholder="&#xF002;">
+
+                <form class="form-inline my-2 my-lg-2search" method="post" action="/search/search-site">
+                    <div class="search__wrapper">
+                        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                        <input type="text"  autocomplete="off" class="search__field {{if eq $menuTransparent 1}} search-form-transparent {{else}}search-form{{end}}" name="search" >
+                        <button type="submit" class="fa fa-search search__icon {{if eq $menuTransparent 1}} text-white {{end}}"></button>
+                    </div>
                 </form>
             </div>
         </div>
