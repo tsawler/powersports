@@ -193,9 +193,9 @@
                 "address": {{safeJSStr (index .PreferenceMap "org-address")}},
                 "telephone": "{{index .PreferenceMap "org-phone"}}",
                 {{ $img := index .PreferenceMap.logo}}
-                {{if ne $img ""}}
+                {{- if ne $img "" -}}
                 "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
-                {{end}}
+                {{- end -}}
             }
         </script>
     {{end}}
