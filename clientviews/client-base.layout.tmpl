@@ -187,11 +187,11 @@
     {{if eq $microdata "1"}}
         <script type="application/ld+json">{
                 "@context": "http:\/\/schema.org",
-                "@type": "{{index .PreferenceMap "org-type"}}",
+                "@type": {{safeJSStr (index .PreferenceMap "org-type")}},
                 "name": {{safeJSStr (index .PreferenceMap "org-name")}},
-                "email": "{{index .PreferenceMap "org-email"}}",
+                "email": {{safeJSStr (index .PreferenceMap "org-email")}},
                 "address": {{safeJSStr (index .PreferenceMap "org-address")}},
-                "telephone": "{{index .PreferenceMap "org-phone"}}",
+                "telephone": {{safeJSStr (index .PreferenceMap "org-phone")}},
                 {{ $img := index .PreferenceMap.logo}}
                 {{- if ne $img "" -}}
                 "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
