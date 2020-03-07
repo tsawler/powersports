@@ -188,16 +188,15 @@
         <script type="application/ld+json">{
                 "@context": "http:\/\/schema.org",
                 "@type": "{{index .PreferenceMap "org-type"}}",
-                "name": "{{index .PreferenceMap "org-name"}}",
+                "name": {{safeJSStr (index .PreferenceMap "org-name")}},
                 "email": "{{index .PreferenceMap "org-email"}}",
-                "address": "{{index .PreferenceMap "org-address"}}",
+                "address": {{safeJSStr (index .PreferenceMap "org-address")}},
                 "telephone": "{{index .PreferenceMap "org-phone"}}",
                 {{ $img := index .PreferenceMap.logo}}
                 {{if ne $img ""}}
                 "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
                 {{end}}
             }
-
         </script>
     {{end}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
