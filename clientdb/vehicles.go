@@ -168,6 +168,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			order by 
 				o.option_name`
 		oRows, err := m.DB.Query(query, c.ID)
+		defer oRows.Close()
 		if err != nil {
 			fmt.Println("*** Error getting options:", err)
 		}
@@ -284,7 +285,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		}
 		nRows = n
 	} else if vehicleTypeID == 1000 {
-		fmt.Println("Doing used")
 		stmt = fmt.Sprintf(`
 		select 
 			count(v.id) 
@@ -301,7 +301,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		}
 		nRows = n
 	} else if vehicleTypeID == 1001 {
-		fmt.Println("Doing used")
 		stmt = fmt.Sprintf(`
 		select 
 			count(v.id) 
@@ -668,6 +667,8 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 		fmt.Println(err)
 	}
 
+	defer rows.Close()
+
 	for rows.Next() {
 		var y int
 		err = rows.Scan(&y)
@@ -724,6 +725,8 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 		fmt.Println(err)
 	}
 
+	defer rows.Close()
+
 	for rows.Next() {
 		var y clientmodels.Make
 		err = rows.Scan(
@@ -754,6 +757,8 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	defer rows.Close()
 
 	for rows.Next() {
 		var y clientmodels.Model
@@ -916,6 +921,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 	if err != nil {
 		fmt.Println("*** Error getting options:", err)
 	}
+	defer oRows.Close()
 
 	var vehicleOptions []*clientmodels.VehicleOption
 	for oRows.Next() {
@@ -936,7 +942,6 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 		}
 	}
 	c.VehicleOptions = vehicleOptions
-	oRows.Close()
 
 	// get images
 	query = `
@@ -957,6 +962,8 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	defer iRows.Close()
 
 	var vehicleImages []*clientmodels.Image
 	for iRows.Next() {
