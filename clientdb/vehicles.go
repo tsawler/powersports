@@ -168,7 +168,6 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			order by 
 				o.option_name`
 		oRows, err := m.DB.Query(query, c.ID)
-		defer oRows.Close()
 		if err != nil {
 			fmt.Println("*** Error getting options:", err)
 		}
@@ -921,7 +920,6 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 	if err != nil {
 		fmt.Println("*** Error getting options:", err)
 	}
-	defer oRows.Close()
 
 	var vehicleOptions []*clientmodels.VehicleOption
 	for oRows.Next() {
@@ -941,7 +939,10 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 			vehicleOptions = append(vehicleOptions, o)
 		}
 	}
+
 	c.VehicleOptions = vehicleOptions
+
+	oRows.Close()
 
 	// get images
 	query = `
