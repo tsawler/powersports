@@ -126,18 +126,19 @@
                   href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
             <link rel="stylesheet"
                   href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
-{{/*            <link rel="stylesheet" href="/static/css/BootSideMenu.css">*/}}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         {{end}}
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css"
               integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous"/>
 
-{{/*        <link rel="stylesheet"*/}}
-{{/*              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"*/}}
-{{/*              integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />*/}}
 
         <link rel="stylesheet" href="/static/custom.css?v={{.CSSVersion}}">
+
+        <style>
+            {{safeCSS .SiteWideCSSFromPrefs}}
+        </style>
+
         {{ $siteWideCss := index .PreferenceMap "css"}}
         {{if ne $siteWideCss ""}}
             {{ safeHTML $siteWideCss}}
