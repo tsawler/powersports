@@ -150,7 +150,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 // ClientInit gives us access to site values for client code.
 func ClientInit(c config.AppConfig, p *driver.DB) {
 	app = c
-	conn := app.Connections["wheels"]
+	conn := app.AlternateConnection
 
 	vehicleModel = &clientdb.VehicleModel{DB: conn}
 	infoLog = app.InfoLog
