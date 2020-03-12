@@ -10,3 +10,4 @@ inventory/outboard-motors-mercury
 pontoon-boats/bennington-crestliner-dealer
 boatsforsale/fishing-speed-jon-aluminum-power-glastron
 used-boats-for-sale/pontoons-pwc-jetski-fishboats-boattrailers
+newtrailers/boat-stv-utility
