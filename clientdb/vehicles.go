@@ -691,7 +691,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			from 
 				vehicle_makes m
 			where
-				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and vehicle_type = ?)
+				m.id in (select v.vehicle_makes_id from wheelsanddeals.vehicles v where status = 1 and vehicle_type = ?)
 			order by 
 				m.make`
 	} else if id == 1000 {
@@ -701,7 +701,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			from 
 				vehicle_makes m
 			where
-				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and used = 1 and vehicle_type  in
+				m.id in (select v.vehicle_makes_id from wheelsanddeals.vehicles v where status = 1 and used = 1 and vehicle_type  in
 				(8, 11, 12, 16, 7, 17, 14, ?)
 )
 			order by 
@@ -713,7 +713,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			from 
 				vehicle_makes m
 			where
-				m.id in (select v.vehicle_makes_id from vehicles v where status = 1 and used = 1 and vehicle_type  in
+				m.id in (select v.vehicle_makes_id from wheelsanddeals.vehicles v where status = 1 and used = 1 and vehicle_type  in
 				(13, 10, 9, 15, ?)
 )
 			order by 
@@ -747,9 +747,9 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 			select  
 				m.id, m.model
 			from 
-				vehicle_models m
+				wheelsanddeals.vehicle_models m
 			where
-				m.id in (select v.vehicle_models_id from vehicles v where status = 1 and vehicle_type = ?)
+				m.id in (select v.vehicle_models_id from wheelsanddeals.vehicles v where status = 1 and vehicle_type = ?)
 			order by 
 				m.model`
 	rows, err := m.DB.Query(query, id)
@@ -807,7 +807,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 		       created_at,
 		       updated_at
 		from 
-		     vehicles v 
+		     wheelsanddeals.vehicles v 
 		where
 			id = ?`
 
@@ -857,7 +857,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				created_at, 
 				updated_at 
 			FROM 
-				vehicle_makes 
+				wheelsanddeals.vehicle_makes 
 			WHERE 
 				id = ?`
 	makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
@@ -883,7 +883,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				created_at, 
 				updated_at 
 			FROM 
-				vehicle_models 
+				wheelsanddeals.vehicle_models 
 			WHERE 
 				id = ?`
 	modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
@@ -909,8 +909,8 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				vo.updated_at,
 				o.option_name
 			from 
-				vehicle_options vo
-				left join options o on (vo.option_id = o.id)
+				wheelsanddeals.vehicle_options vo
+				left join wheelsanddeals.options o on (vo.option_id = o.id)
 			where
 				vo.vehicle_id = ?
 				and o.active = 1
@@ -954,7 +954,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				updated_at,
 				sort_order
 			from 
-				vehicle_images 
+				wheelsanddeals.vehicle_images 
 			where
 				vehicle_id = ?
 			order by 
@@ -995,8 +995,8 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				v.file_name,
 				v.thumb
 			from 
-				vehicle_videos vv
-				left join videos v on (vv.video_id = v.id)
+				wheelsanddeals.vehicle_videos vv
+				left join wheelsanddeals.videos v on (vv.video_id = v.id)
 			where
 				vv.vehicle_id = ?
 			limit 1`
@@ -1032,7 +1032,7 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 		       coalesce(phone, ''),
 		       coalesce(image, '')
 		from 
-		     sales 
+		     wheelsanddeals.sales 
 		where
 			active = 1
 
@@ -1070,7 +1070,7 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 // InsertCreditApp saves a credit application
 func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 	stmt := `
-	INSERT INTO credit_applications (first_name, last_name, email, phone, address, city, province, zip, 
+	INSERT INTO wheelsanddeals.credit_applications (first_name, last_name, email, phone, address, city, province, zip, 
 	                   vehicle, processed, created_at, updated_at)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
@@ -1099,7 +1099,7 @@ func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 // InsertTestDrive saves a test drive application
 func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
 	stmt := `
-	INSERT INTO test_drives (users_name, email, phone, preferred_date, preferred_time, vehicle_id, 
+	INSERT INTO wheelsanddeals.test_drives (users_name, email, phone, preferred_date, preferred_time, vehicle_id, 
 	                   processed, created_at, updated_at)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
@@ -1125,7 +1125,7 @@ func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
 // InsertQuickQuote saves a quick quote to remote dataabase
 func (m *VehicleModel) InsertQuickQuote(a clientmodels.QuickQuote) error {
 	stmt := `
-	INSERT INTO quick_quotes (users_name, email, phone, vehicle_id, 
+	INSERT INTO wheelsanddeals.quick_quotes (users_name, email, phone, vehicle_id, 
 	                   processed, created_at, updated_at)
     VALUES(?, ?, ?, ?, ?, ?, ?)
     `
