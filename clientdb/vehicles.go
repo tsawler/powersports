@@ -273,7 +273,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		select 
 			count(v.id) 
 		from 
-			vehicles v 
+			wheelsanddeals.vehicles v 
 		where 
 			status = 1 
 			and vehicle_type = ? %s`, where)
@@ -288,7 +288,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		select 
 			count(v.id) 
 		from 
-			vehicles v 
+			wheelsanddeals.vehicles v 
 		where 
 			status = 1 
 			and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s 
@@ -304,7 +304,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		select 
 			count(v.id) 
 		from 
-			vehicles v 
+			wheelsanddeals.vehicles v 
 		where 
 			status = 1 
 			and vehicle_type in (13, 10, 9, 15) %s 
@@ -360,7 +360,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		       created_at,
 		       updated_at
 		from 
-		     vehicles v 
+		     wheelsanddeals.vehicles v 
 		where
 			vehicle_type = ?
 			and status = 1
@@ -404,7 +404,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		       created_at,
 		       updated_at
 		from 
-		     vehicles v 
+		     wheelsanddeals.vehicles v 
 		where
 			vehicle_type in (8, 11, 12, 16, 7, 17, 14)
 			and status = 1
@@ -450,7 +450,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		       created_at,
 		       updated_at
 		from 
-		     vehicles v 
+		     wheelsanddeals.vehicles v 
 		where
 			vehicle_type in (13, 10, 9, 15)
 			and status = 1
@@ -513,7 +513,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				created_at, 
 				updated_at 
 			FROM 
-				vehicle_makes 
+				wheelsanddeals.vehicle_makes 
 			WHERE 
 				id = ?`
 		makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
@@ -540,7 +540,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				created_at, 
 				updated_at 
 			FROM 
-				vehicle_models 
+				wheelsanddeals.vehicle_models 
 			WHERE 
 				id = ?`
 		modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
@@ -567,8 +567,8 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				vo.updated_at,
 				o.option_name
 			from 
-				vehicle_options vo
-				left join options o on (vo.option_id = o.id)
+				wheelsanddeals.vehicle_options vo
+				left join wheelsanddeals.options o on (vo.option_id = o.id)
 			where
 				vo.vehicle_id = ?
 				and o.active = 1
@@ -610,7 +610,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				updated_at,
 				sort_order
 			from 
-				vehicle_images 
+				wheelsanddeals.vehicle_images 
 			where
 				vehicle_id = ?
 			order by 

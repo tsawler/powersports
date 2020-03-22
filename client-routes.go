@@ -151,7 +151,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 func ClientInit(c config.AppConfig, p *driver.DB) {
 	app = c
 
-	vehicleModel = &clientdb.VehicleModel{DB: app.AlternateConnection}
+	vehicleModel = &clientdb.VehicleModel{DB: p.SQL}
 	infoLog = app.InfoLog
 	errorLog = app.ErrorLog
 	pageModel = page.NewSQLPageRepo(p.SQL)
