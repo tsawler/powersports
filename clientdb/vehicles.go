@@ -106,7 +106,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				created_at, 
 				updated_at 
 			FROM 
-				vehicle_makes 
+				wheelsanddeals.vehicle_makes 
 			WHERE 
 				id = ?`
 		makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
@@ -133,7 +133,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				created_at, 
 				updated_at 
 			FROM 
-				vehicle_models 
+				wheelsanddeals.vehicle_models 
 			WHERE 
 				id = ?`
 		modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
@@ -160,7 +160,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				vo.updated_at,
 				o.option_name
 			from 
-				vehicle_options vo
+				wheelsanddeals.vehicle_options vo
 				left join options o on (vo.option_id = o.id)
 			where
 				vo.vehicle_id = ?
@@ -203,7 +203,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				updated_at,
 				sort_order
 			from 
-				vehicle_images 
+				wheelsanddeals.vehicle_images 
 			where
 				vehicle_id = ?
 			order by 
