@@ -45,7 +45,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 		       created_at,
 		       updated_at
 		from 
-		     vehicles v 
+		     wheelsanddeals.vehicles v 
 		where
 			vehicle_type = ?
 			and status = 1
@@ -161,7 +161,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				o.option_name
 			from 
 				wheelsanddeals.vehicle_options vo
-				left join options o on (vo.option_id = o.id)
+				left join wheelsanddeals.options o on (vo.option_id = o.id)
 			where
 				vo.vehicle_id = ?
 				and o.active = 1
@@ -655,7 +655,7 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 			select distinct 
 				v.year
 			from 
-				vehicles v
+				wheelsanddeals.vehicles v
 			where
 				vehicle_type = ?
 				and v.status = 1
@@ -689,7 +689,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			select  
 				m.id, m.make
 			from 
-				vehicle_makes m
+				wheelsanddeals.vehicle_makes m
 			where
 				m.id in (select v.vehicle_makes_id from wheelsanddeals.vehicles v where status = 1 and vehicle_type = ?)
 			order by 
@@ -699,7 +699,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			select  
 				m.id, m.make
 			from 
-				vehicle_makes m
+				wheelsanddeals.vehicle_makes m
 			where
 				m.id in (select v.vehicle_makes_id from wheelsanddeals.vehicles v where status = 1 and used = 1 and vehicle_type  in
 				(8, 11, 12, 16, 7, 17, 14, ?)
@@ -711,7 +711,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			select  
 				m.id, m.make
 			from 
-				vehicle_makes m
+				wheelsanddeals.vehicle_makes m
 			where
 				m.id in (select v.vehicle_makes_id from wheelsanddeals.vehicles v where status = 1 and used = 1 and vehicle_type  in
 				(13, 10, 9, 15, ?)
