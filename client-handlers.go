@@ -339,6 +339,10 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	phone := r.Form.Get("phone")
 	interest := r.Form.Get("interested")
 	vid, _ := strconv.Atoi(r.Form.Get("vehicle_id"))
+	msg := r.Form.Get("msg")
+	if msg != "" {
+		interest = msg
+	}
 
 	content := fmt.Sprintf(`
 		<p>
