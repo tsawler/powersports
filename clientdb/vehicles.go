@@ -1,9 +1,11 @@
 package clientdb
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientmodels"
+	"time"
 )
 
 // VehicleModel holds the db connection
@@ -13,6 +15,9 @@ type VehicleModel struct {
 
 // GetVehiclesForSaleByType returns slice of vehicles by type
 func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels.Vehicle, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var v []clientmodels.Vehicle
 
 	query := `
@@ -52,7 +57,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 
 		order by year desc`
 
-	rows, err := m.DB.Query(query, vehicleType)
+	rows, err := m.DB.QueryContext(ctx, query, vehicleType)
 
 	if err != nil {
 		fmt.Println(err)
@@ -109,7 +114,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				wheelsanddeals.vehicle_makes 
 			WHERE 
 				id = ?`
-		makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
+		makeRow := m.DB.QueryRowContext(ctx, query, c.VehicleMakesID)
 
 		err = makeRow.Scan(
 			&vehicleMake.ID,
@@ -136,7 +141,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				wheelsanddeals.vehicle_models 
 			WHERE 
 				id = ?`
-		modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
+		modelRow := m.DB.QueryRowContext(ctx, query, c.VehicleModelsID)
 
 		err = modelRow.Scan(
 			&model.ID,
@@ -167,7 +172,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				and o.active = 1
 			order by 
 				o.option_name`
-		oRows, err := m.DB.Query(query, c.ID)
+		oRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
 			fmt.Println("*** Error getting options:", err)
 		}
@@ -208,7 +213,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				vehicle_id = ?
 			order by 
 				sort_order`
-		iRows, err := m.DB.Query(query, c.ID)
+		iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -243,6 +248,9 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 
 // AllVehiclesPaginated returns paginated slice of vehicles, by type
 func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year, make, model, price int) ([]clientmodels.Vehicle, int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var v []clientmodels.Vehicle
 
 	where := ""
@@ -277,7 +285,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		where 
 			status = 1 
 			and vehicle_type = ? %s`, where)
-		n, err := m.DB.Query(stmt, vehicleTypeID)
+		n, err := m.DB.QueryContext(ctx, stmt, vehicleTypeID)
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -293,7 +301,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			status = 1 
 			and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s 
 			and v.used = 1`, where)
-		n, err := m.DB.Query(stmt)
+		n, err := m.DB.QueryContext(ctx, stmt)
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -309,7 +317,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			status = 1 
 			and vehicle_type in (13, 10, 9, 15) %s 
 			and v.used = 1`, where)
-		n, err := m.DB.Query(stmt)
+		n, err := m.DB.QueryContext(ctx, stmt)
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -367,7 +375,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 			%s
 		limit ? offset ?`, where, orderBy)
-		rows, err = m.DB.Query(query, vehicleTypeID, perPage, offset)
+		rows, err = m.DB.QueryContext(ctx, query, vehicleTypeID, perPage, offset)
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -413,7 +421,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 		limit ? offset ?`, where, orderBy)
 
-		rows, err = m.DB.Query(query, perPage, offset)
+		rows, err = m.DB.QueryContext(ctx, query, perPage, offset)
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -459,7 +467,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 		limit ? offset ?`, where, orderBy)
 
-		rows, err = m.DB.Query(query, perPage, offset)
+		rows, err = m.DB.QueryContext(ctx, query, perPage, offset)
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -516,7 +524,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				wheelsanddeals.vehicle_makes 
 			WHERE 
 				id = ?`
-		makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
+		makeRow := m.DB.QueryRowContext(ctx, query, c.VehicleMakesID)
 
 		err = makeRow.Scan(
 			&vehicleMake.ID,
@@ -543,7 +551,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				wheelsanddeals.vehicle_models 
 			WHERE 
 				id = ?`
-		modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
+		modelRow := m.DB.QueryRowContext(ctx, query, c.VehicleModelsID)
 
 		err = modelRow.Scan(
 			&model.ID,
@@ -574,7 +582,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				and o.active = 1
 			order by 
 				o.option_name`
-		oRows, err := m.DB.Query(query, c.ID)
+		oRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
 			fmt.Println("*** Error getting options:", err)
 		}
@@ -615,7 +623,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				vehicle_id = ?
 			order by 
 				sort_order`
-		iRows, err := m.DB.Query(query, c.ID)
+		iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -650,6 +658,9 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 
 // GetYearsForVehicleType gets years for vehicle type
 func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var years []int
 	query := `
 			select distinct 
@@ -661,7 +672,7 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 				and v.status = 1
 			order by 
 				year desc`
-	rows, err := m.DB.Query(query, id)
+	rows, err := m.DB.QueryContext(ctx, query, id)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -681,6 +692,9 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 
 // GetMakesForVehicleType gets makes for vehicle type
 func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var makes []clientmodels.Make
 	query := ""
 
@@ -719,7 +733,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 			order by 
 				m.make`
 	}
-	rows, err := m.DB.Query(query, id)
+	rows, err := m.DB.QueryContext(ctx, query, id)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -742,6 +756,9 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 
 // GetModelsForVehicleType gets models for vehicle type
 func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var models []clientmodels.Model
 	query := `
 			select  
@@ -752,7 +769,7 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 				m.id in (select v.vehicle_models_id from wheelsanddeals.vehicles v where status = 1 and vehicle_type = ?)
 			order by 
 				m.model`
-	rows, err := m.DB.Query(query, id)
+	rows, err := m.DB.QueryContext(ctx, query, id)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -775,6 +792,9 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 
 // GetPowerSportItem gets a complete record for a power sports item
 func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var c clientmodels.Vehicle
 
 	query := `
@@ -811,7 +831,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 		where
 			id = ?`
 
-	row := m.DB.QueryRow(query, id)
+	row := m.DB.QueryRowContext(ctx, query, id)
 
 	err := row.Scan(
 		&c.ID,
@@ -860,7 +880,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				wheelsanddeals.vehicle_makes 
 			WHERE 
 				id = ?`
-	makeRow := m.DB.QueryRow(query, c.VehicleMakesID)
+	makeRow := m.DB.QueryRowContext(ctx, query, c.VehicleMakesID)
 
 	err = makeRow.Scan(
 		&vehicleMake.ID,
@@ -886,7 +906,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				wheelsanddeals.vehicle_models 
 			WHERE 
 				id = ?`
-	modelRow := m.DB.QueryRow(query, c.VehicleModelsID)
+	modelRow := m.DB.QueryRowContext(ctx, query, c.VehicleModelsID)
 
 	err = modelRow.Scan(
 		&model.ID,
@@ -916,7 +936,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				and o.active = 1
 			order by 
 				o.option_name`
-	oRows, err := m.DB.Query(query, c.ID)
+	oRows, err := m.DB.QueryContext(ctx, query, c.ID)
 	if err != nil {
 		fmt.Println("*** Error getting options:", err)
 	}
@@ -959,7 +979,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 				vehicle_id = ?
 			order by 
 				sort_order`
-	iRows, err := m.DB.Query(query, c.ID)
+	iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -1000,7 +1020,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 			where
 				vv.vehicle_id = ?
 			limit 1`
-	vRow := m.DB.QueryRow(query, c.ID)
+	vRow := m.DB.QueryRowContext(ctx, query, c.ID)
 
 	var vehicleVideo clientmodels.Video
 
@@ -1021,6 +1041,9 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 
 // GetSales gets max six sales people
 func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	var s []clientmodels.SalesStaff
 
 	query := `
@@ -1039,7 +1062,7 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 
 		order by RAND() limit 6`
 
-	rows, err := m.DB.Query(query)
+	rows, err := m.DB.QueryContext(ctx, query)
 
 	if err != nil {
 		fmt.Println(err)
@@ -1069,13 +1092,17 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 
 // InsertCreditApp saves a credit application
 func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	stmt := `
 	INSERT INTO wheelsanddeals.credit_applications (first_name, last_name, email, phone, address, city, province, zip, 
 	                   vehicle, processed, created_at, updated_at)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
 
-	_, err := m.DB.Exec(stmt,
+	_, err := m.DB.ExecContext(ctx,
+		stmt,
 		a.FirstName,
 		a.LastName,
 		a.Email,
@@ -1098,13 +1125,16 @@ func (m *VehicleModel) InsertCreditApp(a clientmodels.CreditApp) error {
 
 // InsertTestDrive saves a test drive application
 func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	stmt := `
 	INSERT INTO wheelsanddeals.test_drives (users_name, email, phone, preferred_date, preferred_time, vehicle_id, 
 	                   processed, created_at, updated_at)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
 
-	_, err := m.DB.Exec(stmt,
+	_, err := m.DB.ExecContext(ctx, stmt,
 		a.UsersName,
 		a.Email,
 		a.Phone,
@@ -1124,13 +1154,16 @@ func (m *VehicleModel) InsertTestDrive(a clientmodels.TestDrive) error {
 
 // InsertQuickQuote saves a quick quote to remote dataabase
 func (m *VehicleModel) InsertQuickQuote(a clientmodels.QuickQuote) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
 	stmt := `
 	INSERT INTO wheelsanddeals.quick_quotes (users_name, email, phone, vehicle_id, 
 	                   processed, created_at, updated_at)
     VALUES(?, ?, ?, ?, ?, ?, ?)
     `
 
-	_, err := m.DB.Exec(stmt,
+	_, err := m.DB.ExecContext(ctx, stmt,
 		a.UsersName,
 		a.Email,
 		a.Phone,
