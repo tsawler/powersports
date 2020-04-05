@@ -126,18 +126,19 @@
                   href="//cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/1.10.3/jquery.contextMenu.min.css">
             <link rel="stylesheet"
                   href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.0.0-beta.3/css/bootstrap-colorpicker.min.css">
-{{/*            <link rel="stylesheet" href="/static/css/BootSideMenu.css">*/}}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         {{end}}
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.5.6/plyr.css"
               integrity="sha256-YVY0cgMlN3Yk6z5+sLnD90gFlKARWzjDwWSnReb0ATI=" crossorigin="anonymous"/>
 
-{{/*        <link rel="stylesheet"*/}}
-{{/*              href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"*/}}
-{{/*              integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />*/}}
 
         <link rel="stylesheet" href="/static/custom.css?v={{.CSSVersion}}">
+
+        <style>
+            {{safeCSS .SiteWideCSSFromPrefs}}
+        </style>
+
         {{ $siteWideCss := index .PreferenceMap "css"}}
         {{if ne $siteWideCss ""}}
             {{ safeHTML $siteWideCss}}
@@ -187,19 +188,19 @@
     {{if eq $microdata "1"}}
         <script type="application/ld+json">{
                 "@context": "http:\/\/schema.org",
-                "@type": "{{index .PreferenceMap "org-type"}}",
-                "name": "{{index .PreferenceMap "org-name"}}",
-                "email": "{{index .PreferenceMap "org-email"}}",
-                "address": "{{index .PreferenceMap "org-address"}}",
-                "telephone": "{{index .PreferenceMap "org-phone"}}",
+                "@type": {{safeJSStr (index .PreferenceMap "org-type")}},
+                "name": {{safeJSStr (index .PreferenceMap "org-name")}},
+                "email": {{safeJSStr (index .PreferenceMap "org-email")}},
+                "address": {{safeJSStr (index .PreferenceMap "org-address")}},
+                "telephone": {{safeJSStr (index .PreferenceMap "org-phone")}},
                 {{ $img := index .PreferenceMap.logo}}
-                {{if ne $img ""}}
+                {{- if ne $img "" -}}
                 "image": "https:\/\/{{.ServerName}}\/static\/prefs\/{{$img}}"
-                {{end}}
+                {{- end -}}
             }
-
         </script>
     {{end}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
@@ -210,8 +211,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="/static/assets/scripts/slick/slick.min.js"></script>
-{{/*    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"*/}}
-{{/*            integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>*/}}
     {{if eq (index .PreferenceMap "use-pusher") "1"}}
         <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
         <script>
@@ -339,6 +338,19 @@
             $("#page-details-opener").removeClass('d-none');
         });
 
+        {{$menuColor := "navbar-light"}}
+        {{$menuTransparent := 0}}
+
+        {{if .Page.PageTitle}}
+        {{$menuColor = .Page.MenuColor}}
+        {{$menuTransparent = .Page.MenuTransparent}}
+        {{end}}
+
+        {{if .Post.Title}}
+        {{$menuColor = .Post.MenuColor}}
+        {{$menuTransparent = .Post.MenuTransparent}}
+        {{end}}
+
         {{$logo := index .PreferenceMap "logo"}}
         {{$invertedLogo := index .PreferenceMap "reverse-logo"}}
         {{$sticky := index .PreferenceMap "sticky-menu"}}
@@ -355,12 +367,18 @@
                 if (scroll >= 50) {
                     header.addClass("scrolled").addClass("fixed-top");
                     $("#top-bar").addClass('d-none');
+                    $("#top-bar-search-field").addClass("search__field-scrolled");
+
                     {{if ne $invertedLogo ""}}
                     $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$invertedLogo}}');
                     {{end}}
+
                     if (header.hasClass("bg-transparent")) {
                         header.removeClass("bg-transparent").addClass("was-transparent");
                     }
+
+                    $("#search-form-button").addClass("text-white");
+
                     {{$showBar := index .PreferenceMap "show-top-bar"}}
                     {{if eq $showBar "1"}}
                     {{if pushDown $topBar .Page.MenuTransparent}}
@@ -372,12 +390,19 @@
                 } else {
                     header.removeClass("scrolled").removeClass("fixed-top");
                     $("#top-bar").removeClass('d-none');
+                    $("#top-bar-search-field").removeClass("search__field-scrolled");
+
                     {{if ne $invertedLogo ""}}
                     $("#menu-bar-logo").attr('src', '/static/site-content/prefs/{{$logo}}');
                     {{end}}
                     if (header.hasClass("was-transparent")) {
                         header.removeClass("was-transparent").addClass("bg-transparent");
                     }
+
+                    {{if eq $menuColor "navbar-light"}}
+                    $("#search-form-button").removeClass("text-white");
+                    {{end}}
+
                     {{if eq $showBar "1"}}
                     {{if pushDown $topBar .Page.MenuTransparent}}
                     $("#top-nav-bar").attr("style", "margin-top: 60px;");

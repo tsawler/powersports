@@ -19,7 +19,7 @@
                                 <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#dddetails">Details</a>
                                 </li>
                                 <li class="nav-item" id="ddsortmenuitems"><a data-toggle="tab" class="nav-link"
-                                                                           href="#ddplacement">Placement</a>
+                                                                             href="#ddplacement">Placement</a>
                                 </li>
                             </ul>
 
@@ -98,7 +98,8 @@
                                     </div>
 
                                     <input type="hidden" name="menu_item_id" id="ddmenu_item_id" value="0">
-                                    <input type="hidden" name="parent_menu_item_id" id="dd_parent_menu_item_id" value="0">
+                                    <input type="hidden" name="parent_menu_item_id" id="dd_parent_menu_item_id"
+                                           value="0">
                                 </div>
 
                                 <div class="tab-pane" id="ddplacement">
@@ -114,12 +115,15 @@
                 </div>
 
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger delbtn btn-sm" onclick="deleteDDMenuItem()">Delete</button>
-                    <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="$('#ddmenuItemForm').submit()">
-                        Save
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger delbtn btn-sm" onclick="deleteDDMenuItem()">Delete
                     </button>
+                    <div>
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="$('#ddmenuItemForm').submit()">
+                            Save
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -250,14 +254,17 @@
                 </div>
 
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger delbtn btn-sm" onclick="deleteMenuItem()">Delete</button>
-                    <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="$('#menuItemForm').submit()">
-                        Save
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger delbtn btn-sm" onclick="deleteMenuItem()">
+                        Delete
                     </button>
+                    <div>
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="$('#menuItemForm').submit()">
+                            Save
+                        </button>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -316,6 +323,7 @@
                     $("#ddmenu_page_id").val(json.page_id);
                     $("#ddmenu_new_window").val(json.new_window);
                     $("#ddmenu_url").val(json.url);
+                    $(".delbtn").removeAttr("disabled");
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Status: " + textStatus);
@@ -415,7 +423,7 @@
                         $("#placement").removeClass("hidden");
                         $("#sortmenuitems").removeClass("hidden");
                         $("#deletebutton").removeClass("hidden");
-                        $(".delbtn").removeClass("hidden");
+                        $(".delbtn").removeAttr("disabled");
                         $('#menuItemModal').modal();
                     } else {
                         bootbox.alert('something went wrong');
@@ -490,7 +498,7 @@
             $('#deletebutton').addClass("hidden");
             $("#sortmenuitems").addClass("hidden");
             $("#placement").addClass("hidden");
-            $(".delbtn").addClass("hidden");
+            $(".delbtn").attr("disabled", "disabled");
         }
 
         function addDDMenuItem(x) {
@@ -504,7 +512,7 @@
             $('#ddmenuItemModal').modal();
             $("#dddeletebutton").addClass("hidden");
             $("#dd_parent_menu_item_id").val(x);
-            $(".delbtn").addClass("hidden");
+            $(".delbtn").attr("disabled", "disabled");
         }
 
         function deleteMenuItem() {
