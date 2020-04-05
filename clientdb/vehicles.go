@@ -60,6 +60,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 	rows, err := m.DB.QueryContext(ctx, query, vehicleType)
 
 	if err != nil {
+		rows.Close()
 		fmt.Println(err)
 		return v, err
 	}
@@ -97,6 +98,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			&c.UpdatedAt,
 		)
 		if err != nil {
+			rows.Close()
 			fmt.Println(err)
 			return v, err
 		}
@@ -215,6 +217,7 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 				sort_order`
 		iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
+			iRows.Close()
 			fmt.Println(err)
 		}
 
@@ -274,7 +277,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 	}
 
 	stmt := ""
-	var nRows *sql.Rows
+	var nRows *sql.Row
 
 	if vehicleTypeID < 1000 {
 		stmt = fmt.Sprintf(`
@@ -285,12 +288,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		where 
 			status = 1 
 			and vehicle_type = ? %s`, where)
-		n, err := m.DB.QueryContext(ctx, stmt, vehicleTypeID)
-		if err != nil {
-			fmt.Println(err)
-			return nil, 0, err
-		}
-		nRows = n
+		nRows = m.DB.QueryRowContext(ctx, stmt, vehicleTypeID)
 	} else if vehicleTypeID == 1000 {
 		stmt = fmt.Sprintf(`
 		select 
@@ -301,12 +299,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			status = 1 
 			and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s 
 			and v.used = 1`, where)
-		n, err := m.DB.QueryContext(ctx, stmt)
-		if err != nil {
-			fmt.Println(err)
-			return nil, 0, err
-		}
-		nRows = n
+		nRows = m.DB.QueryRowContext(ctx, stmt)
 	} else if vehicleTypeID == 1001 {
 		stmt = fmt.Sprintf(`
 		select 
@@ -317,17 +310,9 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			status = 1 
 			and vehicle_type in (13, 10, 9, 15) %s 
 			and v.used = 1`, where)
-		n, err := m.DB.QueryContext(ctx, stmt)
-		if err != nil {
-			fmt.Println(err)
-			return nil, 0, err
-		}
-		nRows = n
+		nRows = m.DB.QueryRowContext(ctx, stmt)
 	}
 
-	defer nRows.Close()
-
-	nRows.Next()
 	var num int
 	err := nRows.Scan(&num)
 	if err != nil {
@@ -376,11 +361,12 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 		limit ? offset ?`, where, orderBy)
 		rows, err = m.DB.QueryContext(ctx, query, vehicleTypeID, perPage, offset)
+		defer rows.Close()
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
 		}
-		defer rows.Close()
+
 	} else if vehicleTypeID == 1000 {
 		query = fmt.Sprintf(`
 		select 
@@ -424,6 +410,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		rows, err = m.DB.QueryContext(ctx, query, perPage, offset)
 		if err != nil {
 			fmt.Println(err)
+			rows.Close()
 			return nil, 0, err
 		}
 		defer rows.Close()
@@ -470,6 +457,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		rows, err = m.DB.QueryContext(ctx, query, perPage, offset)
 		if err != nil {
 			fmt.Println(err)
+			rows.Close()
 			return nil, 0, err
 		}
 		defer rows.Close()
@@ -508,6 +496,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		)
 		if err != nil {
 			fmt.Println(err)
+			rows.Close()
 			return nil, 0, err
 		}
 
@@ -584,6 +573,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				o.option_name`
 		oRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
+			oRows.Close()
 			fmt.Println("*** Error getting options:", err)
 		}
 
@@ -601,6 +591,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 
 			if err != nil {
 				fmt.Println(err)
+				oRows.Close()
 			} else {
 				vehicleOptions = append(vehicleOptions, o)
 			}
@@ -625,6 +616,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 				sort_order`
 		iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
+			iRows.Close()
 			fmt.Println(err)
 		}
 
@@ -642,6 +634,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 
 			if err != nil {
 				fmt.Println(err)
+				iRows.Close()
 			} else {
 				vehicleImages = append(vehicleImages, o)
 			}
@@ -735,6 +728,7 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 	}
 	rows, err := m.DB.QueryContext(ctx, query, id)
 	if err != nil {
+		rows.Close()
 		fmt.Println(err)
 	}
 
@@ -771,6 +765,7 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 				m.model`
 	rows, err := m.DB.QueryContext(ctx, query, id)
 	if err != nil {
+		rows.Close()
 		fmt.Println(err)
 	}
 
@@ -982,6 +977,7 @@ func (m *VehicleModel) GetPowerSportItem(id int) (clientmodels.Vehicle, error) {
 	iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 	if err != nil {
 		fmt.Println(err)
+		iRows.Close()
 	}
 
 	defer iRows.Close()
@@ -1066,6 +1062,7 @@ func (m *VehicleModel) GetSales() ([]clientmodels.SalesStaff, error) {
 
 	if err != nil {
 		fmt.Println(err)
+		rows.Close()
 		return s, err
 	}
 	defer rows.Close()
