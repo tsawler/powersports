@@ -58,7 +58,6 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 		order by year desc`
 
 	rows, err := m.DB.QueryContext(ctx, query, vehicleType)
-
 	if err != nil {
 		rows.Close()
 		fmt.Println(err)
@@ -361,7 +360,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 		limit ? offset ?`, where, orderBy)
 		rows, err = m.DB.QueryContext(ctx, query, vehicleTypeID, perPage, offset)
-		defer rows.Close()
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -413,7 +411,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			rows.Close()
 			return nil, 0, err
 		}
-		defer rows.Close()
 	} else if vehicleTypeID == 1001 {
 		query = fmt.Sprintf(`
 		select 
@@ -460,8 +457,9 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			rows.Close()
 			return nil, 0, err
 		}
-		defer rows.Close()
 	}
+
+	defer rows.Close()
 
 	for rows.Next() {
 		c := &clientmodels.Vehicle{}
