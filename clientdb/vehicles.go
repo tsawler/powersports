@@ -97,7 +97,6 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			&c.UpdatedAt,
 		)
 		if err != nil {
-			rows.Close()
 			fmt.Println(err)
 			return v, err
 		}
@@ -243,6 +242,10 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 
 		current := *c
 		v = append(v, current)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return v, nil
@@ -494,7 +497,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		)
 		if err != nil {
 			fmt.Println(err)
-			rows.Close()
 			return nil, 0, err
 		}
 
@@ -644,6 +646,10 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		v = append(v, current)
 	}
 
+	if err = rows.Err(); err != nil {
+		return nil, num, err
+	}
+
 	return v, num, nil
 }
 
@@ -677,6 +683,10 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 			fmt.Println(err)
 		}
 		years = append(years, y)
+	}
+
+	if err = rows.Err(); err != nil {
+		return years, err
 	}
 	return years, nil
 }
@@ -743,6 +753,10 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 		makes = append(makes, y)
 	}
 
+	if err = rows.Err(); err != nil {
+		return makes, err
+	}
+
 	return makes, nil
 }
 
@@ -778,6 +792,10 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 			fmt.Println(err)
 		}
 		models = append(models, y)
+	}
+
+	if err = rows.Err(); err != nil {
+		return models, err
 	}
 
 	return models, nil
