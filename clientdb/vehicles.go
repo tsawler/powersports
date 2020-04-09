@@ -1335,8 +1335,6 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 		c.Model = model
 		c.VehicleModel = model.Model
 
-		current := *c
-
 		// get images
 		query = `
 			select 
@@ -1351,14 +1349,15 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 			where
 				vehicle_id = ?
 			order by 
-				sort_order limit 2`
+				sort_order asc`
 		iRows, err := m.DB.QueryContext(ctx, query, c.ID)
 		if err != nil {
 			iRows.Close()
 			fmt.Println(err)
 		}
 
-		count := 1
+		var vehicleImages []*clientmodels.Image
+
 		for iRows.Next() {
 			o := &clientmodels.Image{}
 			err = iRows.Scan(
@@ -1369,14 +1368,23 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 				&o.UpdatedAt,
 				&o.SortOrder,
 			)
-			if count == 1 {
-				current.Photo1 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
+
+			ph := fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
+			o.Image = ph
+
+			if err != nil {
+				fmt.Println(err)
 			} else {
-				current.Photo2 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
+				vehicleImages = append(vehicleImages, o)
 			}
-			count = count + 1
+
 		}
 		iRows.Close()
+
+		c.Images = vehicleImages
+		iRows.Close()
+
+		current := *c
 
 		v = append(v, current)
 	}
