@@ -1233,7 +1233,7 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 		where
 			v.status = 1
 		
-		order by stock_no limit 2`
+		order by stock_no`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 
