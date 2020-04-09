@@ -8,9 +8,9 @@ import (
 )
 
 type Xml struct {
-	XMLName  xml.Name `xml:"vehicles"`
-	Version  string   `xml:"version,attr"`
-	Vehicles []clientmodels.Vehicle
+	XMLName  xml.Name               `xml:"vehicles"`
+	Version  string                 `xml:"version,attr"`
+	Vehicles []clientmodels.Vehicle `xml:"Vehicle"`
 }
 
 func FacebookMarketplaceFeed(w http.ResponseWriter, r *http.Request) {
