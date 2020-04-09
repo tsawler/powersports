@@ -226,7 +226,7 @@
                     <div class="row justify-content-between">
 
                         <div class="col-3">
-                            {{if or (gt .Page.ID 1) (ne .Page.PageImmutable 1)}}
+                            {{if or (gt .Page.ID 1) (ne .Page.Immutable 1)}}
                                 <a class="btn btn-danger mb5 btn-rounded text-white ml-5" href="#!"
                                    onclick="deletePage()">Delete</a>
                             {{end}}
