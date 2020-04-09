@@ -4,9 +4,9 @@ import "time"
 
 // Vehicle holds a vehicle
 type Vehicle struct {
-	ID              int              `xml:"ID"`
+	ID              int              `xml:"-"`
 	StockNo         string           `xml:"StockNo"`
-	Cost            float32          `xml:"Cost"`
+	Cost            float32          `xml:"Price"`
 	Vin             string           `xml:"-"`
 	Odometer        int              `xml:"-"`
 	Year            int              `xml:"Year"`
@@ -36,8 +36,8 @@ type Vehicle struct {
 	Video           Video            `xml:"-"`
 	Images          []*Image         `xml:"-"`
 	VehicleOptions  []*VehicleOption `xml:"-"`
-	VehicleMake     string           `xml:"make"`
-	VehicleModel    string           `xml:"model"`
+	VehicleMake     string           `xml:"Make"`
+	VehicleModel    string           `xml:"Model"`
 	Photo1          string           `xml:"Photo1"`
 	Photo2          string           `xml:"Photo2"`
 }
