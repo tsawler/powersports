@@ -34,12 +34,10 @@ type Vehicle struct {
 	Make            Make             `xml:"-"`
 	Model           Model            `xml:"-"`
 	Video           Video            `xml:"-"`
-	Images          []*Image         `xml:"-"`
+	Images          []*Image         `xml:"Images"`
 	VehicleOptions  []*VehicleOption `xml:"-"`
 	VehicleMake     string           `xml:"Make"`
 	VehicleModel    string           `xml:"Model"`
-	Photo1          string           `xml:"Photo1"`
-	Photo2          string           `xml:"Photo2"`
 }
 
 // Option holds vehicle options
@@ -80,12 +78,12 @@ type Model struct {
 
 // Image is a vehicle image
 type Image struct {
-	ID        int
-	VehicleID int
-	Image     string `xml:"image"`
-	SortOrder int
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        int       `xml:"-"`
+	VehicleID int       `xml:"-"`
+	Image     string    `xml:"image"`
+	SortOrder int       `xml:"-"`
+	CreatedAt time.Time `xml:"-"`
+	UpdatedAt time.Time `xml:"-"`
 }
 
 // Video holds a video
