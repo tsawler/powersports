@@ -35,6 +35,10 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	fileServer = http.FileServer(http.Dir("./ui/static/"))
 	mux.Get("/static/", http.StripPrefix("/static", fileServer))
 
+	// api
+	mux.Get("/api/facebook-marketplace", dynamicMiddleware.ThenFunc(FacebookMarketplaceFeed))
+
+	// homepage
 	mux.Get("/", dynamicMiddleware.ThenFunc(ShowHome))
 
 	mux.Get("/blog", standardMiddleWare.ThenFunc(func(w http.ResponseWriter, r *http.Request) {
