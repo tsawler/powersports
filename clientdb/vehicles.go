@@ -1233,7 +1233,7 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 		where
 			v.status = 1
 		
-		order by stock_no limit 10`
+		order by stock_no limit 2`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 
@@ -1358,7 +1358,6 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 			fmt.Println(err)
 		}
 
-		var vehicleImages []*clientmodels.Image
 		count := 1
 		for iRows.Next() {
 			o := &clientmodels.Image{}
@@ -1371,18 +1370,12 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 				&o.SortOrder,
 			)
 			if count == 1 {
-				c.Photo1 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
+				current.Photo1 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
 			} else {
-				c.Photo2 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
-			}
-			if err != nil {
-				fmt.Println(err)
-			} else {
-				vehicleImages = append(vehicleImages, o)
+				current.Photo2 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
 			}
 			count = count + 1
 		}
-		c.Images = vehicleImages
 		iRows.Close()
 
 		v = append(v, current)

@@ -34,7 +34,7 @@ type Vehicle struct {
 	Make            Make             `xml:"-"`
 	Model           Model            `xml:"-"`
 	Video           Video            `xml:"-"`
-	Images          []*Image         `xml:"Vehicle-Images"`
+	Images          []*Image         `xml:"-"`
 	VehicleOptions  []*VehicleOption `xml:"-"`
 	VehicleMake     string           `xml:"make"`
 	VehicleModel    string           `xml:"model"`
