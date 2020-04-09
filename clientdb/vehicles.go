@@ -58,7 +58,6 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 		order by year desc`
 
 	rows, err := m.DB.QueryContext(ctx, query, vehicleType)
-
 	if err != nil {
 		rows.Close()
 		fmt.Println(err)
@@ -98,7 +97,6 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 			&c.UpdatedAt,
 		)
 		if err != nil {
-			rows.Close()
 			fmt.Println(err)
 			return v, err
 		}
@@ -246,6 +244,10 @@ func (m *VehicleModel) GetVehiclesForSaleByType(vehicleType int) ([]clientmodels
 		v = append(v, current)
 	}
 
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return v, nil
 }
 
@@ -361,7 +363,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			%s
 		limit ? offset ?`, where, orderBy)
 		rows, err = m.DB.QueryContext(ctx, query, vehicleTypeID, perPage, offset)
-		defer rows.Close()
 		if err != nil {
 			fmt.Println(err)
 			return nil, 0, err
@@ -413,7 +414,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			rows.Close()
 			return nil, 0, err
 		}
-		defer rows.Close()
 	} else if vehicleTypeID == 1001 {
 		query = fmt.Sprintf(`
 		select 
@@ -460,8 +460,9 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			rows.Close()
 			return nil, 0, err
 		}
-		defer rows.Close()
 	}
+
+	defer rows.Close()
 
 	for rows.Next() {
 		c := &clientmodels.Vehicle{}
@@ -496,7 +497,6 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		)
 		if err != nil {
 			fmt.Println(err)
-			rows.Close()
 			return nil, 0, err
 		}
 
@@ -646,6 +646,10 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		v = append(v, current)
 	}
 
+	if err = rows.Err(); err != nil {
+		return nil, num, err
+	}
+
 	return v, num, nil
 }
 
@@ -679,6 +683,10 @@ func (m *VehicleModel) GetYearsForVehicleType(id int) ([]int, error) {
 			fmt.Println(err)
 		}
 		years = append(years, y)
+	}
+
+	if err = rows.Err(); err != nil {
+		return years, err
 	}
 	return years, nil
 }
@@ -745,6 +753,10 @@ func (m *VehicleModel) GetMakesForVehicleType(id int) ([]clientmodels.Make, erro
 		makes = append(makes, y)
 	}
 
+	if err = rows.Err(); err != nil {
+		return makes, err
+	}
+
 	return makes, nil
 }
 
@@ -780,6 +792,10 @@ func (m *VehicleModel) GetModelsForVehicleType(id int) ([]clientmodels.Model, er
 			fmt.Println(err)
 		}
 		models = append(models, y)
+	}
+
+	if err = rows.Err(); err != nil {
+		return models, err
 	}
 
 	return models, nil
@@ -1174,4 +1190,200 @@ func (m *VehicleModel) InsertQuickQuote(a clientmodels.QuickQuote) error {
 	}
 
 	return nil
+}
+
+// GetAllVehiclesForSale returns slice of all Vehicles for sale
+func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var v []clientmodels.Vehicle
+
+	query := `
+		select 
+		       id, 
+		       stock_no, 
+		       coalesce(cost, 0),
+		       vin, 
+		       coalesce(odometer, 0),
+		       coalesce(year, 0),
+		       coalesce(trim, ''),
+		       vehicle_type,
+		       coalesce(body, ''),
+		       coalesce(seating_capacity,''),
+		       coalesce(drive_train,''),
+		       coalesce(engine,''),
+		       coalesce(exterior_color,''),
+		       coalesce(interior_color,''),
+		       coalesce(transmission,''),
+		       coalesce(options,''),
+		       coalesce(model_number, ''),
+		       coalesce(total_msr,0.0),
+		       v.status,
+		       coalesce(description, ''),
+		       vehicle_makes_id,
+		       vehicle_models_id,
+		       hand_picked,
+		       used,
+		       coalesce(price_for_display,''),
+		       created_at,
+		       updated_at
+		from 
+		     wheelsanddeals.vehicles v 
+		where
+			v.status = 1
+		
+		order by stock_no`
+
+	rows, err := m.DB.QueryContext(ctx, query)
+
+	if err != nil {
+		fmt.Println(err)
+		return v, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		c := &clientmodels.Vehicle{}
+		err = rows.Scan(
+			&c.ID,
+			&c.StockNo,
+			&c.Cost,
+			&c.Vin,
+			&c.Odometer,
+			&c.Year,
+			&c.Trim,
+			&c.VehicleType,
+			&c.Body,
+			&c.SeatingCapacity,
+			&c.DriveTrain,
+			&c.Engine,
+			&c.ExteriorColour,
+			&c.InteriorColour,
+			&c.Transmission,
+			&c.Options,
+			&c.ModelNumber,
+			&c.TotalMSR,
+			&c.Status,
+			&c.Description,
+			&c.VehicleMakesID,
+			&c.VehicleModelsID,
+			&c.HandPicked,
+			&c.Used,
+			&c.PriceForDisplay,
+			&c.CreatedAt,
+			&c.UpdatedAt,
+		)
+		if err != nil {
+			fmt.Println(err)
+			return v, err
+		}
+
+		// get make
+		vehicleMake := clientmodels.Make{}
+
+		query = `
+			SELECT 
+				id, 
+				make, 
+				created_at, 
+				updated_at 
+			FROM 
+				wheelsanddeals.vehicle_makes 
+			WHERE 
+				id = ?`
+		makeRow := m.DB.QueryRowContext(ctx, query, c.VehicleMakesID)
+
+		err = makeRow.Scan(
+			&vehicleMake.ID,
+			&vehicleMake.Make,
+			&vehicleMake.CreatedAt,
+			&vehicleMake.UpdatedAt)
+		if err != nil {
+			fmt.Println("*** Error getting make:", err)
+			//return v, err
+		}
+		c.Make = vehicleMake
+		c.VehicleMake = vehicleMake.Make
+
+		// get model
+		model := clientmodels.Model{}
+
+		query = `
+			SELECT 
+				id, 
+				model, 
+				vehicle_makes_id,
+				created_at, 
+				updated_at 
+			FROM 
+				wheelsanddeals.vehicle_models 
+			WHERE 
+				id = ?`
+		modelRow := m.DB.QueryRowContext(ctx, query, c.VehicleModelsID)
+
+		err = modelRow.Scan(
+			&model.ID,
+			&model.Model,
+			&model.MakeID,
+			&model.CreatedAt,
+			&model.UpdatedAt)
+		if err != nil {
+			fmt.Println("*** Error getting model:", err)
+			//return v, err
+		}
+		c.Model = model
+		c.VehicleModel = model.Model
+
+		current := *c
+
+		// get images
+		query = `
+			select 
+				id, 
+				vehicle_id,
+				image,
+				created_at,
+				updated_at,
+				sort_order
+			from 
+				wheelsanddeals.vehicle_images 
+			where
+				vehicle_id = ?
+			order by 
+				sort_order limit 2`
+		iRows, err := m.DB.QueryContext(ctx, query, c.ID)
+		if err != nil {
+			iRows.Close()
+			fmt.Println(err)
+		}
+
+		count := 1
+		for iRows.Next() {
+			o := &clientmodels.Image{}
+			err = iRows.Scan(
+				&o.ID,
+				&o.VehicleID,
+				&o.Image,
+				&o.CreatedAt,
+				&o.UpdatedAt,
+				&o.SortOrder,
+			)
+			if count == 1 {
+				current.Photo1 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
+			} else {
+				current.Photo2 = fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
+			}
+			count = count + 1
+		}
+		iRows.Close()
+
+		v = append(v, current)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return v, nil
 }

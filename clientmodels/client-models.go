@@ -4,38 +4,42 @@ import "time"
 
 // Vehicle holds a vehicle
 type Vehicle struct {
-	ID              int
-	StockNo         string
-	Cost            float32
-	Vin             string
-	Odometer        int
-	Year            int
-	Trim            string
-	VehicleType     int
-	Body            string
-	SeatingCapacity string
-	DriveTrain      string
-	Engine          string
-	ExteriorColour  string
-	InteriorColour  string
-	Transmission    string
-	Options         string
-	ModelNumber     string
-	TotalMSR        float32
-	Status          int
-	Description     string
-	VehicleMakesID  int
-	VehicleModelsID int
-	HandPicked      int
-	Used            int
-	PriceForDisplay string
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
-	Make            Make
-	Model           Model
-	Video           Video
-	Images          []*Image
-	VehicleOptions  []*VehicleOption
+	ID              int              `xml:"-"`
+	StockNo         string           `xml:"StockNo"`
+	Cost            float32          `xml:"Price"`
+	Vin             string           `xml:"-"`
+	Odometer        int              `xml:"-"`
+	Year            int              `xml:"Year"`
+	Trim            string           `xml:"-"`
+	VehicleType     int              `xml:"-"`
+	Body            string           `xml:"-"`
+	SeatingCapacity string           `xml:"-"`
+	DriveTrain      string           `xml:"-"`
+	Engine          string           `xml:"-"`
+	ExteriorColour  string           `xml:"-"`
+	InteriorColour  string           `xml:"-"`
+	Transmission    string           `xml:"-"`
+	Options         string           `xml:"-"`
+	ModelNumber     string           `xml:"-"`
+	TotalMSR        float32          `xml:"-"`
+	Status          int              `xml:"-"`
+	Description     string           `xml:"Description"`
+	VehicleMakesID  int              `xml:"-"`
+	VehicleModelsID int              `xml:"-"`
+	HandPicked      int              `xml:"-"`
+	Used            int              `xml:"-"`
+	PriceForDisplay string           `xml:"-"`
+	CreatedAt       time.Time        `xml:"-"`
+	UpdatedAt       time.Time        `xml:"-"`
+	Make            Make             `xml:"-"`
+	Model           Model            `xml:"-"`
+	Video           Video            `xml:"-"`
+	Images          []*Image         `xml:"-"`
+	VehicleOptions  []*VehicleOption `xml:"-"`
+	VehicleMake     string           `xml:"Make"`
+	VehicleModel    string           `xml:"Model"`
+	Photo1          string           `xml:"Photo1"`
+	Photo2          string           `xml:"Photo2"`
 }
 
 // Option holds vehicle options
@@ -78,7 +82,7 @@ type Model struct {
 type Image struct {
 	ID        int
 	VehicleID int
-	Image     string
+	Image     string `xml:"image"`
 	SortOrder int
 	CreatedAt time.Time
 	UpdatedAt time.Time

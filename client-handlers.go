@@ -430,7 +430,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 
 	var cc []string
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
-	cc = append(cc, "john.eliakis@wheelsanddeals.ca")
+	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 
 	mailMessage := maildata.MailData{
 		ToName:      "",
@@ -621,7 +621,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 
 	var cc []string
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
-	cc = append(cc, "john.eliakis@wheelsanddeals.ca")
+	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 	cc = append(cc, "chelsea.gilbert@wheelsanddeals.ca")
 
 	mailMessage := maildata.MailData{
