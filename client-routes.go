@@ -4,6 +4,7 @@ import (
 	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
+	"github.com/tsawler/goblender/pkg/backups"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/driver"
 	"github.com/tsawler/goblender/pkg/handlers"
@@ -25,6 +26,7 @@ var userHandlers *handlers.UserDBRepo
 var roleHandlers *handlers.RoleDBRepo
 var historyHandlers *handlers.HistoryDBRepo
 var postHandlers *handlers.PostDBRepo
+var backupRepo *backups.BackupDBRepo
 
 // ClientRoutes holds all app routes for the custom code
 func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddleware alice.Chain) (*pat.PatternServeMux, error) {
@@ -152,8 +154,9 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 }
 
 // ClientInit gives us access to site values for client code.
-func ClientInit(c config.AppConfig, p *driver.DB) {
+func ClientInit(c config.AppConfig, p *driver.DB, br *backups.BackupDBRepo) {
 	app = c
+	backupRepo = br
 
 	vehicleModel = &clientdb.VehicleModel{DB: p.SQL}
 	infoLog = app.InfoLog
@@ -165,6 +168,6 @@ func ClientInit(c config.AppConfig, p *driver.DB) {
 	historyHandlers = handlers.NewHistoryHandler(p)
 	roleHandlers = handlers.NewRoleHandlers(p, historyHandlers)
 	userHandlers = handlers.NewUserHandlers(app, p, roleHandlers)
-	pageHandlers = handlers.NewPageHandler(app, p, userHandlers, preferenceHandlers)
+	pageHandlers = handlers.NewPageHandler(app, p, userHandlers, preferenceHandlers, backupRepo)
 	postHandlers = handlers.NewPostHandlers(app, p, pageHandlers)
 }
