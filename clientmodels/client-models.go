@@ -8,7 +8,7 @@ type Vehicle struct {
 	StockNo         string           `xml:"StockNo"`
 	Cost            float32          `xml:"Price"`
 	Vin             string           `xml:"-"`
-	Odometer        int              `xml:"-"`
+	Odometer        int              `xml:"odometer"`
 	Year            int              `xml:"Year"`
 	Trim            string           `xml:"-"`
 	VehicleType     int              `xml:"-"`
@@ -16,8 +16,8 @@ type Vehicle struct {
 	SeatingCapacity string           `xml:"-"`
 	DriveTrain      string           `xml:"-"`
 	Engine          string           `xml:"-"`
-	ExteriorColour  string           `xml:"-"`
-	InteriorColour  string           `xml:"-"`
+	ExteriorColour  string           `xml:"exterior_color"`
+	InteriorColour  string           `xml:"interior_color"`
 	Transmission    string           `xml:"-"`
 	Options         string           `xml:"-"`
 	ModelNumber     string           `xml:"-"`
