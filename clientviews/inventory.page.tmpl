@@ -9,7 +9,7 @@
         .is-wrapper {
             height: auto;
         }
-        #compareModal, #qqModal, #tdModal, #sfModal {
+        #compareModal, #qqModal, #tdModal, #sfModal, #qciModal {
             z-index: 20003;
         }
     </style>
@@ -267,8 +267,14 @@
 
                                 <a class="btn btn-block btn-danger text-white"
                                    href="#!"
-                                   onclick="openQQ('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}', '{{.StockNo}}')">
+                                   onclick="openQCI('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}', '{{.StockNo}}')">
                                     Quick Click Inquiry
+                                </a>
+
+                                <a class="btn btn-block btn-danger text-white"
+                                   href="#!"
+                                   onclick="openQQ('{{.ID}}', '{{.Year}} {{.Make.Make}} {{.Model.Model}} {{.Trim}}', '{{.StockNo}}')">
+                                    Quick Quote
                                 </a>
 
                                 <a class="btn btn-block btn-danger text-white"

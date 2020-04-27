@@ -25,7 +25,8 @@
                 </div>
                 <div class="modal-body">
 
-                    <p>This virtual thing is different but I understand...</p>
+                    <p>Just fill out the form below and click <strong>Request Quick Quote</strong>, and we'll get back
+                        to you with a quick quote.</p>
 
                     <form id="qq-form" class="needs-validation" method="post" action="/power-sports/quick-quote"
                           novalidate>
@@ -80,24 +81,18 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="talkabout">I would like to talk about:</label>
-                            <textarea id="talkabout" class="form-control" rows="3"></textarea>
-                            <span id="interested-in-item"></span>
+
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-12">
+                                <div class="card card-body bg-light" style="width: 100%;">
+                                    <div class="card-body">
+                                        <p class="text-center"><strong>Interested In:</strong>
+                                            <span id="interested-in-item"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-
-{{/*                        <div class="row d-flex justify-content-center">*/}}
-{{/*                            <div class="col-md-12">*/}}
-{{/*                                <div class="card card-body bg-light" style="width: 100%;">*/}}
-{{/*                                    <div class="card-body">*/}}
-{{/*                                        <p class="text-center"><strong>Interested In:</strong>*/}}
-{{/*                                            <span id="interested-in-item"></span>*/}}
-{{/*                                        </p>*/}}
-{{/*                                    </div>*/}}
-{{/*                                </div>*/}}
-{{/*                            </div>*/}}
-{{/*                        </div>*/}}
                     </form>
 
                 </div>
@@ -111,7 +106,99 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="qciModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Quick Quote</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <p>This virtual thing is different but I understand...</p>
+
+                    <form id="qci-form" class="needs-validation" method="post" action="/power-sports/quick-quote"
+                          novalidate>
+                        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                        <input type="hidden" name="qci-vid" id="qci-vid">
+
+                        <div class="form-group">
+                            <label for="qci-name">My name is:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-user fa-fw"></i></span>
+                                </div>
+                                <input class="form-control required"
+                                       id="qci-name"
+                                       autocomplete="off" type='text'
+                                       name='name' required>
+                                <div class="invalid-feedback">
+                                    Required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qci-email">My email is:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
+                                </div>
+                                <input class="form-control required"
+                                       id="qci-email"
+                                       autocomplete="off" type='email'
+                                       name='email' required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qci-phone">My number is:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-phone fa-fw"></i></span>
+                                </div>
+                                <input class="form-control required"
+                                       id="qci-phone"
+                                       autocomplete="off" type='text'
+                                       name='phone'>
+                                <div class="invalid-feedback">
+                                    Required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="talkabout">I would like to talk about:</label>
+                            <textarea id="talkabout" class="form-control" rows="3"></textarea>
+                            <span id="qci-interested-in-item"></span>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            onclick="valQCI()">
+                        Click Here
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function openQCI(id, item, stockNo) {
+            $("#qci-interested-in-item").html(item + ", Stock Number: " + stockNo);
+            $("#qci-vid").val(id)
+            $('#qciModal').modal({backdrop: true})
+        }
+
         function openQQ(id, item, stockNo) {
             $("#interested-in-item").html(item + ", Stock Number: " + stockNo);
             $("#qq-vid").val(id)
@@ -132,6 +219,35 @@
                 formData.append('phone', $("#qq-phone").val());
                 formData.append('interested', $("#interested-in-item").html());
                 formData.append('vehicle_id', $("#qq-vid").val());
+                // formData.append("msg", $("#talkabout").val());
+                formData.append('csrf_token', {{.CSRFToken}});
+                let ajax = new XMLHttpRequest();
+                ajax.responseType = "json";
+                ajax.open("POST", "/power-sports/quick-quote");
+                ajax.send(formData);
+                ajax.onreadystatechange = function () {
+                    if (ajax.readyState === 4) {
+                        $("#qqModal").modal('hide');
+                        successAlert("Quick Quote Request sent!!");
+                    }
+                }
+            }
+        }
+
+        function valQCI() {
+            let form = $("#qci-form");
+            if (form[0].checkValidity() === false) {
+                this.event.preventDefault();
+                this.event.stopPropagation();
+            }
+            form.addClass('was-validated');
+            if (form[0].checkValidity() === true) {
+                let formData = new FormData();
+                formData.append('name', $("#qci-name").val());
+                formData.append('email', $("#qci-email").val());
+                formData.append('phone', $("#qci-phone").val());
+                formData.append('interested', $("#qci-interested-in-item").html());
+                formData.append('vehicle_id', $("#qci-vid").val());
                 formData.append("msg", $("#talkabout").val());
                 formData.append('csrf_token', {{.CSRFToken}});
                 let ajax = new XMLHttpRequest();

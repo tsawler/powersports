@@ -35,7 +35,7 @@
             opacity: 0.7;
         }
 
-        #compareModal, #qqModal, #tdModal, #sfModal {
+        #compareModal, #qqModal, #tdModal, #sfModal, #qciModal {
             z-index: 20003;
         }
     </style>
@@ -228,8 +228,15 @@
 
                                     <a class="btn btn-block btn-danger text-white"
                                        href="#!"
-                                       onclick="openQQ('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
+                                       onclick="openQCI('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
                                         Quick Click Inquiry
+                                    </a>
+
+
+                                    <a class="btn btn-block btn-danger text-white"
+                                       href="#!"
+                                       onclick="openQQ('{{$item.ID}}', '{{$item.Year}} {{$item.Make.Make}} {{$item.Model.Model}} {{$item.Trim}}', '{{$item.StockNo}}')">
+                                        Quick Quote
                                     </a>
                                 </div>
                             </div>
