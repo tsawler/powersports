@@ -241,6 +241,7 @@
                 this.event.stopPropagation();
             }
             form.addClass('was-validated');
+            let v = document.getElementById("qci-interested-in-item").innerHTML;
             if (form[0].checkValidity() === true) {
                 let formData = new FormData();
                 formData.append('name', $("#qci-name").val());
@@ -248,7 +249,7 @@
                 formData.append('phone', $("#qci-phone").val());
                 formData.append('interested', $("#qci-interested-in-item").html());
                 formData.append('vehicle_id', $("#qci-vid").val());
-                formData.append("msg", $("#talkabout").val());
+                formData.append("msg", $("#talkabout").val() + "<br> " + v);
                 formData.append('csrf_token', {{.CSRFToken}});
                 let ajax = new XMLHttpRequest();
                 ajax.responseType = "json";
