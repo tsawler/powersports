@@ -7,7 +7,7 @@ type Vehicle struct {
 	ID              int              `xml:"-"`
 	StockNo         string           `xml:"StockNo"`
 	Cost            float32          `xml:"Price"`
-	Vin             string           `xml:"vin"`
+	Vin             string           `xml:"Vin"`
 	Odometer        int              `xml:"odometer"`
 	Year            int              `xml:"Year"`
 	Trim            string           `xml:"-"`
