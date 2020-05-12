@@ -296,15 +296,18 @@
                                     href="#!">Compare checked</a>
                                     <br>
                                     <br>
-                                    <strong>The Jim Gilbert’s PowerSports Advantage:</strong>
-                                    {{if eq .VehicleMakesID 47}}
-                                    <div data-hide="true" class="hidden">
-                                        <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Parts & Labor,First Service Included,Full Tank of Gas</span>
-                                    </div>
+                                    {{if or (eq .VehicleMakesID 47) (eq .VehicleMakesID 90) (eq .VehicleMakesID 30) (eq .VehicleMakesID 39)  }}
+                                        <strong>The Jim Gilbert’s PowerSports Advantage:</strong>
+                                        <div data-hide="true" class="hidden">
+                                            <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Parts & Labor,Full Tank of Gas</span>
+                                        </div>
+                                    {{else if or (eq .VehicleMakesID 37) (eq .VehicleMakesID 41) (eq .VehicleMakesID 68)}}
+
                                     {{else}}
-                                    <div data-hide="true" class="hidden"> <!-- other powerports -->
-                                        <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,No Charge 1st Scheduled Service "done by us",Full Tank of Gas</span>
-                                    </div>
+                                        <strong>The Jim Gilbert’s PowerSports Advantage:</strong>
+                                        <div data-hide="true" class="hidden"> <!-- other powerports -->
+                                            <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,First Service Free or Free Service Kit,Full Tank of Gas</span>
+                                        </div>
                                     {{end}}
                                 </div>
                             </div>
