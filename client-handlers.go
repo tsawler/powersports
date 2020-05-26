@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
 	"github.com/tsawler/goblender/client/clienthandlers/clientmodels"
+	channel_data "github.com/tsawler/goblender/pkg/channel-data"
 	"github.com/tsawler/goblender/pkg/forms"
 	"github.com/tsawler/goblender/pkg/helpers"
-	"github.com/tsawler/goblender/pkg/maildata"
 	"github.com/tsawler/goblender/pkg/templates"
 	"html/template"
 	"net/http"
@@ -358,7 +358,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	var cc []string
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
@@ -432,7 +432,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
@@ -504,7 +504,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 		</p>
 `, name, interest, url)
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   email,
 		FromName:    app.PreferenceMap["smtp-from-name"],
@@ -624,7 +624,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 	cc = append(cc, "chelsea.gilbert@wheelsanddeals.ca")
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
