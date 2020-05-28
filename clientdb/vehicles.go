@@ -1227,7 +1227,22 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 		       used,
 		       coalesce(price_for_display,''),
 		       created_at,
-		       updated_at
+		       updated_at, 
+		       case when vehicle_type in (8, 11, 12) then 'ATV'
+		       when vehicle_type = 1 then 'Car'
+		       when vehicle_type = 16 then 'Electric Bike'
+		       when vehicle_type = 13 then 'Jetski'
+		       when vehicle_type = 10 then 'Outboard Motor'
+		       when vehicle_type = 7 then 'Motorcycle'
+		       when vehicle_type = 9 then 'Pontoon Boat'
+		       when vehicle_type = 15 then 'Power Boat'
+		       when vehicle_type = 17 then 'Scooter'
+		       when vehicle_type = 5 then 'SUV'
+		       when vehicle_type = 14 then 'Trailer'
+		       when vehicle_type = 2 then 'Truck'
+		       when vehicle_type = 4 then 'Other'
+		       when vehicle_type = 6 then 'Van'
+		       end as vehicle_type_string 
 		from 
 		     wheelsanddeals.vehicles v 
 		where
@@ -1273,6 +1288,7 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 			&c.PriceForDisplay,
 			&c.CreatedAt,
 			&c.UpdatedAt,
+			&c.VehicleTypeString,
 		)
 		if err != nil {
 			fmt.Println(err)
