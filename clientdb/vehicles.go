@@ -1247,6 +1247,8 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 		     wheelsanddeals.vehicles v 
 		where
 			v.status = 1
+			and v.vehicle_models_id is not null 
+			and v.vehicle_makes_id is not null
 		
 		order by stock_no`
 
