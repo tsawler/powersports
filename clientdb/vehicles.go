@@ -1242,6 +1242,7 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 		       when vehicle_type = 2 then 'Truck'
 		       when vehicle_type = 4 then 'Other'
 		       when vehicle_type = 6 then 'Van'
+		       else ''
 		       end as vehicle_type_string 
 		from 
 		     wheelsanddeals.vehicles v 
