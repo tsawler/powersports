@@ -24,12 +24,6 @@ type JSONResponse struct {
 	Message string `json:"message"`
 }
 
-// ShowHome returns the home page using our local page template for the client
-func ShowHome(w http.ResponseWriter, r *http.Request) {
-	pageHandlers.SetDefaultPageTemplate("client-home.page.tmpl")
-	pageHandlers.Home(w, r)
-}
-
 // CompareVehicles Show 2 or 3 vehicles in table TODO
 func CompareVehicles(w http.ResponseWriter, r *http.Request) {
 	idString := r.Form.Get("ids")
@@ -257,7 +251,7 @@ func renderInventory(r *http.Request, stringMap map[string]string, vehicleType i
 	intMap["model"] = selectedModel
 	intMap["price"] = selectedPrice
 
-	pg, err := pageModel.GetBySlug(slug)
+	pg, err := repo.DB.GetPageBySlug(slug)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -303,7 +297,7 @@ func renderInventory(r *http.Request, stringMap map[string]string, vehicleType i
 func ShowItem(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(r.URL.Query().Get(":ID"))
 
-	pg, err := pageModel.GetBySlug("power-sports-item")
+	pg, err := repo.DB.GetPageBySlug("power-sports-item")
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -537,7 +531,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 
 // CreditApp displays credit app page
 func CreditApp(w http.ResponseWriter, r *http.Request) {
-	pg, err := pageModel.GetBySlug("credit-application")
+	pg, err := repo.DB.GetPageBySlug("credit-application")
 
 	if err != nil {
 		helpers.ServerError(w, err)
