@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
 	"github.com/tsawler/goblender/client/clienthandlers/clientmodels"
+	channel_data "github.com/tsawler/goblender/pkg/channel-data"
 	"github.com/tsawler/goblender/pkg/forms"
 	"github.com/tsawler/goblender/pkg/helpers"
-	"github.com/tsawler/goblender/pkg/maildata"
 	"github.com/tsawler/goblender/pkg/templates"
 	"html/template"
 	"net/http"
@@ -22,12 +22,6 @@ var vehicleModel *clientdb.VehicleModel
 type JSONResponse struct {
 	OK      bool   `json:"ok"`
 	Message string `json:"message"`
-}
-
-// ShowHome returns the home page using our local page template for the client
-func ShowHome(w http.ResponseWriter, r *http.Request) {
-	pageHandlers.SetDefaultPageTemplate("client-home.page.tmpl")
-	pageHandlers.Home(w, r)
 }
 
 // CompareVehicles Show 2 or 3 vehicles in table TODO
@@ -257,7 +251,7 @@ func renderInventory(r *http.Request, stringMap map[string]string, vehicleType i
 	intMap["model"] = selectedModel
 	intMap["price"] = selectedPrice
 
-	pg, err := pageModel.GetBySlug(slug)
+	pg, err := repo.DB.GetPageBySlug(slug)
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -303,7 +297,7 @@ func renderInventory(r *http.Request, stringMap map[string]string, vehicleType i
 func ShowItem(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(r.URL.Query().Get(":ID"))
 
-	pg, err := pageModel.GetBySlug("power-sports-item")
+	pg, err := repo.DB.GetPageBySlug("power-sports-item")
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -358,7 +352,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 	var cc []string
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
@@ -432,7 +426,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 	cc = append(cc, "wheelsanddeals@pbssystems.com")
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
@@ -504,7 +498,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 		</p>
 `, name, interest, url)
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   email,
 		FromName:    app.PreferenceMap["smtp-from-name"],
@@ -537,7 +531,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 
 // CreditApp displays credit app page
 func CreditApp(w http.ResponseWriter, r *http.Request) {
-	pg, err := pageModel.GetBySlug("credit-application")
+	pg, err := repo.DB.GetPageBySlug("credit-application")
 
 	if err != nil {
 		helpers.ServerError(w, err)
@@ -624,7 +618,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 	cc = append(cc, "chelsea.gilbert@wheelsanddeals.ca")
 
-	mailMessage := maildata.MailData{
+	mailMessage := channel_data.MailData{
 		ToName:      "",
 		ToAddress:   "alex.gilbert@wheelsanddeals.ca",
 		FromName:    app.PreferenceMap["smtp-from-name"],
