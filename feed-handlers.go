@@ -7,12 +7,14 @@ import (
 	"net/http"
 )
 
+// Xml describes XML structure for Facebook feed
 type Xml struct {
 	XMLName  xml.Name               `xml:"vehicles"`
 	Version  string                 `xml:"version,attr"`
 	Vehicles []clientmodels.Vehicle `xml:"Vehicle"`
 }
 
+// FacebookMarketplaceFeed generates xml feed for Facebook marketplace
 func FacebookMarketplaceFeed(w http.ResponseWriter, r *http.Request) {
 
 	v := &Xml{Version: "1"}
