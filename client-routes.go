@@ -150,5 +150,5 @@ func ClientInit(c config.AppConfig, p *driver.DB, r *handlers.DBRepo) {
 	errorLog = app.ErrorLog
 	parentDB = p
 
-	repo.SetDefaultPageTemplate("client-home.page.tmpl")
+	repo.SetHomePageTemplate("client-home.page.tmpl")
 }
