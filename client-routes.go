@@ -4,6 +4,7 @@ import (
 	"github.com/bmizerany/pat"
 	"github.com/justinas/alice"
 	"github.com/tsawler/goblender/client/clienthandlers/clientdb"
+	template_data "github.com/tsawler/goblender/client/clienthandlers/template--data"
 	"github.com/tsawler/goblender/pkg/config"
 	"github.com/tsawler/goblender/pkg/driver"
 	"github.com/tsawler/goblender/pkg/handlers"
@@ -151,4 +152,5 @@ func ClientInit(c config.AppConfig, p *driver.DB, r *handlers.DBRepo) {
 	parentDB = p
 
 	repo.SetHomePageTemplate("client-home.page.tmpl")
+	template_data.NewTemplateData(p.SQL)
 }
