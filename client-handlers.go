@@ -494,7 +494,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 			%s
 			<br><br>
 			You can see the item by following this link:
-			<a href='http://%s'>Click here to see the item!</a>
+			<a href='%s'>Click here to see the item!</a>
 		</p>
 `, name, interest, url)
 
