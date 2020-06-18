@@ -6,14 +6,13 @@ import (
 	"github.com/tsawler/goblender/pkg/templates"
 )
 
-var vehicleModel *clientdb.DBModel
+var vehicleModel *clientdb.VehicleModel
 
 func NewTemplateData(p *sql.DB) {
-	vehicleModel = &clientdb.DBModel{DB: p}
+	vehicleModel = &clientdb.VehicleModel{DB: p}
 }
 
 // AddDefaultData
 func AddDefaultData(td *templates.TemplateData) *templates.TemplateData {
-
 	return td
 }
