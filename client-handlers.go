@@ -350,7 +350,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 `, name, email, phone, interest)
 
 	var cc []string
-	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "wheelsanddealspowersports@pbssystems.com")
 
 	mailMessage := channel_data.MailData{
 		ToName:      "",
@@ -423,7 +423,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 `, name, email, phone, pDate, pTime, interest)
 
 	var cc []string
-	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "wheelsanddealspowersports@pbssystems.com")
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 
 	mailMessage := channel_data.MailData{
@@ -614,7 +614,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	)
 
 	var cc []string
-	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "wheelsanddealspowersports@pbssystems.com")
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 	cc = append(cc, "chelsea.gilbert@wheelsanddeals.ca")
 
