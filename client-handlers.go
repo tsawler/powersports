@@ -359,7 +359,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     "PowerSports Quick Quote Request",
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 		CC:          cc,
 	}
 
@@ -433,7 +433,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     "PowerSports Test Drive Request",
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 		CC:          cc,
 	}
 
@@ -505,7 +505,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     fmt.Sprintf("%s thought you might be intersted in this item from Jim Gilbert's PowerSports", name),
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 	}
 
 	helpers.SendEmail(mailMessage)
@@ -625,7 +625,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     "PowerSports Credit Application",
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 		CC:          cc,
 	}
 
