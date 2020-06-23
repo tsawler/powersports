@@ -18,6 +18,34 @@ import (
 
 var vehicleModel *clientdb.VehicleModel
 
+const (
+	SOLD    = 0
+	FORSALE = 1
+	PENDING = 2
+	TRADEIN = 3
+)
+
+const (
+	All           = 0
+	ATVBruteForce = 8
+	ATVMule       = 11
+	ATVTeryx      = 12
+	Car           = 1
+	ElectricBike  = 16
+	JetSki        = 13
+	Mercury       = 10
+	Motorcycle    = 7
+	Other         = 3
+	PontoonBoat   = 9
+	PowerBoat     = 15
+	Scooter       = 17
+	SUV           = 5
+	Trailer       = 14
+	Truck         = 2
+	MiniVan       = 6
+	Unknown       = 4
+)
+
 // JSONResponse is a generic struct to hold json responses
 type JSONResponse struct {
 	OK      bool   `json:"ok"`
@@ -310,6 +338,12 @@ func ShowItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if item.Status != FORSALE {
+		// item is sold, or whatever
+		http.Redirect(w, r, "/motorcyclesforsale/fredericton", http.StatusMovedPermanently)
+		return
+	}
+
 	rowSets := make(map[string]interface{})
 	rowSets["item"] = item
 
@@ -350,7 +384,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 `, name, email, phone, interest)
 
 	var cc []string
-	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "wheelsanddealspowersports@pbssystems.com")
 
 	mailMessage := channel_data.MailData{
 		ToName:      "",
@@ -359,7 +393,7 @@ func QuickQuote(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     "PowerSports Quick Quote Request",
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 		CC:          cc,
 	}
 
@@ -423,7 +457,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 `, name, email, phone, pDate, pTime, interest)
 
 	var cc []string
-	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "wheelsanddealspowersports@pbssystems.com")
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 
 	mailMessage := channel_data.MailData{
@@ -433,7 +467,7 @@ func TestDrive(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     "PowerSports Test Drive Request",
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 		CC:          cc,
 	}
 
@@ -494,7 +528,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 			%s
 			<br><br>
 			You can see the item by following this link:
-			<a href='http://%s'>Click here to see the item!</a>
+			<a href='%s'>Click here to see the item!</a>
 		</p>
 `, name, interest, url)
 
@@ -505,7 +539,7 @@ func SendFriend(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     fmt.Sprintf("%s thought you might be intersted in this item from Jim Gilbert's PowerSports", name),
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 	}
 
 	helpers.SendEmail(mailMessage)
@@ -614,7 +648,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	)
 
 	var cc []string
-	cc = append(cc, "wheelsanddeals@pbssystems.com")
+	cc = append(cc, "wheelsanddealspowersports@pbssystems.com")
 	//cc = append(cc, "john.eliakis@wheelsanddeals.ca")
 	cc = append(cc, "chelsea.gilbert@wheelsanddeals.ca")
 
@@ -625,7 +659,7 @@ func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 		FromAddress: app.PreferenceMap["smtp-from-email"],
 		Subject:     "PowerSports Credit Application",
 		Content:     template.HTML(content),
-		Template:    "generic-email.mail.tmpl",
+		Template:    "bootstrap.mail.tmpl",
 		CC:          cc,
 	}
 

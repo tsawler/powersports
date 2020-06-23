@@ -12,6 +12,9 @@
         #compareModal, #qqModal, #tdModal, #sfModal, #qciModal {
             z-index: 20003;
         }
+        .rotator-wrapper {
+            height: 3em;
+        }
     </style>
 {{end}}
 
@@ -298,17 +301,31 @@
                                     <br>
                                     {{if eq .Used 1}}
 
-                                    {{else if or (eq .VehicleMakesID 89) (eq .VehicleMakesID 47) (eq .VehicleMakesID 90) (eq .VehicleMakesID 30) (eq .VehicleMakesID 39)  }}
-                                        <strong>The Jim Gilbert’s PowerSports Advantage:</strong>
-                                        <div data-hide="true" class="hidden">
-                                            <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Parts & Labor,Full Tank of Gas</span>
+                                    {{else if eq .VehicleMakesID 90}}
+                                        <p class="text-danger" style="font-weight: bold">The Jim Gilbert’s PowerSports
+                                            Advantage:</p>
+                                        <div class="rotator-wrapper">
+                                            <div data-hide="true" class="hidden"> <!-- other powerports -->
+                                                <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor</span>
+                                            </div>
+                                        </div>
+                                    {{else if or (eq .VehicleMakesID 89) (eq .VehicleMakesID 47) (eq .VehicleMakesID 30) (eq .VehicleMakesID 39)  }}
+                                        <p class="text-danger" style="font-weight: bold">The Jim Gilbert’s PowerSports
+                                            Advantage:</p>
+                                        <div class="rotator-wrapper">
+                                            <div data-hide="true" class="hidden">
+                                                <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Parts & Labor,Full Tank of Gas</span>
+                                            </div>
                                         </div>
                                     {{else if or (eq .VehicleMakesID 41) (eq .VehicleMakesID 68)}}
 
                                     {{else}}
-                                        <strong>The Jim Gilbert’s PowerSports Advantage:</strong>
-                                        <div data-hide="true" class="hidden"> <!-- other powerports -->
-                                            <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,First Service Free or Free Service Kit,Full Tank of Gas</span>
+                                        <p class="text-danger" style="font-weight: bold">The Jim Gilbert’s PowerSports
+                                            Advantage:</p>
+                                        <div class="rotator-wrapper">
+                                            <div data-hide="true" class="hidden"> <!-- other powerports -->
+                                                <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,First Service Free or Free Service Kit,Full Tank of Gas</span>
+                                            </div>
                                         </div>
                                     {{end}}
                                 </div>
