@@ -18,6 +18,13 @@ import (
 
 var vehicleModel *clientdb.VehicleModel
 
+const (
+	SOLD    = 0
+	FORSALE = 1
+	PENDING = 2
+	TRADEIN = 3
+)
+
 // JSONResponse is a generic struct to hold json responses
 type JSONResponse struct {
 	OK      bool   `json:"ok"`
@@ -307,6 +314,12 @@ func ShowItem(w http.ResponseWriter, r *http.Request) {
 	item, err := vehicleModel.GetPowerSportItem(id)
 	if err != nil {
 		fmt.Fprint(w, "custom 404")
+		return
+	}
+
+	if item.Status != FORSALE {
+		// item is sold, or whatever
+		http.Redirect(w, r, "/motorcyclesforsale/fredericton", http.StatusMovedPermanently)
 		return
 	}
 
