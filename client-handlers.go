@@ -25,6 +25,27 @@ const (
 	TRADEIN = 3
 )
 
+const (
+	All           = 0
+	ATVBruteForce = 8
+	ATVMule       = 11
+	ATVTeryx      = 12
+	Car           = 1
+	ElectricBike  = 16
+	JetSki        = 13
+	Mercury       = 10
+	Motorcycle    = 7
+	Other         = 3
+	PontoonBoat   = 9
+	PowerBoat     = 15
+	Scooter       = 17
+	SUV           = 5
+	Trailer       = 14
+	Truck         = 2
+	MiniVan       = 6
+	Unknown       = 4
+)
+
 // JSONResponse is a generic struct to hold json responses
 type JSONResponse struct {
 	OK      bool   `json:"ok"`
