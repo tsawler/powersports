@@ -299,7 +299,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 			wheels_go.vehicles v 
 		where 
 			status = 1 
-			and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14) %s 
+			and vehicle_type in (8, 11, 12, 16, 13, 10, 7, 9, 15, 17, 14, 13, 10, 9, 15) %s 
 			and v.used = 1`, where)
 		nRows = m.DB.QueryRowContext(ctx, stmt)
 	} else if vehicleTypeID == 1001 {
