@@ -401,7 +401,7 @@ func (m *VehicleModel) AllVehiclesPaginated(vehicleTypeID, perPage, offset, year
 		from 
 		     wheels_go.vehicles v 
 		where
-			vehicle_type in (8, 11, 12, 16, 7, 17, 14)
+			vehicle_type in (8, 11, 12, 16, 7, 17, 14, 13, 10, 9, 15)
 			and status = 1
 			and v.used = 1
 			%s
