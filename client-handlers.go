@@ -590,7 +590,22 @@ func CreditApp(w http.ResponseWriter, r *http.Request) {
 // PostCreditApp handles ajax post of credit application
 func PostCreditApp(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
-	form.Required("first_name", "last_name", "email", "y", "m", "y", "phone", "address", "city", "province", "zip", "rent", "income", "vehicle", "g-recaptcha-response")
+	form.Required(
+		"first_name",
+		"last_name",
+		"email",
+		"y",
+		"m",
+		"d",
+		"phone",
+		"address",
+		"city",
+		"province",
+		"zip",
+		"rent",
+		"income",
+		"vehicle",
+		"g-recaptcha-response")
 
 	form.RecaptchaValid(r.RemoteAddr)
 
