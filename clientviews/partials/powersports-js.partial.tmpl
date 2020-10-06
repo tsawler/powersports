@@ -267,14 +267,16 @@
                 ajax.open("POST", "/power-sports/quick-quote");
                 ajax.send(formData);
                 ajax.onreadystatechange = function () {
-                    let resp = ajax.response;
-                    let json = JSON.parse(JSON.stringify(resp));
-                    if (!json.ok) {
-                        errorAlert("Invalid form response!");
-                    } else {
-                        $("#qqModal").modal('hide');
-                        successAlert("Quick Quote Request sent!!");
-                        resetCaptcha();
+                    if (ajax.readyState === 4) {
+                        let resp = ajax.response;
+                        let json = JSON.parse(JSON.stringify(resp));
+                        if (!json.ok) {
+                            errorAlert("Invalid form response!");
+                        } else {
+                            $("#qqModal").modal('hide');
+                            successAlert("Quick Quote Request sent!!");
+                            resetCaptcha();
+                        }
                     }
                 }
             }
