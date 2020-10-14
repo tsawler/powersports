@@ -36,7 +36,7 @@ func ClientRoutes(mux *pat.PatternServeMux, standardMiddleWare, dynamicMiddlewar
 	}))
 
 	// blog
-	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(repo.ShowBlogPage(app)))
+	mux.Get("/motorsportsnews", standardMiddleWare.ThenFunc(repo.ShowBlogPage()))
 
 	// public buttons
 	mux.Post("/inventory/compare-vehicles", standardMiddleWare.ThenFunc(CompareVehicles))
@@ -150,6 +150,12 @@ func ClientInit(c config.AppConfig, p *driver.DB, r *handlers.DBRepo) {
 	infoLog = app.InfoLog
 	errorLog = app.ErrorLog
 	parentDB = p
+
+	if app.Database == "postgresql" {
+		handlers.NewPostgresqlHandlers(parentDB, app.ServerName, app.InProduction, &app)
+	} else {
+		handlers.NewMysqlHandlers(parentDB, app.ServerName, app.InProduction, &app)
+	}
 
 	repo.SetHomePageTemplate("client-home.page.tmpl")
 	template_data.NewTemplateData(p.SQL)
