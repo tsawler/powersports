@@ -1388,7 +1388,7 @@ func (m *VehicleModel) GetAllVehiclesForSale() ([]clientmodels.Vehicle, error) {
 				&o.SortOrder,
 			)
 
-			ph := fmt.Sprintf("https://www.wheels_go.ca/storage/inventory/%d/%s", c.ID, o.Image)
+			ph := fmt.Sprintf("https://www.wheelsanddeals.ca/storage/inventory/%d/%s", c.ID, o.Image)
 			o.Image = ph
 
 			if err != nil {
