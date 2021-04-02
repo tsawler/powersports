@@ -157,6 +157,6 @@ func ClientInit(c config.AppConfig, p *driver.DB, r *handlers.DBRepo) {
 		handlers.NewMysqlHandlers(parentDB, app.ServerName, app.InProduction, &app)
 	}
 
-	repo.SetHomePageTemplate("client-home.page.tmpl")
+	//repo.SetHomePageTemplate("client-home.page.tmpl")
 	template_data.NewTemplateData(p.SQL)
 }
