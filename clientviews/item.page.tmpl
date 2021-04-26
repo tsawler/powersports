@@ -202,9 +202,9 @@
                                     </div>
                                 {{else if or (eq $item.VehicleMakesID 41) (eq $item.VehicleMakesID 68)}}
 
-                                {{else if eq  .VehicleType 14}}
+                                {{else if eq  $item.VehicleType 14}}
 
-                                {{else if or (eq .VehicleType 17) (eq .VehicleType 1000)}}
+                                {{else if eq $item.VehicleType 17}}
                                     <p class="text-danger" style="font-weight: bold">The Jim Gilbert’s PowerSports
                                         Advantage:</p>
                                     <div class="rotator-wrapper">
