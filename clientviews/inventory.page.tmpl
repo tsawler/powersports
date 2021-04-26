@@ -319,6 +319,16 @@
                                         </div>
                                     {{else if or (eq .VehicleMakesID 41) (eq .VehicleMakesID 68)}}
 
+                                    {{else if eq  .VehicleType 14}}
+
+                                    {{else if or (eq .VehicleType 17) (eq .VehicleType 1000)}}
+                                        <p class="text-danger" style="font-weight: bold">The Jim Gilbert’s PowerSports
+                                            Advantage:</p>
+                                        <div class="rotator-wrapper">
+                                            <div data-hide="true" class="hidden"> <!-- other powerports -->
+                                                <span class="rotator" style="color: #a94442; font-weight: bold;">VIP Discounts & Savings on Accessories,VIP Discounts & Savings on Parts & Labor,Full Tank of Gas</span>
+                                            </div>
+                                        </div>
                                     {{else}}
                                         <p class="text-danger" style="font-weight: bold">The Jim Gilbert’s PowerSports
                                             Advantage:</p>
